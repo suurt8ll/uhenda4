@@ -30,7 +30,6 @@ public class MainMenuScreen implements Screen {
     @Override
     public void show() {
         stage = new Stage(game.viewport,game.batch);
-        System.out.println("tererere");
         ImageButton playbutton = new ImageButton(new TextureRegionDrawable(new TextureRegion((Texture) game.assetsLoader.manager.get(game.assetsLoader.playButtonImg))));
         playbutton.addListener(new InputListener(){
             @Override

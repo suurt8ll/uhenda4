@@ -21,13 +21,13 @@ public class Games extends Game {
     public GamesEnum selectedGameType;
     public int ScreenWidth = 800;
     public int ScreenHeight = 600;
-    public AssetsLoader assetsLoader = new AssetsLoader();
+    public AssetsLoader assetsLoader;
     public Preferences prefs;
 
     public GameMenuScreen GAMEMENU;
     public SettingsScreen SETTINGS;
 
-    public InputMultiplexer inputMultiplexer = new InputMultiplexer();
+    public InputMultiplexer inputMultiplexer;
 
     public Object getPreferences() {
         return this.prefs;
@@ -39,10 +39,12 @@ public class Games extends Game {
 
     @Override
     public void create() {
+        this.assetsLoader = new AssetsLoader();
         assetsLoader.load();
         this.prefs = Gdx.app.getPreferences("MyPrefs");
         this.viewport = new FitViewport(this.ScreenWidth,this.ScreenHeight);
         this.batch = new SpriteBatch();
+        this.inputMultiplexer = new InputMultiplexer();
         this.GAMEMENU = new GameMenuScreen(this);
         this.SETTINGS = new SettingsScreen(this);
         this.setScreen(new MainMenuScreen(this));
