@@ -19,9 +19,9 @@
 *.tar.gz
 *.rar
 
-.idea/
+**.idea/**
 ### Gradle ###
-.gradle
+**.gradle**
 /build/
 
 # Ignore Gradle GUI config
