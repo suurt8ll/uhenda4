@@ -4,6 +4,7 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.connectfour.screens.GameMenuScreen;
 import com.connectfour.screens.MainMenuScreen;
@@ -20,10 +21,10 @@ public class Games extends Game {
     public int ScreenWidth = 800;
     public int ScreenHeight = 600;
     public AssetsLoader assetsLoader = new AssetsLoader();
-    public Preferences prefs = Gdx.app.getPreferences("savedata");
+    public Preferences prefs;
 
-    public GameMenuScreen GAMEMENU = new GameMenuScreen(this);
-    public SettingsScreen SETTINGS = new SettingsScreen(this);
+    public GameMenuScreen GAMEMENU;
+    public SettingsScreen SETTINGS;
 
     public InputMultiplexer inputMultiplexer = new InputMultiplexer();
 
@@ -38,6 +39,10 @@ public class Games extends Game {
     @Override
     public void create() {
         assetsLoader.load();
+        this.prefs = Gdx.app.getPreferences("MyPrefs");
+        this.GAMEMENU = new GameMenuScreen(this);
+        this.SETTINGS = new SettingsScreen(this);
+        this.viewport = new FitViewport(this.ScreenWidth,this.ScreenHeight);
         this.setScreen(new MainMenuScreen(this));
     }
 
