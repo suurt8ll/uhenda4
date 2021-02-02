@@ -30,19 +30,21 @@ public class MainMenuScreen implements Screen {
     @Override
     public void show() {
         stage = new Stage(game.viewport,game.batch);
+        System.out.println("tererere");
         ImageButton playbutton = new ImageButton(new TextureRegionDrawable(new TextureRegion((Texture) game.assetsLoader.manager.get(game.assetsLoader.playButtonImg))));
         playbutton.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                System.out.println("reeteteere");
                 game.changeScreen(game.GAMEMENU);
                 return true;
             }
         });
-
         ImageButton settingsbutton = new ImageButton(new TextureRegionDrawable(new TextureRegion((Texture) game.assetsLoader.manager.get(game.assetsLoader.settingsButtonImg))));
         settingsbutton.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                System.out.println("reeteteere");
                 game.changeScreen(game.SETTINGS);
                 return true;
             }

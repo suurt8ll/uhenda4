@@ -3,6 +3,7 @@ package com.connectfour;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -13,7 +14,7 @@ import com.connectfour.screens.gameScreens.GamesEnum;
 
 public class Games extends Game {
     public Viewport viewport;
-    public Batch batch;
+    public SpriteBatch batch;
     public Player player1;
     public Skin skin;
     public Player player2;
@@ -40,9 +41,10 @@ public class Games extends Game {
     public void create() {
         assetsLoader.load();
         this.prefs = Gdx.app.getPreferences("MyPrefs");
+        this.viewport = new FitViewport(this.ScreenWidth,this.ScreenHeight);
+        this.batch = new SpriteBatch();
         this.GAMEMENU = new GameMenuScreen(this);
         this.SETTINGS = new SettingsScreen(this);
-        this.viewport = new FitViewport(this.ScreenWidth,this.ScreenHeight);
         this.setScreen(new MainMenuScreen(this));
     }
 

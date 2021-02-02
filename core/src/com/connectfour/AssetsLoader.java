@@ -10,6 +10,8 @@ public class AssetsLoader {
 
     public void load() {
         manager.load(playButtonImg, Texture.class);
+        manager.load(settingsButtonImg, Texture.class);
+        manager.finishLoading();
     }
 
 }
