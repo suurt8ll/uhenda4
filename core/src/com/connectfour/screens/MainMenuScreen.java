@@ -34,7 +34,7 @@ public class MainMenuScreen implements Screen {
         playbutton.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                game.changeScreen(Games.GAMEMENU);
+                game.changeScreen(game.GAMEMENU);
                 return true;
             }
         });
@@ -43,7 +43,7 @@ public class MainMenuScreen implements Screen {
         settingsbutton.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                game.changeScreen(Games.SETTINGS);
+                game.changeScreen(game.SETTINGS);
                 return true;
             }
         });

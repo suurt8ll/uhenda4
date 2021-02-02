@@ -8,11 +8,11 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.connectfour.ColorPicker;
+//import com.connectfour.ColorPicker;
 import com.connectfour.Games;
 import com.connectfour.NumberTextFieldFilter;
 import com.connectfour.screens.gameScreens.GamesEnum;
-import com.connectfour.testacor;
+//import com.connectfour.testacor;
 
 public class SettingsScreen implements Screen {
     private Games game;
@@ -29,7 +29,7 @@ public class SettingsScreen implements Screen {
         final TextField nameTextField2 = new TextField(game.player2.getName(), game.skin);
         //final TextField boardsizeX = new TextField(String.valueOf(GamesEnum.gettype(game.getPreferences().getSelectedGameName()).getBoardsizex())  , game.skin);
         //final TextField boardsizeY = new TextField(String.valueOf(GamesEnum.gettype(game.getPreferences().getSelectedGameName()).getBoardsizey()), game.skin);
-        final SelectBox<String> selectBox = new SelectBox<String>(game.skin);
+        final SelectBox<String> selectBox = new SelectBox<>(game.skin);
         final TextButton applybutton = new TextButton("Apply",game.skin);
         final Slider volumeMusicSlider = new Slider( 0f, 1f, 0.1f,false, game.skin);
         final Slider volumeSoundSlider = new Slider( 0f, 1f, 0.1f,false, game.skin);

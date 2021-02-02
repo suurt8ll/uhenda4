@@ -1,5 +1,7 @@
 package com.connectfour.screens.gameScreens;
 
+import com.connectfour.Games;
+
 public enum GamesEnum {
     CONNECTFOUR("ConnectFour", 7,6);
 
@@ -41,4 +43,9 @@ public enum GamesEnum {
     public void setBoardsizey(int boardy) {
         this.Boardsizey = boardy;
     }
+
+    public void run(Games game) {
+        game.changeScreen(game.GAMEMENU);
+    }
+
 }
