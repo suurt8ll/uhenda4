@@ -27,23 +27,23 @@ public class SettingsScreen implements Screen {
     public void show() {
         final TextField nameTextField = new TextField(game.player1.getName(), game.skin);
         final TextField nameTextField2 = new TextField(game.player2.getName(), game.skin);
-        final TextField boardsizeX = new TextField(String.valueOf(GamesEnum.gettype(game.getPreferences().getSelectedGameName()).getBoardsizex())  , game.skin);
-        final TextField boardsizeY = new TextField(String.valueOf(GamesEnum.gettype(game.getPreferences().getSelectedGameName()).getBoardsizey()), game.skin);
+        //final TextField boardsizeX = new TextField(String.valueOf(GamesEnum.gettype(game.getPreferences().getSelectedGameName()).getBoardsizex())  , game.skin);
+        //final TextField boardsizeY = new TextField(String.valueOf(GamesEnum.gettype(game.getPreferences().getSelectedGameName()).getBoardsizey()), game.skin);
         final SelectBox<String> selectBox = new SelectBox<String>(game.skin);
         final TextButton applybutton = new TextButton("Apply",game.skin);
         final Slider volumeMusicSlider = new Slider( 0f, 1f, 0.1f,false, game.skin);
         final Slider volumeSoundSlider = new Slider( 0f, 1f, 0.1f,false, game.skin);
-        ColorPicker player1ColorPicker = new ColorPicker(150,20, game.player1.getColor(),game.getPreferences().getPlayer1Color());
-        ColorPicker player2ColorPicker = new ColorPicker(150,20, game.player2.getColor(),game.getPreferences().getPlayer2Color());
-        volumeMusicSlider.setValue(game.getPreferences().getMusicVolume());
-        volumeSoundSlider.setValue(game.getPreferences().getSoundVolume());
-        boardsizeX.setTextFieldFilter(new NumberTextFieldFilter());
-        boardsizeY.setTextFieldFilter(new NumberTextFieldFilter());
-        String[] values = new String[]{GamesEnum.CONNECTFOUR.getName(), GamesEnum.GOMOKU.getName()};
-        selectBox.setItems(values);
-        selectBox.setSelected(game.getPreferences().getSelectedGameName());
-        selectBox.setPosition(0, game.ScreenHeight-selectBox.getHeight());
-        selectBox.addListener(new ChangeListener() {
+        //ColorPicker player1ColorPicker = new ColorPicker(150,20, game.player1.getColor(),game.getPreferences().getPlayer1Color());
+        //ColorPicker player2ColorPicker = new ColorPicker(150,20, game.player2.getColor(),game.getPreferences().getPlayer2Color());
+        //volumeMusicSlider.setValue(game.getPreferences().getMusicVolume());
+        //volumeSoundSlider.setValue(game.getPreferences().getSoundVolume());
+        //boardsizeX.setTextFieldFilter(new NumberTextFieldFilter());
+        //boardsizeY.setTextFieldFilter(new NumberTextFieldFilter());
+        //String[] values = new String[]{GamesEnum.CONNECTFOUR.getName(), GamesEnum.GOMOKU.getName()};
+        //selectBox.setItems(values);
+        //selectBox.setSelected(game.getPreferences().getSelectedGameName());
+        //selectBox.setPosition(0, game.ScreenHeight-selectBox.getHeight());
+        /*selectBox.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 GamesEnum type = GamesEnum.gettype(selectBox.getSelected());
@@ -52,6 +52,8 @@ public class SettingsScreen implements Screen {
 
             }
         });
+        */
+        /*
         applybutton.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -85,7 +87,8 @@ public class SettingsScreen implements Screen {
                 return true;
             }
         });
-
+         */
+        /*
         Table table = new Table();
         table.setFillParent(true);
         table.add(new Label("Player1: ", game.skin));
@@ -117,6 +120,7 @@ public class SettingsScreen implements Screen {
         stage.addActor(table);
         player1ColorPicker.setPosition(100,100);
         game.inputMultiplexer.addProcessor(stage);
+         */
     }
 
     @Override
