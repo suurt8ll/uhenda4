@@ -8,11 +8,11 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.connectfour.ColorPicker;
+//import com.connectfour.ColorPicker;
 import com.connectfour.Games;
 import com.connectfour.NumberTextFieldFilter;
 import com.connectfour.screens.gameScreens.GamesEnum;
-import com.connectfour.testacor;
+//import com.connectfour.testacor;
 
 public class SettingsScreen implements Screen {
     private Games game;
