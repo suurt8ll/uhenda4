@@ -2,7 +2,6 @@ package com.connectfour;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -40,11 +39,13 @@ public class Games extends Game {
     @Override
     public void create() {
         this.assetsLoader = new AssetsLoader();
-        assetsLoader.load();
+        this.assetsLoader.init();
+        this.assetsLoader.load();
         this.prefs = Gdx.app.getPreferences("MyPrefs");
         this.viewport = new FitViewport(this.ScreenWidth,this.ScreenHeight);
         this.batch = new SpriteBatch();
         this.inputMultiplexer = new InputMultiplexer();
+        Gdx.input.setInputProcessor(this.inputMultiplexer);
         this.GAMEMENU = new GameMenuScreen(this);
         this.SETTINGS = new SettingsScreen(this);
         this.setScreen(new MainMenuScreen(this));
@@ -53,5 +54,13 @@ public class Games extends Game {
     @Override
     public void render() {
         super.render();
+    }
+
+    @Override
+    public void dispose() {
+        this.GAMEMENU.dispose();
+        this.SETTINGS.dispose();
+        this.batch.dispose();
+        super.dispose();
     }
 }
