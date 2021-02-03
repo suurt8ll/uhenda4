@@ -54,6 +54,10 @@ public class Games extends Game {
             //this.player1 = new Player(this.prefs.getPlayer1Name(),0,new Color(Integer.parseInt(this.prefs.getPlayer2Color(),8)));
             //this.player2 = new Player(this.prefs.getPlayer2Name(),1, new Color(hexToBinary(this.prefs.getPlayer2Color())));
         }
+        //HILJEM KUSTUTADA
+        this.player1 = new Player(this.prefs.getPlayer1Name(),0,new Color(1,0,0,1));
+        this.player2 = new Player(this.prefs.getPlayer2Name(),1, new Color(0,1,0,1));
+        //------------
         System.out.println(hexToBin(this.prefs.getPlayer1Color()));
 
         this.inputMultiplexer = new InputMultiplexer();
