@@ -5,7 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-//import com.connectfour.ColorPicker;
+import com.connectfour.ColorPicker;
 import com.connectfour.Games;
 import com.connectfour.NumberTextFieldFilter;
 //import com.connectfour.testacor;
@@ -28,7 +28,7 @@ public class SettingsScreen implements Screen {
         final TextButton applybutton = new TextButton("Apply",game.skin);
         final Slider volumeMusicSlider = new Slider( 0f, 1f, 0.1f,false, game.skin);
         final Slider volumeSoundSlider = new Slider( 0f, 1f, 0.1f,false, game.skin);
-        //ColorPicker player1ColorPicker = new ColorPicker(150,20, game.player1.getColor(),game.getPreferences().getPlayer1Color());
+        ColorPicker player1ColorPicker = new ColorPicker(150,20, game.player1.getColor(),game.getPreferences().getPlayer1Color());
         //ColorPicker player2ColorPicker = new ColorPicker(150,20, game.player2.getColor(),game.getPreferences().getPlayer2Color());
         volumeMusicSlider.setValue(game.getPreferences().getMusicVolume());
         volumeSoundSlider.setValue(game.getPreferences().getSoundVolume());
@@ -55,6 +55,7 @@ public class SettingsScreen implements Screen {
                 //game.player2.setColor(player2ColorPicker.getCurrentColor());
                 //game.getPreferences().setPlayer1Color(player1ColorPicker.getStringColorHex());
                 //game.getPreferences().setPlayer2Color(player2ColorPicker.getStringColorHex());
+                game.getPreferences().save();
                 game.changeScreen(game.MAINMENU);
                 return true;
             }
@@ -82,7 +83,7 @@ public class SettingsScreen implements Screen {
         table.add(volumeSoundSlider);
         table.row();
         table.add(new Label("Player1 color: ",game.skin));
-        //table.add(player1ColorPicker);
+        table.add(player1ColorPicker);
         table.row();
         table.add(new Label("Player2 color: ",game.skin));
         //table.add(player2ColorPicker);

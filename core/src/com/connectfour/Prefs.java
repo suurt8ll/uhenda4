@@ -2,6 +2,7 @@ package com.connectfour;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.graphics.Color;
 
 public class Prefs {
     private final String MUSIC_VOLUME = "Music_volume";
@@ -50,6 +51,13 @@ public class Prefs {
         return this.preferences.getString(this.PLAYER1_NAME);
     }
     public String getPlayer2Name(){
+        return this.preferences.getString(this.PLAYER2_NAME);
+    }
+    public void save(){
+        this.preferences.flush();
+    }
+
+    public String getPlayer1Color() {
         return this.preferences.getString(this.PLAYER2_NAME);
     }
 }

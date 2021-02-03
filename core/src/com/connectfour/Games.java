@@ -45,7 +45,6 @@ public class Games extends Game {
         this.viewport = new FitViewport(this.ScreenWidth,this.ScreenHeight);
         this.batch = new SpriteBatch();
         this.skin = assetsLoader.manager.get(assetsLoader.uiSkinJson,Skin.class);
-
         this.player1 = new Player(this.prefs.getPlayer1Name(),0,new Color(1,1,0,1));
         this.player2 = new Player(this.prefs.getPlayer2Name(),1, new Color(1,0,1,1));
         this.inputMultiplexer = new InputMultiplexer();
