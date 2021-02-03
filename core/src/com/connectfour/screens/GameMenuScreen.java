@@ -29,7 +29,7 @@ public class GameMenuScreen implements Screen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 game.player2.setAI(false);
-                game.selectedGameType.run(game);
+                game.changeScreen(game.CONNECTFOUR);
                 return true;
             }
         });
@@ -39,7 +39,7 @@ public class GameMenuScreen implements Screen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 game.player2.setAI(true);
-                game.selectedGameType.run(game);
+                game.changeScreen(game.CONNECTFOUR);
                 return true;
             }
         });

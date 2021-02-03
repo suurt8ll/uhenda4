@@ -4,19 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
 public class Prefs {
-    private final String SELECTED_GAME_NAME = "Selected_game_name";
     private final String MUSIC_VOLUME = "Music_volume";
     private final String SOUND_VOLUME = "Sound_volume";
+    private final String PLAYER1_NAME = "Player1_name";
+    private final String PLAYER2_NAME = "Player2_name";
+    private final String BOARD_SIZE_X = "Board_size_x";
+    private final String BOARD_SIZE_Y = "Board_size_y";
     private Preferences preferences;
     public Prefs(){
         this.preferences = Gdx.app.getPreferences("MyPrefs");
     }
-    public Preferences getPreferences() {
-        return preferences;
-    }
-    public String getSelectedGameName(){
-        return this.preferences.getString(this.SELECTED_GAME_NAME);
-    }
+
 
     public float getMusicVolume() {
         return this.preferences.getFloat(this.MUSIC_VOLUME);
@@ -27,6 +25,31 @@ public class Prefs {
     }
 
     public void setMusicVolume(float value) {
-        this.preferences.putFloat(MUSIC_VOLUME, value);
+        this.preferences.putFloat(this.MUSIC_VOLUME, value);
+    }
+
+    public void setSoundVolume(float value) {
+        this.preferences.putFloat(this.SOUND_VOLUME, value);
+    }
+
+    public void setPlayer1Name(String name) {
+        this.preferences.putString(this.PLAYER1_NAME, name);
+    }
+    public void setPlayer2Name(String name) {
+        this.preferences.putString(this.PLAYER2_NAME, name);
+    }
+
+    public void Boardx(int boardx) {
+        this.preferences.putInteger(this.BOARD_SIZE_X, boardx);
+    }
+    public void Boardy(int boardy) {
+        this.preferences.putInteger(this.BOARD_SIZE_Y, boardy);
+    }
+
+    public String getPlayer1Name(){
+        return this.preferences.getString(this.PLAYER1_NAME);
+    }
+    public String getPlayer2Name(){
+        return this.preferences.getString(this.PLAYER2_NAME);
     }
 }
