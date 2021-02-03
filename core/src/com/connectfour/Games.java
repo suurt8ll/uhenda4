@@ -2,6 +2,7 @@ package com.connectfour;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -21,16 +22,12 @@ public class Games extends Game {
     public int ScreenWidth = 800;
     public int ScreenHeight = 600;
     public AssetsLoader assetsLoader;
-    public Preferences prefs;
+    public Prefs prefs;
 
     public GameMenuScreen GAMEMENU;
     public SettingsScreen SETTINGS;
 
     public InputMultiplexer inputMultiplexer;
-
-    public Object getPreferences() {
-        return this.prefs;
-    }
 
     public void changeScreen(Screen s) {
         this.setScreen(s);
@@ -41,9 +38,11 @@ public class Games extends Game {
         this.assetsLoader = new AssetsLoader();
         this.assetsLoader.init();
         this.assetsLoader.load();
-        this.prefs = Gdx.app.getPreferences("MyPrefs");
+        this.prefs = new Prefs();
         this.viewport = new FitViewport(this.ScreenWidth,this.ScreenHeight);
         this.batch = new SpriteBatch();
+        this.skin = new Skin();
+        this.skin.load(Gdx.files.internal(assetsLoader.uiSkinJson));//assetsLoader.manager.get(assetsLoader.uiSkinJson,Skin.class);
         this.inputMultiplexer = new InputMultiplexer();
         Gdx.input.setInputProcessor(this.inputMultiplexer);
         this.GAMEMENU = new GameMenuScreen(this);
@@ -61,6 +60,12 @@ public class Games extends Game {
         this.GAMEMENU.dispose();
         this.SETTINGS.dispose();
         this.batch.dispose();
+        this.assetsLoader.manager.dispose();
         super.dispose();
+    }
+
+
+    public Prefs getPreferences() {
+        return prefs;
     }
 }

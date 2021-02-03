@@ -1,18 +1,21 @@
 package com.connectfour.screens.gameScreens;
 
+import com.badlogic.gdx.Screen;
 import com.connectfour.Games;
 
 public enum GamesEnum {
-    CONNECTFOUR("ConnectFour", 7,6);
+    CONNECTFOUR("ConnectFour", 7,6, new ConnectFourScreen());
 
     public int Boardsizex;
     public final String name;
     public int Boardsizey;
+    public final Screen ScreenClass;
 
-    GamesEnum(String name, int x, int y) {
+    GamesEnum(String name, int x, int y, ConnectFourScreen connectFourScreenClass) {
         this.name = name;
         this.Boardsizex = x;
         this.Boardsizey = y;
+        this.ScreenClass = connectFourScreenClass;
 
     }
 
@@ -45,7 +48,7 @@ public enum GamesEnum {
     }
 
     public void run(Games game) {
-        game.changeScreen(game.GAMEMENU);
+        game.changeScreen(this.ScreenClass);
     }
 
 }

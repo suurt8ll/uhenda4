@@ -27,8 +27,8 @@ public class SettingsScreen implements Screen {
     public void show() {
         final TextField nameTextField = new TextField(game.player1.getName(), game.skin);
         final TextField nameTextField2 = new TextField(game.player2.getName(), game.skin);
-        //final TextField boardsizeX = new TextField(String.valueOf(GamesEnum.gettype(game.getPreferences().getSelectedGameName()).getBoardsizex())  , game.skin);
-        //final TextField boardsizeY = new TextField(String.valueOf(GamesEnum.gettype(game.getPreferences().getSelectedGameName()).getBoardsizey()), game.skin);
+        final TextField boardsizeX = new TextField(String.valueOf(GamesEnum.gettype(game.getPreferences().getSelectedGameName()).getBoardsizex())  , game.skin);
+        final TextField boardsizeY = new TextField(String.valueOf(GamesEnum.gettype(game.getPreferences().getSelectedGameName()).getBoardsizey()), game.skin);
         final SelectBox<String> selectBox = new SelectBox<>(game.skin);
         final TextButton applybutton = new TextButton("Apply",game.skin);
         final Slider volumeMusicSlider = new Slider( 0f, 1f, 0.1f,false, game.skin);
