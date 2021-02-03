@@ -3,8 +3,11 @@ package com.connectfour;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.connectfour.screens.GameMenuScreen;
@@ -41,8 +44,11 @@ public class Games extends Game {
         this.prefs = new Prefs();
         this.viewport = new FitViewport(this.ScreenWidth,this.ScreenHeight);
         this.batch = new SpriteBatch();
-        this.skin = new Skin();
-        this.skin.load(Gdx.files.internal(assetsLoader.uiSkinJson));//assetsLoader.manager.get(assetsLoader.uiSkinJson,Skin.class);
+        //this.skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
+        this.skin = assetsLoader.manager.get(assetsLoader.uiSkinJson,Skin.class);
+
+        this.player1 = new Player("Ants",0,new Color(1,1,0,1));
+        this.player2 = new Player("Jüri",1, new Color(1,0,1,1));
         this.inputMultiplexer = new InputMultiplexer();
         Gdx.input.setInputProcessor(this.inputMultiplexer);
         this.GAMEMENU = new GameMenuScreen(this);

@@ -35,15 +35,18 @@ public class SettingsScreen implements Screen {
         final Slider volumeSoundSlider = new Slider( 0f, 1f, 0.1f,false, game.skin);
         //ColorPicker player1ColorPicker = new ColorPicker(150,20, game.player1.getColor(),game.getPreferences().getPlayer1Color());
         //ColorPicker player2ColorPicker = new ColorPicker(150,20, game.player2.getColor(),game.getPreferences().getPlayer2Color());
-        //volumeMusicSlider.setValue(game.getPreferences().getMusicVolume());
-        //volumeSoundSlider.setValue(game.getPreferences().getSoundVolume());
-        //boardsizeX.setTextFieldFilter(new NumberTextFieldFilter());
-        //boardsizeY.setTextFieldFilter(new NumberTextFieldFilter());
-        //String[] values = new String[]{GamesEnum.CONNECTFOUR.getName(), GamesEnum.GOMOKU.getName()};
-        //selectBox.setItems(values);
-        //selectBox.setSelected(game.getPreferences().getSelectedGameName());
-        //selectBox.setPosition(0, game.ScreenHeight-selectBox.getHeight());
-        /*selectBox.addListener(new ChangeListener() {
+        volumeMusicSlider.setValue(game.getPreferences().getMusicVolume());
+        volumeSoundSlider.setValue(game.getPreferences().getSoundVolume());
+        boardsizeX.setTextFieldFilter(new NumberTextFieldFilter());
+        boardsizeY.setTextFieldFilter(new NumberTextFieldFilter());
+        String[] values = new String[GamesEnum.values().length];//{GamesEnum.CONNECTFOUR.getName(), GamesEnum.GOMOKU.getName()};
+        for (int i = 0; i < GamesEnum.values().length; i++) {
+            values[i] = GamesEnum.values()[i].getName();
+        }
+        selectBox.setItems(values);
+        selectBox.setSelected(game.getPreferences().getSelectedGameName());
+        selectBox.setPosition(0, game.ScreenHeight-selectBox.getHeight());
+        selectBox.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 GamesEnum type = GamesEnum.gettype(selectBox.getSelected());
@@ -52,7 +55,6 @@ public class SettingsScreen implements Screen {
 
             }
         });
-        */
         /*
         applybutton.addListener(new InputListener(){
             @Override
@@ -87,6 +89,7 @@ public class SettingsScreen implements Screen {
                 return true;
             }
         });
+
          */
         /*
         Table table = new Table();

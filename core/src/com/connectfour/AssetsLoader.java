@@ -21,6 +21,7 @@ public class AssetsLoader {
     public final String uiSkinAtlas = "skin/uiskin.atlas";
     public final String uiSkinJson = "skin/uiskin.json";
     public final String uiSkinFont = "skin/default.fnt";
+    public final String uiSkinPng = "skin/uiskin.png";
     private Preferences preferences;
     private FreetypeFontLoader.FreeTypeFontLoaderParameter mySmallFont;
 
@@ -29,9 +30,9 @@ public class AssetsLoader {
         manager.load(settingsButtonImg, Texture.class);
         manager.load(robotoBlack, BitmapFont.class, mySmallFont);
         manager.load(uiSkinAtlas, TextureAtlas.class);
+        //manager.load(uiSkinPng,Texture.class);
         manager.load(uiSkinJson, Skin.class, new SkinLoader.SkinParameter(uiSkinAtlas));
         manager.finishLoading();
-
     }
     public void init(){
         FileHandleResolver resolver = new InternalFileHandleResolver();
