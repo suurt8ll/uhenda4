@@ -64,8 +64,6 @@ public class Games extends Game {
 
     @Override
     public void dispose() {
-        this.GAMEMENU.dispose();
-        this.SETTINGS.dispose();
         this.batch.dispose();
         this.assetsLoader.manager.dispose();
         super.dispose();

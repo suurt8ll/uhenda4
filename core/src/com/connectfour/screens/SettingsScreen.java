@@ -16,11 +16,11 @@ public class SettingsScreen implements Screen {
 
     public SettingsScreen(final Games game){
         this.game = game;
-        stage = new Stage(game.viewport,game.batch);
     }
 
     @Override
     public void show() {
+        stage = new Stage(game.viewport,game.batch);
         final TextField nameTextField = new TextField(game.player1.getName(), game.skin);
         final TextField nameTextField2 = new TextField(game.player2.getName(), game.skin);
         final TextField boardsizeX = new TextField(String.valueOf(game.boardSizeX), game.skin);
