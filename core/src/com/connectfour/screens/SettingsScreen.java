@@ -29,7 +29,7 @@ public class SettingsScreen implements Screen {
         final Slider volumeMusicSlider = new Slider( 0f, 1f, 0.1f,false, game.skin);
         final Slider volumeSoundSlider = new Slider( 0f, 1f, 0.1f,false, game.skin);
         ColorPicker player1ColorPicker = new ColorPicker(150,20, game.player1.getColor(),game.getPreferences().getPlayer1Color());
-        //ColorPicker player2ColorPicker = new ColorPicker(150,20, game.player2.getColor(),game.getPreferences().getPlayer2Color());
+        ColorPicker player2ColorPicker = new ColorPicker(150,20, game.player2.getColor(),game.getPreferences().getPlayer2Color());
         volumeMusicSlider.setValue(game.getPreferences().getMusicVolume());
         volumeSoundSlider.setValue(game.getPreferences().getSoundVolume());
         boardsizeX.setTextFieldFilter(new NumberTextFieldFilter());
@@ -51,10 +51,10 @@ public class SettingsScreen implements Screen {
                 game.getPreferences().setPlayer2Name(name2);
                 game.getPreferences().Boardx(boardx);
                 game.getPreferences().Boardy(boardy);
-                //game.player1.setColor(player1ColorPicker.getCurrentColor());
-                //game.player2.setColor(player2ColorPicker.getCurrentColor());
-                //game.getPreferences().setPlayer1Color(player1ColorPicker.getStringColorHex());
-                //game.getPreferences().setPlayer2Color(player2ColorPicker.getStringColorHex());
+                game.player1.setColor(player1ColorPicker.getCurrentColor());
+                game.player2.setColor(player2ColorPicker.getCurrentColor());
+                game.getPreferences().setPlayer1Color(player1ColorPicker.getStringColorHex());
+                game.getPreferences().setPlayer2Color(player2ColorPicker.getStringColorHex());
                 game.getPreferences().save();
                 game.changeScreen(game.MAINMENU);
                 return true;
@@ -86,11 +86,10 @@ public class SettingsScreen implements Screen {
         table.add(player1ColorPicker);
         table.row();
         table.add(new Label("Player2 color: ",game.skin));
-        //table.add(player2ColorPicker);
+        table.add(player2ColorPicker);
         table.row();
         table.add(applybutton).colspan(3).height(100).width(300).padTop(30);
         stage.addActor(table);
-       // player1ColorPicker.setPosition(100,100);
         game.inputMultiplexer.addProcessor(stage);
     }
 

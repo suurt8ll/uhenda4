@@ -11,6 +11,8 @@ public class Prefs {
     private final String PLAYER2_NAME = "Player2_name";
     private final String BOARD_SIZE_X = "Board_size_x";
     private final String BOARD_SIZE_Y = "Board_size_y";
+    private final String PLAYER1_COLOR = "Player1_color";
+    private final String PLAYER2_COLOR = "Player2_color";
     private Preferences preferences;
     public Prefs(){
         this.preferences = Gdx.app.getPreferences("MyPrefs");
@@ -58,6 +60,16 @@ public class Prefs {
     }
 
     public String getPlayer1Color() {
-        return this.preferences.getString(this.PLAYER2_NAME);
+        return this.preferences.getString(this.PLAYER1_COLOR);
+    }
+
+    public String getPlayer2Color() {
+        return this.preferences.getString(this.PLAYER2_COLOR);
+    }
+    public void setPlayer1Color(String hex){
+        this.preferences.putString(this.PLAYER1_COLOR, hex);
+    }
+    public void setPlayer2Color(String hex){
+        this.preferences.putString(this.PLAYER2_COLOR, hex);
     }
 }

@@ -11,6 +11,8 @@ import com.connectfour.screens.MainMenuScreen;
 import com.connectfour.screens.SettingsScreen;
 import com.connectfour.screens.gameScreens.ConnectFourScreen;
 
+import java.math.BigInteger;
+
 public class Games extends Game {
 
     public Viewport viewport;
@@ -45,8 +47,15 @@ public class Games extends Game {
         this.viewport = new FitViewport(this.ScreenWidth,this.ScreenHeight);
         this.batch = new SpriteBatch();
         this.skin = assetsLoader.manager.get(assetsLoader.uiSkinJson,Skin.class);
-        this.player1 = new Player(this.prefs.getPlayer1Name(),0,new Color(1,1,0,1));
-        this.player2 = new Player(this.prefs.getPlayer2Name(),1, new Color(1,0,1,1));
+        if (this.prefs.getPlayer1Color().equals("")){
+            this.player1 = new Player(this.prefs.getPlayer1Name(),0,new Color(1,0,0,1));
+            this.player2 = new Player(this.prefs.getPlayer2Name(),1, new Color(0,1,0,1));
+        }else {
+            //this.player1 = new Player(this.prefs.getPlayer1Name(),0,new Color(Integer.parseInt(this.prefs.getPlayer2Color(),8)));
+            //this.player2 = new Player(this.prefs.getPlayer2Name(),1, new Color(hexToBinary(this.prefs.getPlayer2Color())));
+        }
+        System.out.println(hexToBin(this.prefs.getPlayer1Color()));
+
         this.inputMultiplexer = new InputMultiplexer();
         Gdx.input.setInputProcessor(this.inputMultiplexer);
         this.GAMEMENU = new GameMenuScreen(this);
@@ -79,5 +88,8 @@ public class Games extends Game {
 
     public void setBoardsizey(int boardy) {
         this.boardSizeY = boardy;
+    }
+    static String hexToBin(String s) {
+        return new BigInteger(s, 16).toString(2);
     }
 }
