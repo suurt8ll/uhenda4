@@ -1,7 +1,9 @@
 package com.connectfour.screens.gameScreens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -32,6 +34,8 @@ public class ConnectFourScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        Gdx.gl30.glClearColor(game.backGroundColor.r,game.backGroundColor.g,game.backGroundColor.b,game.backGroundColor.a);
+        Gdx.gl30.glClear(GL30.GL_COLOR_BUFFER_BIT);
         this.stage.act();
         this.stage.draw();
     }
