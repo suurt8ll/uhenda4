@@ -1,14 +1,16 @@
+com/connectfour/AssetsLoader.java
+ com.connectfour.AssetsLoader
+com/connectfour/Board.java
+ com.connectfour.Board
 com/connectfour/ColorPicker.java
  com.connectfour.ColorPicker
  com.connectfour.ColorPicker$1
-com/connectfour/Board.java
- com.connectfour.Board
-com/connectfour/NumberTextFieldFilter.java
- com.connectfour.NumberTextFieldFilter
 com/connectfour/Player.java
  com.connectfour.Player
 com/connectfour/Prefs.java
  com.connectfour.Prefs
+com/connectfour/NumberTextFieldFilter.java
+ com.connectfour.NumberTextFieldFilter
 com/connectfour/screens/GameMenuScreen.java
  com.connectfour.screens.GameMenuScreen
  com.connectfour.screens.GameMenuScreen$1
@@ -25,5 +27,3 @@ com/connectfour/screens/gameScreens/ConnectFourScreen.java
 com/connectfour/screens/SettingsScreen.java
  com.connectfour.screens.SettingsScreen
  com.connectfour.screens.SettingsScreen$1
-com/connectfour/AssetsLoader.java
- com.connectfour.AssetsLoader
