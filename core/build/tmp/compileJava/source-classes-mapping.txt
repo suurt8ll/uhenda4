@@ -22,6 +22,8 @@ com/connectfour/screens/MainMenuScreen.java
  com.connectfour.screens.MainMenuScreen
  com.connectfour.screens.MainMenuScreen$1
  com.connectfour.screens.MainMenuScreen$2
+com/connectfour/Minimax.java
+ com.connectfour.Minimax
 com/connectfour/screens/gameScreens/ConnectFourScreen.java
  com.connectfour.screens.gameScreens.ConnectFourScreen
 com/connectfour/screens/SettingsScreen.java

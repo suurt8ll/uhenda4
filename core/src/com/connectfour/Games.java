@@ -52,8 +52,8 @@ public class Games extends Game {
         this.batch = new SpriteBatch();
         this.skin = assetsLoader.manager.get(assetsLoader.uiSkinJson,Skin.class);
 
-        this.player1 = new Player(this.prefs.getPlayer1Name(),0,new Color(HexToColor(this.prefs.getPlayer1Color())));
-        this.player2 = new Player(this.prefs.getPlayer2Name(),1, new Color(HexToColor(this.prefs.getPlayer2Color())));
+        this.player1 = new Player(this.prefs.getPlayer1Name(),1,new Color(HexToColor(this.prefs.getPlayer1Color())));
+        this.player2 = new Player(this.prefs.getPlayer2Name(),2, new Color(HexToColor(this.prefs.getPlayer2Color())));
         this.backGroundColor = HexToColor(this.prefs.getBackgroundColor());
 
         this.music = assetsLoader.manager.get(assetsLoader.musicfile, Music.class);
