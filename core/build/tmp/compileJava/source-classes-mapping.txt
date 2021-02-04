@@ -17,6 +17,7 @@ com/connectfour/screens/GameMenuScreen.java
  com.connectfour.screens.GameMenuScreen$2
 com/connectfour/Games.java
  com.connectfour.Games
+ com.connectfour.Games$1
 com/connectfour/screens/MainMenuScreen.java
  com.connectfour.screens.MainMenuScreen
  com.connectfour.screens.MainMenuScreen$1

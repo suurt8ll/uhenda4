@@ -26,7 +26,6 @@ public class Games extends Game {
     public Prefs prefs;
     public int boardSizeX;
     public int boardSizeY;
-
     public GameMenuScreen GAMEMENU;
     public SettingsScreen SETTINGS;
     public MainMenuScreen MAINMENU;
@@ -51,16 +50,23 @@ public class Games extends Game {
             this.player1 = new Player(this.prefs.getPlayer1Name(),0,new Color(1,0,0,1));
             this.player2 = new Player(this.prefs.getPlayer2Name(),1, new Color(0,1,0,1));
         }else {
-            //this.player1 = new Player(this.prefs.getPlayer1Name(),0,new Color(Integer.parseInt(this.prefs.getPlayer2Color(),8)));
-            //this.player2 = new Player(this.prefs.getPlayer2Name(),1, new Color(hexToBinary(this.prefs.getPlayer2Color())));
+            this.player1 = new Player(this.prefs.getPlayer1Name(),0,new Color(HexToColor(this.prefs.getPlayer1Color())));
+            this.player2 = new Player(this.prefs.getPlayer2Name(),1, new Color(HexToColor(this.prefs.getPlayer2Color())));
         }
-        //HILJEM KUSTUTADA
-        this.player1 = new Player(this.prefs.getPlayer1Name(),0,new Color(1,0,0,1));
-        this.player2 = new Player(this.prefs.getPlayer2Name(),1, new Color(0,1,0,1));
-        //------------
-        System.out.println(hexToBin(this.prefs.getPlayer1Color()));
 
         this.inputMultiplexer = new InputMultiplexer();
+        this.inputMultiplexer.addProcessor(new InputAdapter(){
+            @Override
+            public boolean keyDown (int keycode) {
+                System.out.println(keycode);
+                if (keycode == Input.Keys.ESCAPE){
+                    changeScreen(MAINMENU);
+                    return true;
+                }
+                return false;
+            }
+
+        });
         Gdx.input.setInputProcessor(this.inputMultiplexer);
         this.GAMEMENU = new GameMenuScreen(this);
         this.SETTINGS = new SettingsScreen(this);
@@ -93,7 +99,22 @@ public class Games extends Game {
     public void setBoardsizey(int boardy) {
         this.boardSizeY = boardy;
     }
-    static String hexToBin(String s) {
-        return new BigInteger(s, 16).toString(2);
+    public static Color HexToColor(String hex)
+    {
+        hex = hex.replace("#", "");
+        switch (hex.length()) {
+            case 6:
+                return new Color(
+                        Integer.valueOf(hex.substring(0, 2), 16)/255f,
+                        Integer.valueOf(hex.substring(2, 4), 16)/255f,
+                        Integer.valueOf(hex.substring(4, 6), 16)/255f,1);
+            case 8:
+                return new Color(
+                        Integer.valueOf(hex.substring(0, 2), 16)/255f,
+                        Integer.valueOf(hex.substring(2, 4), 16)/255f,
+                        Integer.valueOf(hex.substring(4, 6), 16)/255f,
+                        Integer.valueOf(hex.substring(6, 8), 16)/255f);
+        }
+        return null;
     }
 }
