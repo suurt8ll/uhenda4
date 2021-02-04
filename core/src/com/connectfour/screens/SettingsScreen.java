@@ -49,8 +49,8 @@ public class SettingsScreen implements Screen {
                 game.getPreferences().setSoundVolume(volumeSoundSlider.getValue());
                 game.getPreferences().setPlayer1Name(name1);
                 game.getPreferences().setPlayer2Name(name2);
-                game.getPreferences().Boardx(boardx);
-                game.getPreferences().Boardy(boardy);
+                game.getPreferences().setBoardx(boardx);
+                game.getPreferences().setBoardy(boardy);
                 game.player1.setColor(player1ColorPicker.getCurrentColor());
                 game.player2.setColor(player2ColorPicker.getCurrentColor());
                 game.getPreferences().setPlayer1Color(player1ColorPicker.getStringColorHex());

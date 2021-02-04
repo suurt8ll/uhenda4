@@ -15,7 +15,7 @@ public class Prefs {
     private final String PLAYER2_COLOR = "Player2_color";
     private Preferences preferences;
     public Prefs(){
-        this.preferences = Gdx.app.getPreferences("MyPrefs");
+        this.preferences = Gdx.app.getPreferences("ConnectFourPrefs");
     }
 
 
@@ -42,10 +42,10 @@ public class Prefs {
         this.preferences.putString(this.PLAYER2_NAME, name);
     }
 
-    public void Boardx(int boardx) {
+    public void setBoardx(int boardx) {
         this.preferences.putInteger(this.BOARD_SIZE_X, boardx);
     }
-    public void Boardy(int boardy) {
+    public void setBoardy(int boardy) {
         this.preferences.putInteger(this.BOARD_SIZE_Y, boardy);
     }
 
@@ -71,5 +71,25 @@ public class Prefs {
     }
     public void setPlayer2Color(String hex){
         this.preferences.putString(this.PLAYER2_COLOR, hex);
+    }
+
+    public void init(){
+        if (this.preferences.getString(this.PLAYER1_NAME).equals("")){
+            setMusicVolume(1);
+            setSoundVolume(1);
+            setPlayer1Name("Player1");
+            setPlayer2Name("Player2");
+            setBoardx(7);
+            setBoardy(6);
+            setPlayer1Color("17ff00ff");
+            setPlayer2Color("f5ff00ff");
+            save();
+        }
+    }
+    public int getBoardx(){
+        return this.preferences.getInteger(this.BOARD_SIZE_X);
+    }
+    public int getBoardy(){
+        return this.preferences.getInteger(this.BOARD_SIZE_Y);
     }
 }

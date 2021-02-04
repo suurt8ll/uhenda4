@@ -43,16 +43,18 @@ public class Games extends Game {
         this.assetsLoader.init();
         this.assetsLoader.load();
         this.prefs = new Prefs();
+        this.prefs.init();
+
+        this.boardSizeX = this.prefs.getBoardx();
+        this.boardSizeY = this.prefs.getBoardy();
+
+
         this.viewport = new FitViewport(this.ScreenWidth,this.ScreenHeight);
         this.batch = new SpriteBatch();
         this.skin = assetsLoader.manager.get(assetsLoader.uiSkinJson,Skin.class);
-        if (this.prefs.getPlayer1Color().equals("")){
-            this.player1 = new Player(this.prefs.getPlayer1Name(),0,new Color(1,0,0,1));
-            this.player2 = new Player(this.prefs.getPlayer2Name(),1, new Color(0,1,0,1));
-        }else {
-            this.player1 = new Player(this.prefs.getPlayer1Name(),0,new Color(HexToColor(this.prefs.getPlayer1Color())));
-            this.player2 = new Player(this.prefs.getPlayer2Name(),1, new Color(HexToColor(this.prefs.getPlayer2Color())));
-        }
+
+        this.player1 = new Player(this.prefs.getPlayer1Name(),0,new Color(HexToColor(this.prefs.getPlayer1Color())));
+        this.player2 = new Player(this.prefs.getPlayer2Name(),1, new Color(HexToColor(this.prefs.getPlayer2Color())));
 
         this.inputMultiplexer = new InputMultiplexer();
         this.inputMultiplexer.addProcessor(new InputAdapter(){
