@@ -62,7 +62,6 @@ public class Games extends Game {
         this.inputMultiplexer.addProcessor(new InputAdapter(){
             @Override
             public boolean keyDown (int keycode) {
-                System.out.println(keycode);
                 if (keycode == Input.Keys.ESCAPE){
                     changeScreen(MAINMENU);
                     return true;

@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 
+import java.util.Map;
+
 public class Prefs {
     private final String MUSIC_VOLUME = "Music_volume";
     private final String SOUND_VOLUME = "Sound_volume";
@@ -13,7 +15,7 @@ public class Prefs {
     private final String BOARD_SIZE_Y = "Board_size_y";
     private final String PLAYER1_COLOR = "Player1_color";
     private final String PLAYER2_COLOR = "Player2_color";
-    private final String BACKGROUND_COLOR = "Player2_color";
+    private final String BACKGROUND_COLOR = "Background_color";
     private final String MUSIC_FILE_NAME = "Music_file_name";
     private Preferences preferences;
     public Prefs(){
@@ -81,7 +83,7 @@ public class Prefs {
         this.preferences.putString(this.BACKGROUND_COLOR, hex);
     }
     public void init(){
-        if (this.preferences.getString(this.PLAYER1_NAME).equals("")){
+        if (this.preferences.get().isEmpty()){
             setMusicVolume(1);
             setSoundVolume(1);
             setPlayer1Name("Player1");

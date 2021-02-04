@@ -61,8 +61,10 @@ public class SettingsScreen implements Screen {
                 game.getPreferences().setBoardy(boardy);
                 game.player1.setColor(player1ColorPicker.getCurrentColor());
                 game.player2.setColor(player2ColorPicker.getCurrentColor());
+                game.backGroundColor = backgroundColorPicker.getCurrentColor();
                 game.getPreferences().setPlayer1Color(player1ColorPicker.getStringColorHex());
                 game.getPreferences().setPlayer2Color(player2ColorPicker.getStringColorHex());
+                game.getPreferences().setBackgroundColor(backgroundColorPicker.getStringColorHex());
                 game.getPreferences().save();
                 game.changeScreen(game.MAINMENU);
                 return true;

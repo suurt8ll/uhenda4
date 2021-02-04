@@ -9,8 +9,6 @@ com/connectfour/Player.java
 com/connectfour/ColorPicker.java
  com.connectfour.ColorPicker
  com.connectfour.ColorPicker$1
-com/connectfour/Prefs.java
- com.connectfour.Prefs
 com/connectfour/screens/GameMenuScreen.java
  com.connectfour.screens.GameMenuScreen
  com.connectfour.screens.GameMenuScreen$1
@@ -22,6 +20,8 @@ com/connectfour/screens/MainMenuScreen.java
  com.connectfour.screens.MainMenuScreen
  com.connectfour.screens.MainMenuScreen$1
  com.connectfour.screens.MainMenuScreen$2
+com/connectfour/Prefs.java
+ com.connectfour.Prefs
 com/connectfour/screens/gameScreens/ConnectFourScreen.java
  com.connectfour.screens.gameScreens.ConnectFourScreen
 com/connectfour/screens/SettingsScreen.java
