@@ -13,17 +13,15 @@ public class ColorPicker extends Actor{
     private int sizex;
     private int sizey;
     private Color color;
-    private String colorString;
     private Pixmap pixmap;
     private TextureRegionDrawable drawable;
     private int selectedsize;
     private int paddingsize;
     private int colorarea;
-    public ColorPicker(int x, int y, Color color, String colorString) {
+    public ColorPicker(int x, int y, Color color) {
         this.sizex = x;
         this.sizey = y;
         this.color = color;
-        this.colorString = colorString;
         this.pixmap = new Pixmap(this.sizex,this.sizey, Pixmap.Format.RGBA8888);
         init();
         addListener(new InputListener() {

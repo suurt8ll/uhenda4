@@ -13,6 +13,8 @@ public class Prefs {
     private final String BOARD_SIZE_Y = "Board_size_y";
     private final String PLAYER1_COLOR = "Player1_color";
     private final String PLAYER2_COLOR = "Player2_color";
+    private final String BACKGROUND_COLOR = "Player2_color";
+    private final String MUSIC_FILE_NAME = "Music_file_name";
     private Preferences preferences;
     public Prefs(){
         this.preferences = Gdx.app.getPreferences("ConnectFourPrefs");
@@ -66,13 +68,18 @@ public class Prefs {
     public String getPlayer2Color() {
         return this.preferences.getString(this.PLAYER2_COLOR);
     }
+    public String getBackgroundColor() {
+        return this.preferences.getString(this.BACKGROUND_COLOR);
+    }
     public void setPlayer1Color(String hex){
         this.preferences.putString(this.PLAYER1_COLOR, hex);
     }
     public void setPlayer2Color(String hex){
         this.preferences.putString(this.PLAYER2_COLOR, hex);
     }
-
+    public void setBackgroundColor(String hex){
+        this.preferences.putString(this.BACKGROUND_COLOR, hex);
+    }
     public void init(){
         if (this.preferences.getString(this.PLAYER1_NAME).equals("")){
             setMusicVolume(1);
@@ -83,6 +90,7 @@ public class Prefs {
             setBoardy(6);
             setPlayer1Color("17ff00ff");
             setPlayer2Color("f5ff00ff");
+            setBackgroundColor("00ff00ff");
             save();
         }
     }

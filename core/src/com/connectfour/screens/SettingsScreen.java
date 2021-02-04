@@ -28,8 +28,16 @@ public class SettingsScreen implements Screen {
         final TextButton applybutton = new TextButton("Apply",game.skin);
         final Slider volumeMusicSlider = new Slider( 0f, 1f, 0.1f,false, game.skin);
         final Slider volumeSoundSlider = new Slider( 0f, 1f, 0.1f,false, game.skin);
-        ColorPicker player1ColorPicker = new ColorPicker(150,20, game.player1.getColor(),game.getPreferences().getPlayer1Color());
-        ColorPicker player2ColorPicker = new ColorPicker(150,20, game.player2.getColor(),game.getPreferences().getPlayer2Color());
+        final SelectBox<String> selectBox = new SelectBox<>(game.skin);
+        String[] values = new String[2];//{GamesEnum.CONNECTFOUR.getName(), GamesEnum.GOMOKU.getName()};
+        for (int i = 0; i < 2; i++) {
+            values[i] = "song1";
+        }
+        selectBox.setItems(values);
+
+        ColorPicker player1ColorPicker = new ColorPicker(150,20, game.player1.getColor());
+        ColorPicker player2ColorPicker = new ColorPicker(150,20, game.player2.getColor());
+        ColorPicker backgroundColorPicker = new ColorPicker(150,20, game.backGroundColor);
         volumeMusicSlider.setValue(game.getPreferences().getMusicVolume());
         volumeSoundSlider.setValue(game.getPreferences().getSoundVolume());
         boardsizeX.setTextFieldFilter(new NumberTextFieldFilter());
@@ -87,6 +95,9 @@ public class SettingsScreen implements Screen {
         table.row();
         table.add(new Label("Player2 color: ",game.skin));
         table.add(player2ColorPicker);
+        table.row();
+        table.add(new Label("Background color: ",game.skin));
+        table.add(backgroundColorPicker);
         table.row();
         table.add(applybutton).colspan(3).height(100).width(300).padTop(30);
         stage.addActor(table);

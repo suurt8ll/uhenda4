@@ -32,6 +32,7 @@ public class Games extends Game {
     public ConnectFourScreen CONNECTFOUR;
 
     public InputMultiplexer inputMultiplexer;
+    public Color backGroundColor;
 
     public void changeScreen(Screen s) {
         this.setScreen(s);
@@ -55,6 +56,7 @@ public class Games extends Game {
 
         this.player1 = new Player(this.prefs.getPlayer1Name(),0,new Color(HexToColor(this.prefs.getPlayer1Color())));
         this.player2 = new Player(this.prefs.getPlayer2Name(),1, new Color(HexToColor(this.prefs.getPlayer2Color())));
+        this.backGroundColor = new Color(HexToColor(this.prefs.getBackgroundColor()));
 
         this.inputMultiplexer = new InputMultiplexer();
         this.inputMultiplexer.addProcessor(new InputAdapter(){
