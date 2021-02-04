@@ -1,10 +1,10 @@
 package com.connectfour;
 
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.SkinLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -22,7 +22,7 @@ public class AssetsLoader {
     public final String uiSkinJson = "skin/uiskin.json";
     public final String uiSkinFont = "skin/default.fnt";
     public final String uiSkinPng = "skin/uiskin.png";
-    private Preferences preferences;
+    public final String musicfile = "music/music.mp3";
     private FreetypeFontLoader.FreeTypeFontLoaderParameter mySmallFont;
 
     public void load() {
@@ -30,8 +30,8 @@ public class AssetsLoader {
         manager.load(settingsButtonImg, Texture.class);
         manager.load(robotoBlack, BitmapFont.class, mySmallFont);
         manager.load(uiSkinAtlas, TextureAtlas.class);
-        //manager.load(uiSkinPng,Texture.class);
         manager.load(uiSkinJson, Skin.class, new SkinLoader.SkinParameter(uiSkinAtlas));
+        manager.load(musicfile, Music.class);
         manager.finishLoading();
     }
     public void init(){

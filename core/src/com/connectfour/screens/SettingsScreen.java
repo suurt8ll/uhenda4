@@ -13,7 +13,8 @@ import com.connectfour.NumberTextFieldFilter;
 public class SettingsScreen implements Screen {
     private Games game;
     private Stage stage;
-
+    private Slider volumeMusicSlider;
+    private Slider volumeSoundSlider;
     public SettingsScreen(final Games game){
         this.game = game;
     }
@@ -26,8 +27,8 @@ public class SettingsScreen implements Screen {
         final TextField boardsizeX = new TextField(String.valueOf(game.boardSizeX), game.skin);
         final TextField boardsizeY = new TextField(String.valueOf(game.boardSizeY), game.skin);
         final TextButton applybutton = new TextButton("Apply",game.skin);
-        final Slider volumeMusicSlider = new Slider( 0f, 1f, 0.1f,false, game.skin);
-        final Slider volumeSoundSlider = new Slider( 0f, 1f, 0.1f,false, game.skin);
+        volumeMusicSlider = new Slider( 0f, 1f, 0.1f,false, game.skin);
+        volumeSoundSlider = new Slider( 0f, 1f, 0.1f,false, game.skin);
         final SelectBox<String> selectBox = new SelectBox<>(game.skin);
         String[] values = new String[2];//{GamesEnum.CONNECTFOUR.getName(), GamesEnum.GOMOKU.getName()};
         for (int i = 0; i < 2; i++) {
@@ -55,6 +56,7 @@ public class SettingsScreen implements Screen {
                 game.setBoardsizey(boardy);
                 game.getPreferences().setMusicVolume(volumeMusicSlider.getValue());
                 game.getPreferences().setSoundVolume(volumeSoundSlider.getValue());
+                game.music.setVolume(volumeMusicSlider.getValue());
                 game.getPreferences().setPlayer1Name(name1);
                 game.getPreferences().setPlayer2Name(name2);
                 game.getPreferences().setBoardx(boardx);
@@ -110,6 +112,12 @@ public class SettingsScreen implements Screen {
     public void render(float delta) {
         Gdx.gl30.glClearColor(0, 0, 0, 1);
         Gdx.gl30.glClear(GL30.GL_COLOR_BUFFER_BIT);
+        if (volumeMusicSlider.isDragging()){
+            game.music.setVolume(volumeMusicSlider.getValue());
+        }
+        if (volumeSoundSlider.isDragging()){
+
+        }
         stage.act();
         stage.draw();
     }

@@ -1,6 +1,7 @@
 package com.connectfour;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -30,6 +31,7 @@ public class Games extends Game {
     public SettingsScreen SETTINGS;
     public MainMenuScreen MAINMENU;
     public ConnectFourScreen CONNECTFOUR;
+    public Music music;
 
     public InputMultiplexer inputMultiplexer;
     public Color backGroundColor;
@@ -57,6 +59,10 @@ public class Games extends Game {
         this.player1 = new Player(this.prefs.getPlayer1Name(),0,new Color(HexToColor(this.prefs.getPlayer1Color())));
         this.player2 = new Player(this.prefs.getPlayer2Name(),1, new Color(HexToColor(this.prefs.getPlayer2Color())));
         this.backGroundColor = new Color(HexToColor(this.prefs.getBackgroundColor()));
+
+        this.music = assetsLoader.manager.get(assetsLoader.musicfile, Music.class);
+        this.music.setVolume(this.prefs.getMusicVolume());
+        this.music.play();
 
         this.inputMultiplexer = new InputMultiplexer();
         this.inputMultiplexer.addProcessor(new InputAdapter(){
@@ -87,6 +93,7 @@ public class Games extends Game {
     public void dispose() {
         this.batch.dispose();
         this.assetsLoader.manager.dispose();
+        this.music.dispose();
         super.dispose();
     }
 

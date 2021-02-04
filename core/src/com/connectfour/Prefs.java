@@ -2,7 +2,6 @@ package com.connectfour;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.graphics.Color;
 
 import java.util.Map;
 
@@ -16,7 +15,6 @@ public class Prefs {
     private final String PLAYER1_COLOR = "Player1_color";
     private final String PLAYER2_COLOR = "Player2_color";
     private final String BACKGROUND_COLOR = "Background_color";
-    private final String MUSIC_FILE_NAME = "Music_file_name";
     private Preferences preferences;
     public Prefs(){
         this.preferences = Gdx.app.getPreferences("ConnectFourPrefs");
@@ -84,15 +82,24 @@ public class Prefs {
     }
     public void init(){
         if (this.preferences.get().isEmpty()){
-            setMusicVolume(1);
-            setSoundVolume(1);
+            setMusicVolume(0.5f);
+            setSoundVolume(0.5f);
             setPlayer1Name("Player1");
             setPlayer2Name("Player2");
             setBoardx(7);
             setBoardy(6);
-            setPlayer1Color("17ff00ff");
-            setPlayer2Color("f5ff00ff");
-            setBackgroundColor("00ff00ff");
+            save();
+        }
+        if (getPlayer1Color().equals("")){
+            setPlayer1Color("09ff00ff");
+            save();
+        }
+        if (getPlayer2Color().equals("")){
+            setPlayer2Color("ff0d00ff");
+            save();
+        }
+        if (getBackgroundColor().equals("")){
+            setBackgroundColor("0065ffff");
             save();
         }
     }
