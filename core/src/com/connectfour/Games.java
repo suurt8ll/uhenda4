@@ -30,13 +30,8 @@ public class Games extends Game {
     public SettingsScreen SETTINGS;
     public MainMenuScreen MAINMENU;
     public ConnectFourScreen CONNECTFOUR;
-
     public InputMultiplexer inputMultiplexer;
     public Color backGroundColor;
-
-    public void changeScreen(Screen s) {
-        this.setScreen(s);
-    }
 
     @Override
     public void create() {
@@ -56,7 +51,7 @@ public class Games extends Game {
 
         this.player1 = new Player(this.prefs.getPlayer1Name(),0,new Color(HexToColor(this.prefs.getPlayer1Color())));
         this.player2 = new Player(this.prefs.getPlayer2Name(),1, new Color(HexToColor(this.prefs.getPlayer2Color())));
-        this.backGroundColor = new Color(HexToColor(this.prefs.getBackgroundColor()));
+        this.backGroundColor = HexToColor(this.prefs.getBackgroundColor());
 
         this.inputMultiplexer = new InputMultiplexer();
         this.inputMultiplexer.addProcessor(new InputAdapter(){
@@ -90,7 +85,6 @@ public class Games extends Game {
         super.dispose();
     }
 
-
     public Prefs getPreferences() {
         return prefs;
     }
@@ -102,8 +96,8 @@ public class Games extends Game {
     public void setBoardsizey(int boardy) {
         this.boardSizeY = boardy;
     }
-    public static Color HexToColor(String hex)
-    {
+
+    public static Color HexToColor(String hex) {
         hex = hex.replace("#", "");
         switch (hex.length()) {
             case 6:
@@ -119,5 +113,9 @@ public class Games extends Game {
                         Integer.valueOf(hex.substring(6, 8), 16)/255f);
         }
         return null;
+    }
+
+    public void changeScreen(Screen s) {
+        this.setScreen(s);
     }
 }
