@@ -23,6 +23,8 @@ public class AssetsLoader {
     public final String uiSkinFont = "skin/default.fnt";
     public final String uiSkinPng = "skin/uiskin.png";
     public final String musicfile = "music/music.mp3";
+    public final String whiteCircle = "whitecircle_100x100.png";
+    public final String blackCircle = "blackcircle.png";
     private FreetypeFontLoader.FreeTypeFontLoaderParameter mySmallFont;
 
     public void load() {
@@ -32,6 +34,8 @@ public class AssetsLoader {
         manager.load(uiSkinAtlas, TextureAtlas.class);
         manager.load(uiSkinJson, Skin.class, new SkinLoader.SkinParameter(uiSkinAtlas));
         manager.load(musicfile, Music.class);
+        manager.load(whiteCircle, Texture.class);
+        manager.load(blackCircle, Texture.class);
         manager.finishLoading();
     }
     public void init(){
