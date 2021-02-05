@@ -9,6 +9,7 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setTitle("ConnectFour");
 		config.setWindowedMode(800, 600);
+		config.setWindowPosition(1, 30);
 		config.setResizable(true);
 		config.useOpenGL3(true,3,2);
 		new Lwjgl3Application(new Games(), config);

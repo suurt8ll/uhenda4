@@ -3,6 +3,7 @@ package com.connectfour;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -48,7 +49,7 @@ public class Games extends Game {
         this.boardSizeY = this.prefs.getBoardy();
 
 
-        this.viewport = new FitViewport(this.ScreenWidth,this.ScreenHeight);
+        this.viewport = new FitViewport(this.ScreenWidth,this.ScreenHeight, new OrthographicCamera(this.ScreenWidth,this.ScreenHeight));
         this.batch = new SpriteBatch();
         this.skin = assetsLoader.manager.get(assetsLoader.uiSkinJson,Skin.class);
 
