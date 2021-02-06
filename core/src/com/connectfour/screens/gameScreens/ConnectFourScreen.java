@@ -34,24 +34,23 @@ public class ConnectFourScreen implements Screen {
     float aspectRatio;
     OrthographicCamera cam;
 
+    float WORLD_SIZE_X, WORLD_SIZE_Y;
+
     public ConnectFourScreen(final Games game){
         this.game = game;
+        WORLD_SIZE_X = game.boardSizeX * 2 + (game.boardSizeX + 1) * game.spacing;
+        WORLD_SIZE_Y = game.boardSizeY * 2 + 2 + (game.boardSizeY + 1) * game.spacing;
     }
 
     @Override
     public void show() {
         aspectRatio = (float) Gdx.graphics.getHeight()/ (float) Gdx.graphics.getWidth();
         cam = new OrthographicCamera();
-        vp = new ExtendViewport(game.boardSizeX * 2, game.boardSizeY * 2 + 2, cam);
-        vp.apply(true);
-        //this.stage = new Stage(game.viewport, game.batch);
-        //this.game.viewport.update(1918, 1009);
-        this.ringid = new byte[game.boardSizeX * game.boardSizeY];
-        Pixmap whitesq = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        whitesq.setColor(1,1,1,1);
-        whitesq.fillRectangle(0,0,1,1);
+        vp = new ExtendViewport(WORLD_SIZE_X, WORLD_SIZE_Y, cam);
+        vp.apply();
+        cam.position.set(WORLD_SIZE_X / 2, WORLD_SIZE_Y / 2, 0);
         shapeRenderer = new ShapeRenderer();
-        //shapeRenderer.setProjectionMatrix(game.viewport.getCamera().combined);
+        this.ringid = new byte[game.boardSizeX * game.boardSizeY];
     }
 
     @Override
@@ -60,20 +59,15 @@ public class ConnectFourScreen implements Screen {
         Gdx.gl30.glClearColor(game.backGroundColor.r,game.backGroundColor.g,game.backGroundColor.b,game.backGroundColor.a);
         Gdx.gl30.glClear(GL30.GL_COLOR_BUFFER_BIT);
 
-        cam.update();
         shapeRenderer.setProjectionMatrix(cam.combined);
-        drawBoard(0.2f, 1);
-
-        /*game.batch.begin();
-        game.batch.draw((Texture) game.assetsLoader.manager.get(game.assetsLoader.whiteCircle), 0, 0);
-        game.batch.draw((Texture) game.assetsLoader.manager.get(game.assetsLoader.whiteCircle), 532, 0);
-        game.batch.end();*/
+        drawBoard(game.spacing, 1);
 
     }
 
     @Override
     public void resize(int width, int height) {
-        vp.update(width,height, true);
+        vp.update(width,height);
+        cam.position.set(WORLD_SIZE_X / 2, WORLD_SIZE_Y / 2, 0);
     }
 
     @Override

@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.connectfour.ColorPicker;
 import com.connectfour.Games;
 import com.connectfour.NumberTextFieldFilter;
+import filters.FloatOnlyFilter;
 //import com.connectfour.testacor;
 
 public class SettingsScreen implements Screen {
@@ -26,6 +27,7 @@ public class SettingsScreen implements Screen {
         final TextField nameTextField2 = new TextField(game.player2.getName(), game.skin);
         final TextField boardsizeX = new TextField(String.valueOf(game.boardSizeX), game.skin);
         final TextField boardsizeY = new TextField(String.valueOf(game.boardSizeY), game.skin);
+        final TextField spacing = new TextField(String.valueOf(game.spacing), game.skin);
         final TextButton applybutton = new TextButton("Apply",game.skin);
         volumeMusicSlider = new Slider( 0f, 1f, 0.1f,false, game.skin);
         volumeSoundSlider = new Slider( 0f, 1f, 0.1f,false, game.skin);
@@ -43,6 +45,7 @@ public class SettingsScreen implements Screen {
         volumeSoundSlider.setValue(game.getPreferences().getSoundVolume());
         boardsizeX.setTextFieldFilter(new NumberTextFieldFilter());
         boardsizeY.setTextFieldFilter(new NumberTextFieldFilter());
+        spacing.setTextFieldFilter(new FloatOnlyFilter());
         applybutton.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -50,10 +53,13 @@ public class SettingsScreen implements Screen {
                 String name2 = nameTextField2.getText();
                 int boardx = Integer.parseInt(boardsizeX.getText());
                 int boardy = Integer.parseInt(boardsizeY.getText());
+                float spac = Float.parseFloat(spacing.getText());
+
                 game.player1.setName(name1);
                 game.player2.setName(name2);
                 game.setBoardsizex(boardx);
                 game.setBoardsizey(boardy);
+                game.spacing = spac;
                 game.getPreferences().setMusicVolume(volumeMusicSlider.getValue());
                 game.getPreferences().setSoundVolume(volumeSoundSlider.getValue());
                 game.music.setVolume(volumeMusicSlider.getValue());
@@ -89,6 +95,9 @@ public class SettingsScreen implements Screen {
         table.row();
         table.add(new Label("Board size y: ", game.skin));
         table.add(boardsizeY);
+        table.row();
+        table.add(new Label("Spacing: ", game.skin));
+        table.add(spacing);
         table.row();
         table.add(new Label("Music volume: ",game.skin));
         table.add(volumeMusicSlider);
