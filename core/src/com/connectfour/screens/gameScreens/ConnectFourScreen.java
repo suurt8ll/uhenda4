@@ -10,6 +10,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.shapebuilders.EllipseShapeBuilder;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -33,6 +36,8 @@ public class ConnectFourScreen implements Screen {
     /**Array, kus hoitakse ketaste info. 0 = ketast pole, 1 = kohaliku mängija ketas, 2 = vastase ketas. Kettad pole maatriksis
      * vahemälu kokkuhoidmiseks. Ketta info saamseks kasuta: {@link ConnectFourScreen#getKetas(int, int)}.*/
     public byte[] ringid;
+    public byte whoseTurn;
+
     float aspectRatio;
     OrthographicCamera cam;
     ImageButton arrowDown;
@@ -43,6 +48,7 @@ public class ConnectFourScreen implements Screen {
         this.game = game;
         WORLD_SIZE_X = game.boardSizeX * 2 + (game.boardSizeX + 1) * game.spacing;
         WORLD_SIZE_Y = game.boardSizeY * 2 + (2 + game.spacing) + (game.boardSizeY + 1) * game.spacing;
+        whoseTurn = 1;
     }
 
     @Override
@@ -58,6 +64,7 @@ public class ConnectFourScreen implements Screen {
         this.ringid = new byte[game.boardSizeX * game.boardSizeY];
 
         stage = new Stage(this.vp, this.game.batch);
+        initButtons();
 
     }
 
@@ -70,9 +77,7 @@ public class ConnectFourScreen implements Screen {
 
         shapeRenderer.setProjectionMatrix(cam.combined);
         drawBoard(game.spacing, 1);
-        drawButtons();
 
-        stage.act();
         stage.draw();
     }
 
@@ -102,33 +107,67 @@ public class ConnectFourScreen implements Screen {
         stage.dispose();
     }
 
+    private void buttonClick(InputEvent e) {
+        int mitmes = Integer.parseInt(e.getListenerActor().getName());
+        setKetas(mitmes, 1, whoseTurn);
+        if (whoseTurn == 1) {
+            whoseTurn = 2;
+        } else {
+            whoseTurn = 1;
+        }
+    }
+
     private void drawBoard(float spaceBetween, float radius) {
+        int ringX = 1;
+        int ringY = 1;
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         for (float y = spaceBetween + radius; y <= game.boardSizeY * (2*radius+spaceBetween); y+=(2*radius+spaceBetween)) {
             for (float x = spaceBetween + radius; x <= game.boardSizeX * (2*radius+spaceBetween); x+=(2*radius+spaceBetween)) {
-                shapeRenderer.setColor(1, 1, 1, 1);
+                if (getKetas(ringX, ringY) == 0) {
+                    shapeRenderer.setColor(Color.WHITE);
+                } else if (getKetas(ringX, ringY) == 1) {
+                    shapeRenderer.setColor(game.player1.color);
+                } else {
+                    shapeRenderer.setColor(game.player2.color);
+                }
                 shapeRenderer.circle(x, y, radius, 100);
+                ringX += 1;
             }
+            ringX = 1;
+            ringY += 1;
         }
         shapeRenderer.end();
     }
 
-    private void drawButtons() {
+    private void initButtons() {
         Sprite arrowSprite = new Sprite((Texture) game.assetsLoader.manager.get(game.assetsLoader.arrowDownImg));
+        int mitmes = 1;
         for (float x = game.spacing; x <= game.boardSizeX * (2 +game.spacing); x+=(2 + game.spacing)) {
             arrowDown = new ImageButton(new SpriteDrawable(arrowSprite));
             arrowDown.setBounds(x, WORLD_SIZE_Y - 2 - game.spacing, 2, 2);
+            arrowDown.setName(Integer.toString(mitmes));
+
+            arrowDown.addListener(new InputListener(){
+                @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    buttonClick(event);
+                    return true;
+                }
+            });
+
             stage.addActor(arrowDown);
+            mitmes += 1;
         }
+        game.inputMultiplexer.addProcessor(stage);
     }
 
-    /**Tagastab ketta antud x ja y koordinaatidel. kettaX ja kettaY on mängulaua gridi, mitte pikslite koordinaadid!*/
+    /**Tagastab ketta antud x ja y koordinaatidel. kettaX ja kettaY on mängulaua gridi (algavad alt vasakust nurgast), mitte pikslite koordinaadid!*/
     public byte getKetas(int kettaX, int kettaY) {
-        return ringid[game.boardSizeX * (kettaY - 1) + kettaX];
+        return ringid[game.boardSizeX * (kettaY - 1) + kettaX - 1];
     }
-    /**Lisab või muudab kettast {@link ConnectFourScreen#ringid} nimekirajs. kettaX ja kettaY on ketta asukoht mängulaua gridis. State määrab ketta kuuluvuse: 0 = ketast pole, 1 = ketas kuulub mängijale, 2 = kettas kuulub vastasele.*/
+    /**Lisab või muudab kettast {@link ConnectFourScreen#ringid} nimekirajs. kettaX ja kettaY on ketta asukoht mängulaua gridis (algavad alt vasakust nurgast). State määrab ketta kuuluvuse: 0 = ketast pole, 1 = ketas kuulub mängijale, 2 = kettas kuulub vastasele.*/
     public void setKetas(int kettaX, int kettaY, byte state) {
-        this.ringid[game.boardSizeX * (kettaY - 1) + kettaX] = state;
+        this.ringid[game.boardSizeX * (kettaY - 1) + kettaX - 1] = state;
     }
 
     private float[] circleVertices(int radius, int edges) {
