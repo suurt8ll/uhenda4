@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class AssetsLoader {
     public AssetManager manager = new AssetManager();
+    public final String arrowDownImg = "arrowdown.png";
     public final String playButtonImg = "play.png";
     public final String settingsButtonImg = "settings.png";
     public final String robotoBlack = "fonts/Roboto-Black.ttf";
@@ -29,6 +30,7 @@ public class AssetsLoader {
     private FreetypeFontLoader.FreeTypeFontLoaderParameter mySmallFont;
 
     public void load() {
+        manager.load(arrowDownImg, Texture.class);
         manager.load(playButtonImg, Texture.class);
         manager.load(settingsButtonImg, Texture.class);
         manager.load(robotoBlack, BitmapFont.class, mySmallFont);

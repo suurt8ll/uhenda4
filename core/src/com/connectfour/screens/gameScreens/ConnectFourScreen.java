@@ -5,6 +5,7 @@ import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.shapebuilders.EllipseShapeBuilder;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -33,24 +35,30 @@ public class ConnectFourScreen implements Screen {
     public byte[] ringid;
     float aspectRatio;
     OrthographicCamera cam;
+    ImageButton arrowDown;
 
     float WORLD_SIZE_X, WORLD_SIZE_Y;
 
     public ConnectFourScreen(final Games game){
         this.game = game;
         WORLD_SIZE_X = game.boardSizeX * 2 + (game.boardSizeX + 1) * game.spacing;
-        WORLD_SIZE_Y = game.boardSizeY * 2 + 2 + (game.boardSizeY + 1) * game.spacing;
+        WORLD_SIZE_Y = game.boardSizeY * 2 + (2 + game.spacing) + (game.boardSizeY + 1) * game.spacing;
     }
 
     @Override
     public void show() {
+
         aspectRatio = (float) Gdx.graphics.getHeight()/ (float) Gdx.graphics.getWidth();
         cam = new OrthographicCamera();
         vp = new ExtendViewport(WORLD_SIZE_X, WORLD_SIZE_Y, cam);
         vp.apply();
         cam.position.set(WORLD_SIZE_X / 2, WORLD_SIZE_Y / 2, 0);
         shapeRenderer = new ShapeRenderer();
+
         this.ringid = new byte[game.boardSizeX * game.boardSizeY];
+
+        stage = new Stage(this.vp, this.game.batch);
+
     }
 
     @Override
@@ -59,9 +67,13 @@ public class ConnectFourScreen implements Screen {
         Gdx.gl30.glClearColor(game.backGroundColor.r,game.backGroundColor.g,game.backGroundColor.b,game.backGroundColor.a);
         Gdx.gl30.glClear(GL30.GL_COLOR_BUFFER_BIT);
 
+
         shapeRenderer.setProjectionMatrix(cam.combined);
         drawBoard(game.spacing, 1);
+        drawButtons();
 
+        stage.act();
+        stage.draw();
     }
 
     @Override
@@ -99,6 +111,15 @@ public class ConnectFourScreen implements Screen {
             }
         }
         shapeRenderer.end();
+    }
+
+    private void drawButtons() {
+        Sprite arrowSprite = new Sprite((Texture) game.assetsLoader.manager.get(game.assetsLoader.arrowDownImg));
+        for (float x = game.spacing; x <= game.boardSizeX * (2 +game.spacing); x+=(2 + game.spacing)) {
+            arrowDown = new ImageButton(new SpriteDrawable(arrowSprite));
+            arrowDown.setBounds(x, WORLD_SIZE_Y - 2 - game.spacing, 2, 2);
+            stage.addActor(arrowDown);
+        }
     }
 
     /**Tagastab ketta antud x ja y koordinaatidel. kettaX ja kettaY on mängulaua gridi, mitte pikslite koordinaadid!*/
