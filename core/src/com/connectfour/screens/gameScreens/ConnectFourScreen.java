@@ -110,11 +110,17 @@ public class ConnectFourScreen implements Screen {
 
     private void buttonClick(InputEvent e) {
         int mitmes = Integer.parseInt(e.getListenerActor().getName());
-        setKetas(mitmes, 1, whoseTurn);
-        if (whoseTurn == 1) {
-            whoseTurn = 2;
-        } else {
-            whoseTurn = 1;
+        for (int i = 1; i <= game.boardSizeY; i++) {
+            if (getKetas(mitmes, i) == 0) {
+                setKetas(mitmes, i, whoseTurn);
+                if (whoseTurn == 1) {
+                    whoseTurn = 2;
+                } else {
+                    whoseTurn = 1;
+                }
+                if (i == game.boardSizeY) e.getListenerActor().clear();
+                return;
+            }
         }
     }
 
@@ -171,7 +177,16 @@ public class ConnectFourScreen implements Screen {
         this.ringid[game.boardSizeX * (kettaY - 1) + kettaX - 1] = state;
     }
 
-    private float[] circleVertices(int radius, int edges) {
-        return new float[1];
+    private void printArr() {
+        int i = 0;
+        for (byte s : ringid) {
+            System.out.printf("%s, ", s);
+            i += 1;
+            if (i == game.boardSizeX) {
+                i = 0;
+                System.out.println();
+            }
+        }
+        System.out.println("-------------------------------------------------------------------------------");
     }
 }
