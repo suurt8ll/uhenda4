@@ -29,6 +29,7 @@ public class GameMenuScreen implements Screen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 game.player2.setAI(false);
+                Gdx.graphics.setWindowedMode(1918, 1009);
                 game.changeScreen(game.CONNECTFOUR);
                 return true;
             }
