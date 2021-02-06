@@ -46,13 +46,14 @@ public class ConnectFourScreen implements Screen {
 
     public ConnectFourScreen(final Games game){
         this.game = game;
-        WORLD_SIZE_X = game.boardSizeX * 2 + (game.boardSizeX + 1) * game.spacing;
-        WORLD_SIZE_Y = game.boardSizeY * 2 + (2 + game.spacing) + (game.boardSizeY + 1) * game.spacing;
         whoseTurn = 1;
     }
 
     @Override
     public void show() {
+
+        WORLD_SIZE_X = game.boardSizeX * 2 + (game.boardSizeX + 1) * game.spacing;
+        WORLD_SIZE_Y = game.boardSizeY * 2 + (2 + game.spacing) + (game.boardSizeY + 1) * game.spacing;
 
         aspectRatio = (float) Gdx.graphics.getHeight()/ (float) Gdx.graphics.getWidth();
         cam = new OrthographicCamera();
