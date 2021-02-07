@@ -12,6 +12,7 @@ import com.connectfour.screens.GameMenuScreen;
 import com.connectfour.screens.MainMenuScreen;
 import com.connectfour.screens.SettingsScreen;
 import com.connectfour.screens.gameScreens.ConnectFourScreen;
+import com.connectfour.screens.gameScreens.EndScreen;
 
 import java.math.BigInteger;
 
@@ -29,10 +30,12 @@ public class Games extends Game {
     public int boardSizeX;
     public int boardSizeY;
     public float spacing;
+
     public GameMenuScreen GAMEMENU;
     public SettingsScreen SETTINGS;
     public MainMenuScreen MAINMENU;
     public ConnectFourScreen CONNECTFOUR;
+
     public Music music;
 
     public InputMultiplexer inputMultiplexer;
@@ -75,6 +78,7 @@ public class Games extends Game {
 
         });
         Gdx.input.setInputProcessor(this.inputMultiplexer);
+
         this.GAMEMENU = new GameMenuScreen(this);
         this.SETTINGS = new SettingsScreen(this);
         this.MAINMENU = new MainMenuScreen(this);

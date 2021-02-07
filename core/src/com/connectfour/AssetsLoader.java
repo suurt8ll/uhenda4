@@ -27,6 +27,7 @@ public class AssetsLoader {
     public final String musicfile = "music/music.mp3";
     public final String whiteCircle = "whitecircle_512x512.png";
     public final String blackCircle = "blackcircle.png";
+    //public final String endScreenFont = "roboto-medium-1px.bmfc";
     private FreetypeFontLoader.FreeTypeFontLoaderParameter mySmallFont;
 
     public void load() {
@@ -42,12 +43,13 @@ public class AssetsLoader {
         p.minFilter = Texture.TextureFilter.MipMapLinearNearest;
         manager.load(whiteCircle, Texture.class, p);
         manager.load(blackCircle, Texture.class);
+        //manager.load(endScreenFont, BitmapFont.class);
         manager.finishLoading();
     }
     public void init(){
         FileHandleResolver resolver = new InternalFileHandleResolver();
         this.manager.setLoader(FreeTypeFontGenerator .class, new FreeTypeFontGeneratorLoader(resolver));
-        this.manager.setLoader(BitmapFont .class, ".ttf", new FreetypeFontLoader(resolver));
+        this.manager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
         this.mySmallFont = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         this.mySmallFont.fontFileName = robotoBlack;
         this.mySmallFont.fontParameters.size = 10;

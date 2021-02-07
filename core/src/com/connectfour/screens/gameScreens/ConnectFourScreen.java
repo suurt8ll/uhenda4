@@ -29,6 +29,7 @@ public class ConnectFourScreen implements Screen {
     private ExtendViewport vp;
     private Stage stage;
     private ShapeRenderer shapeRenderer;
+    private EndScreen ENDSCREEN;
 
     public ConnectFourScreen(final Games game) {
         this.game = game;
@@ -99,7 +100,19 @@ public class ConnectFourScreen implements Screen {
         for (int y = 1; y <= game.boardSizeY; y++) {
             if (board.getKettaState(mitmes, y) == 0) {
                 board.setKettaState(mitmes, y, whoseTurn);
-                System.out.println(board.checkWin(4));
+
+                switch (board.checkWin(4)) {
+                    case 0:
+                        game.setScreen(new EndScreen(game, EndScreen.Outcome.DRAW/*, cam, vp*/));
+                        break;
+                    case 1:
+                        game.setScreen(new EndScreen(game, EndScreen.Outcome.WIN/*, cam, vp*/));
+                        break;
+                    case 2:
+                        game.setScreen(new EndScreen(game, EndScreen.Outcome.LOSE/*, cam, vp*/));
+                        break;
+                }
+
                 if (whoseTurn == 1) {
                     whoseTurn = 2;
                 } else {
