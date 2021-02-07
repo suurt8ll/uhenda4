@@ -14,16 +14,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.connectfour.Board;
 import com.connectfour.Games;
 
 public class ConnectFourScreen implements Screen {
 
     private final Games game;
-    /**
-     * Array, kus hoitakse ketaste info. 0 = ketast pole, 1 = kohaliku mängija ketas, 2 = vastase ketas. Kettad pole maatriksis
-     * vahemälu kokkuhoidmiseks. Ketta info saamseks kasuta: {@link ConnectFourScreen#getKetas(int, int)}.
-     */
-    public byte[] ringid;
+    public Board board;
     public byte whoseTurn;
     float aspectRatio;
     OrthographicCamera cam;
@@ -51,7 +48,7 @@ public class ConnectFourScreen implements Screen {
         cam.position.set(WORLD_SIZE_X / 2, WORLD_SIZE_Y / 2, 0);
         shapeRenderer = new ShapeRenderer();
 
-        this.ringid = new byte[game.boardSizeX * game.boardSizeY];
+        this.board = new Board(game.boardSizeX, game.boardSizeY);
 
         stage = new Stage(this.vp, this.game.batch);
         initButtons();
@@ -99,15 +96,17 @@ public class ConnectFourScreen implements Screen {
 
     private void buttonClick(InputEvent e) {
         int mitmes = Integer.parseInt(e.getListenerActor().getName());
-        for (int i = 1; i <= game.boardSizeY; i++) {
-            if (getKetas(mitmes, i) == 0) {
-                setKetas(mitmes, i, whoseTurn);
+        for (int y = 1; y <= game.boardSizeY; y++) {
+            if (board.getKettaState(mitmes, y) == 0) {
+                board.setKettaState(mitmes, y, whoseTurn);
+                System.out.println(board.checkWin(4));
                 if (whoseTurn == 1) {
                     whoseTurn = 2;
                 } else {
                     whoseTurn = 1;
                 }
-                if (i == game.boardSizeY) e.getListenerActor().clear();
+                if (y == game.boardSizeY) e.getListenerActor().clear();
+                //board.printboard();
                 return;
             }
         }
@@ -119,9 +118,9 @@ public class ConnectFourScreen implements Screen {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         for (float y = spaceBetween + radius; y <= game.boardSizeY * (2 * radius + spaceBetween); y += (2 * radius + spaceBetween)) {
             for (float x = spaceBetween + radius; x <= game.boardSizeX * (2 * radius + spaceBetween); x += (2 * radius + spaceBetween)) {
-                if (getKetas(ringX, ringY) == 0) {
+                if (board.getKettaState(ringX, ringY) == 0) {
                     shapeRenderer.setColor(Color.WHITE);
-                } else if (getKetas(ringX, ringY) == 1) {
+                } else if (board.getKettaState(ringX, ringY) == 1) {
                     shapeRenderer.setColor(game.player1.color);
                 } else {
                     shapeRenderer.setColor(game.player2.color);
@@ -156,19 +155,4 @@ public class ConnectFourScreen implements Screen {
         }
         game.inputMultiplexer.addProcessor(stage);
     }
-
-    /**
-     * Tagastab ketta antud x ja y koordinaatidel. kettaX ja kettaY on mängulaua gridi (algavad alt vasakust nurgast), mitte pikslite koordinaadid!
-     */
-    public byte getKetas(int kettaX, int kettaY) {
-        return ringid[game.boardSizeX * (kettaY - 1) + kettaX - 1];
-    }
-
-    /**
-     * Lisab või muudab kettast {@link ConnectFourScreen#ringid} nimekirajs. kettaX ja kettaY on ketta asukoht mängulaua gridis (algavad alt vasakust nurgast). State määrab ketta kuuluvuse: 0 = ketast pole, 1 = ketas kuulub mängijale, 2 = kettas kuulub vastasele.
-     */
-    public void setKetas(int kettaX, int kettaY, byte state) {
-        this.ringid[game.boardSizeX * (kettaY - 1) + kettaX - 1] = state;
-    }
-
 }

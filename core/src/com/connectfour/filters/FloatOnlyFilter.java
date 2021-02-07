@@ -1,4 +1,4 @@
-package filters;
+package com.connectfour.filters;
 
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 

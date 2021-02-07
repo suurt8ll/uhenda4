@@ -1,116 +1,112 @@
 package com.connectfour;
 
 public class Board {
-    protected int[][] board;
-    protected float size;
-    public Board(int x, int y){
-        board = new int[x][y];
-    }
-    public void init(){
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-                board[i][j]=0;
-            }
-        }
-    }
-    public void setSize(float size) {
-        this.size = size;
+
+    protected byte[][] board;
+
+    public Board(int boardSizeX, int boardSizeY) {
+        board = new byte[boardSizeY][boardSizeX];
     }
 
-    public float getSize() {
-        return size;
+    /**Mängulaua koordinaadid algavad ülevalt vasakust nurgast, esimene ketas on näiteks (1, 1), teine (2, 1) jne...*/
+    public byte getKettaState(int boardX, int boardY) {
+        return board[boardY - 1][boardX - 1];
     }
 
-    public int[][] getBoard() {
+    /**Mängulaua koordinaadid algavad ülevalt vasakust nurgast, esimene ketas on näiteks (1, 1), teine (2, 1) jne...*/
+    public void setKettaState(int boardX, int boardY, byte state) {
+        board[boardY - 1][boardX - 1] = state;
+    }
+
+    public byte[][] getBoard() {
         return board;
     }
 
-    public void setBoard(int[][] board) {
-        this.board = board;
+    /** Väljastab konsooli mängulaua maatriksi.*/
+    public void printboard() {
+        for (int y = 0; y < board.length; y++) {
+            for (int x = 0; x < board[0].length; x++) {
+                System.out.printf("%s ", board[y][x]);
+            }
+            System.out.println();
+        }
+        System.out.println("-----------------------");
     }
 
-    public void printboard(){
-        for (int i = board[0].length-1; i >= 0; i--) {
-            for (int j = 0; j < board.length; j++) {
-                System.out.print(board[j][i]);
-            }
-            System.out.println("");
-        }
-    }
-    public int checkWin(int inARow){
+    public int checkWin(int inARow) {
         int voitja = -1;
-        for (int i = 0; i < board.length; i++){
-            for(int j = 0; j < board[0].length-3; j++){
-                for(int l = 1; l < 3; l++) {
+        for (int y = 0; y < board.length; y++) {
+            for (int x = 0; x < board[0].length - 3; x++) {
+                for (int l = 1; l < 3; l++) {
                     boolean praeguneCheck = true;
                     for (int k = 0; k < inARow; k++) {
-                        if (board[i][j + k] != l) {
+                        if (board[y][x + k] != l) {
                             praeguneCheck = false;
                             break;
                         }
                     }
-                    if(praeguneCheck){
+                    if (praeguneCheck) {
                         voitja = l;
                     }
                 }
             }
         }
-        for(int i = 0; i < board.length-3; i++){
-            for(int j = 0; j < board[0].length; j++){
-                for(int l = 1; l < 3; l++) {
+        for (int y = 0; y < board.length - 3; y++) {
+            for (int x = 0; x < board[0].length; x++) {
+                for (int l = 1; l < 3; l++) {
                     boolean praeguneCheck = true;
                     for (int k = 0; k < inARow; k++) {
-                        if (board[i + k][j] != l) {
+                        if (board[y + k][x] != l) {
                             praeguneCheck = false;
                             break;
                         }
                     }
-                    if(praeguneCheck){
+                    if (praeguneCheck) {
                         voitja = l;
                     }
                 }
             }
         }
-        for(int i = 0; i < board.length-3; i++){
-            for(int j = 0; j < board[0].length-3; j++){
-                for(int l = 1; l < 3; l++) {
+        for (int y = 0; y < board.length - 3; y++) {
+            for (int x = 0; x < board[0].length - 3; x++) {
+                for (int l = 1; l < 3; l++) {
                     boolean praeguneCheck = true;
                     for (int k = 0; k < inARow; k++) {
-                        if (board[i + k][j + k] != l) {
+                        if (board[y + k][x + k] != l) {
                             praeguneCheck = false;
                             break;
                         }
                     }
-                    if(praeguneCheck){
+                    if (praeguneCheck) {
                         voitja = l;
                     }
                 }
             }
         }
-        for(int i = 3; i < board.length; i++){
-            for(int j = 0; j < board[0].length-3; j++){
-                for(int l = 1; l < 3; l++) {
+        for (int y = 3; y < board.length; y++) {
+            for (int x = 0; x < board[0].length - 3; x++) {
+                for (int l = 1; l < 3; l++) {
                     boolean praeguneCheck = true;
                     for (int k = 0; k < inARow; k++) {
-                        if (board[i - k][j + k] != l) {
+                        if (board[y - k][x + k] != l) {
                             praeguneCheck = false;
                             break;
                         }
                     }
-                    if(praeguneCheck){
+                    if (praeguneCheck) {
                         voitja = l;
                     }
                 }
             }
         }
-        if (voitja == -1){
+        if (voitja == -1) {
             loop:
-            for (int i = 0; i < board.length; i++) {
-                for (int j = 0; j < board[0].length; j++) {
-                    if (board[i][j]==0){
+            for (int y = 0; y < board.length; y++) {
+                for (int x = 0; x < board[0].length; x++) {
+                    if (board[y][x] == 0) {
                         voitja = -1;
                         break loop;
-                    }else {
+                    } else {
                         voitja = 0;
                     }
                 }

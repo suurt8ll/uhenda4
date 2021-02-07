@@ -2,10 +2,10 @@ package com.connectfour;
 
 public class Minimax {
     public Board board;
-    public int[][] b;
-    public int playerid;
-    public int aiid;
-    public int emptyid = 0;
+    public byte[][] b;
+    public byte playerid;
+    public byte aiid;
+    public byte emptyid;
 
     public Minimax(Board board) {
         this.board = board;
@@ -27,10 +27,10 @@ public class Minimax {
             int bestscore = -1000;
             for (int x = 0; x < b.length; x++) {
                 for (int y = 0; y < b.length; y++) {
-                    if (b[x][y]==emptyid){
-                        b[x][y]=this.aiid;
+                    if (b[y][x]==emptyid){
+                        b[y][x]=this.aiid;
                         score = minimax1(false, alpha, beta, depth-1)-1;
-                        b[x][y]=emptyid;
+                        b[y][x]=emptyid;
                         bestscore = Math.max(bestscore,score);
                         alpha = Math.max(alpha,score);
                         if (beta<=alpha){
@@ -45,10 +45,10 @@ public class Minimax {
             int bestscore = 1000;
             for (int x = 0; x < b.length; x++) {
                 for (int y = 0; y < b.length; y++) {
-                    if (b[x][y]==emptyid){
-                        b[x][y]=this.playerid;
+                    if (b[y][x]==emptyid){
+                        b[y][x]=this.playerid;
                         score = minimax1(true, alpha, beta, depth-1)-1;
-                        b[x][y]=emptyid;
+                        b[y][x]=emptyid;
                         bestscore = Math.min(bestscore,score);
                         beta = Math.min(alpha,score);
                         if (beta<=alpha){

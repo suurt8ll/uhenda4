@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.connectfour.ColorPicker;
 import com.connectfour.Games;
 import com.connectfour.NumberTextFieldFilter;
-import filters.FloatOnlyFilter;
+import com.connectfour.filters.FloatOnlyFilter;
 //import com.connectfour.testacor;
 
 public class SettingsScreen implements Screen {
