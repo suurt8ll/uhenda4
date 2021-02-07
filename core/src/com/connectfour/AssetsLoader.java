@@ -27,7 +27,8 @@ public class AssetsLoader {
     public final String musicfile = "music/music.mp3";
     public final String whiteCircle = "whitecircle_512x512.png";
     public final String blackCircle = "blackcircle.png";
-    //public final String endScreenFont = "roboto-medium-1px.bmfc";
+    public final String newGame = "newgame_512x122.png";
+    public final String exit = "exit_512x122.png";
     private FreetypeFontLoader.FreeTypeFontLoaderParameter mySmallFont;
 
     public void load() {
@@ -43,7 +44,8 @@ public class AssetsLoader {
         p.minFilter = Texture.TextureFilter.MipMapLinearNearest;
         manager.load(whiteCircle, Texture.class, p);
         manager.load(blackCircle, Texture.class);
-        //manager.load(endScreenFont, BitmapFont.class);
+        manager.load(newGame, Texture.class);
+        manager.load(exit, Texture.class);
         manager.finishLoading();
     }
     public void init(){
