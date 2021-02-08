@@ -61,12 +61,14 @@ public class EndScreen implements Screen {
                 message = "YOU LOST! SHITASS!";
                 break;
         }
-        font = new BitmapFont(new FileHandle("C:\\Users\\leoku\\Desktop\\UhendaNeli\\core\\assets\\fonts\\roboto-medium-1024px.fnt"));
+        //font = new BitmapFont(new FileHandle("C:\\Users\\leoku\\Desktop\\UhendaNeli\\core\\assets\\fonts\\roboto-medium-1024px.fnt"));
+        font = game.assetsLoader.manager.get(game.assetsLoader.robotoBlack);
         GlyphLayout layout = new GlyphLayout(font, message);
         text = new BitmapFontCache(font);
         //FIXME Tekst on mingitel kindlatel teadmata juhtudel valesti positsioneeritud ning scaletud.
         float textScale = (float) ((0.8 * Gdx.graphics.getWidth()) / layout.width);
-        font.getData().setScale(textScale);
+        //muuda fondi suurust assetsloaderis init funktsioonis
+        //font.getData().setScale(textScale);
         text.addText(message, (float) (Gdx.graphics.getWidth() * 0.1), 400);
 
         ImageButton newGame = new ImageButton(new SpriteDrawable(new Sprite((Texture) game.assetsLoader.manager.get(game.assetsLoader.newGame))));
@@ -131,7 +133,8 @@ public class EndScreen implements Screen {
     public void dispose() {
         game.inputMultiplexer.removeProcessor(stage);
         stage.dispose();
-        font.dispose();
+        //kui managerist võtta ss ei pea enam disposima
+        //font.dispose();
     }
 
     public enum Outcome {
