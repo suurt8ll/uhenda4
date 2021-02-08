@@ -64,12 +64,7 @@ public class EndScreen implements Screen {
         font = new BitmapFont(new FileHandle("C:\\Users\\leoku\\Desktop\\UhendaNeli\\core\\assets\\fonts\\roboto-medium-1024px.fnt"));
         GlyphLayout layout = new GlyphLayout(font, message);
         text = new BitmapFontCache(font);
-        float s;
-        if (Gdx.graphics.getWidth() <= layout.width) {
-            s = (Gdx.graphics.getWidth() - layout.width) / 2;
-        } else {
-            s = (float) (Gdx.graphics.getWidth() * 0.1);
-        }
+        //FIXME Tekst on mingitel kindlatel teadmata juhtudel valesti positsioneeritud ning scaletud.
         float textScale = (float) ((0.8 * Gdx.graphics.getWidth()) / layout.width);
         font.getData().setScale(textScale);
         text.addText(message, (float) (Gdx.graphics.getWidth() * 0.1), 400);

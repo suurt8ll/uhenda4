@@ -29,6 +29,7 @@ public class Games extends Game {
     public Prefs prefs;
     public int boardSizeX;
     public int boardSizeY;
+    //FIXME muutuja spacing Prefs klassi implementida
     public float spacing;
 
     public GameMenuScreen GAMEMENU;
