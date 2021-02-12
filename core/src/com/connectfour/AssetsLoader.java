@@ -26,9 +26,12 @@ public class AssetsLoader {
     public final String uiSkinPng = "skin/uiskin.png";
     public final String musicfile = "music/music.mp3";
     public final String whiteCircle = "whitecircle_512x512.png";
-    public final String blackCircle = "blackcircle.png";
     public final String newGame = "newgame_512x122.png";
     public final String exit = "exit_512x122.png";
+    //TODO Faili suuruseid tuleg kindlasti väiksemaks saada.
+    public final String host = "host_1937x256.png";
+    public final String join = "join_1834x256.png";
+    public final String vsai = "vsai_1733x256.png";
     private FreetypeFontLoader.FreeTypeFontLoaderParameter mySmallFont;
 
     public void load() {
@@ -43,9 +46,11 @@ public class AssetsLoader {
         p.genMipMaps = true;
         p.minFilter = Texture.TextureFilter.MipMapLinearNearest;
         manager.load(whiteCircle, Texture.class, p);
-        manager.load(blackCircle, Texture.class);
         manager.load(newGame, Texture.class);
         manager.load(exit, Texture.class);
+        manager.load(host, Texture.class);
+        manager.load(join, Texture.class);
+        manager.load(vsai, Texture.class);
         manager.finishLoading();
     }
     public void init(){

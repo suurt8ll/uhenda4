@@ -12,11 +12,13 @@ import com.connectfour.screens.GameMenuScreen;
 import com.connectfour.screens.MainMenuScreen;
 import com.connectfour.screens.SettingsScreen;
 import com.connectfour.screens.gameScreens.ConnectFourScreen;
-import com.connectfour.screens.gameScreens.EndScreen;
 
-import java.math.BigInteger;
+import java.awt.*;
 
 public class Games extends Game {
+
+    public static int MONITORWIDTH;
+    public static int MONITORHEIGHT;
 
     public Viewport viewport;
     public SpriteBatch batch;
@@ -44,6 +46,10 @@ public class Games extends Game {
 
     @Override
     public void create() {
+        Dimension dimension = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        MONITORWIDTH = dimension.width;
+        MONITORHEIGHT = dimension.height;
+
         this.assetsLoader = new AssetsLoader();
         this.assetsLoader.init();
         this.assetsLoader.load();

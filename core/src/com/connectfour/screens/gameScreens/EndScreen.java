@@ -2,7 +2,6 @@ package com.connectfour.screens.gameScreens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,24 +9,20 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.connectfour.Games;
 
 public class EndScreen implements Screen {
 
-    private Games game;
-    private Outcome outcome;
-    private Camera cam;
-    private Viewport viewport;
+    private final Games game;
+    private final Outcome outcome;
+    private final Camera cam;
+    private final Viewport viewport;
     private Stage stage;
     private BitmapFontCache text;
     private BitmapFont font;
@@ -66,14 +61,14 @@ public class EndScreen implements Screen {
         GlyphLayout layout = new GlyphLayout(font, message);
         text = new BitmapFontCache(font);
         //FIXME Tekst on mingitel kindlatel teadmata juhtudel valesti positsioneeritud ning scaletud.
-        float textScale = (float) ((0.8 * Gdx.graphics.getWidth()) / layout.width);
+        float textScale = (float) ((0.8 * Games.MONITORWIDTH) / layout.width);
         //muuda fondi suurust assetsloaderis init funktsioonis
         //font.getData().setScale(textScale);
-        text.addText(message, (float) (Gdx.graphics.getWidth() * 0.1), 400);
+        text.addText(message, (float) (Games.MONITORWIDTH * 0.1), 400);
 
         ImageButton newGame = new ImageButton(new SpriteDrawable(new Sprite((Texture) game.assetsLoader.manager.get(game.assetsLoader.newGame))));
-        float imageScale = Gdx.graphics.getWidth() / (3 * newGame.getWidth());
-        newGame.setBounds((float) (Gdx.graphics.getWidth() * 0.1), 400 - layout.height * textScale - newGame.getHeight() * imageScale - 50,
+        float imageScale = Games.MONITORWIDTH / (3 * newGame.getWidth());
+        newGame.setBounds((float) (Games.MONITORWIDTH * 0.1), 400 - layout.height * textScale - newGame.getHeight() * imageScale - 50,
                 newGame.getWidth() * imageScale, newGame.getHeight() * imageScale);
         newGame.addListener(new InputListener() {
             @Override
@@ -85,7 +80,7 @@ public class EndScreen implements Screen {
         stage.addActor(newGame);
 
         ImageButton exit = new ImageButton(new SpriteDrawable(new Sprite((Texture) game.assetsLoader.manager.get(game.assetsLoader.exit))));
-        exit.setBounds((float) (Gdx.graphics.getWidth() * 0.9 - exit.getWidth() * imageScale), 400 - layout.height * textScale - exit.getHeight() * imageScale - 50,
+        exit.setBounds((float) (Games.MONITORWIDTH * 0.9 - exit.getWidth() * imageScale), 400 - layout.height * textScale - exit.getHeight() * imageScale - 50,
                 exit.getWidth() * imageScale, exit.getHeight() * imageScale);
         exit.addListener(new InputListener() {
             @Override

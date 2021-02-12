@@ -22,14 +22,13 @@ public class ConnectFourScreen implements Screen {
     private final Games game;
     public Board board;
     public byte whoseTurn;
-    float aspectRatio;
-    OrthographicCamera cam;
-    ImageButton arrowDown;
-    float WORLD_SIZE_X, WORLD_SIZE_Y;
+    private float aspectRatio;
+    private OrthographicCamera cam;
+    private ImageButton arrowDown;
+    private float WORLD_SIZE_X, WORLD_SIZE_Y;
     private ExtendViewport vp;
     private Stage stage;
     private ShapeRenderer shapeRenderer;
-    private EndScreen ENDSCREEN;
 
     public ConnectFourScreen(final Games game) {
         this.game = game;
@@ -42,10 +41,9 @@ public class ConnectFourScreen implements Screen {
         WORLD_SIZE_X = game.boardSizeX * 2 + (game.boardSizeX + 1) * game.spacing;
         WORLD_SIZE_Y = game.boardSizeY * 2 + (2 + game.spacing) + (game.boardSizeY + 1) * game.spacing;
 
-        aspectRatio = (float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth();
+        aspectRatio = (float) Games.MONITORHEIGHT / (float) Games.MONITORWIDTH;
         cam = new OrthographicCamera();
         vp = new ExtendViewport(WORLD_SIZE_X, WORLD_SIZE_Y, cam);
-        vp.apply();
         cam.position.set(WORLD_SIZE_X / 2, WORLD_SIZE_Y / 2, 0);
         shapeRenderer = new ShapeRenderer();
 
@@ -61,7 +59,6 @@ public class ConnectFourScreen implements Screen {
 
         Gdx.gl30.glClearColor(game.backGroundColor.r, game.backGroundColor.g, game.backGroundColor.b, game.backGroundColor.a);
         Gdx.gl30.glClear(GL30.GL_COLOR_BUFFER_BIT);
-
 
         shapeRenderer.setProjectionMatrix(cam.combined);
         drawBoard(game.spacing, 1);
