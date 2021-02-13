@@ -7,18 +7,13 @@ import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.connectfour.Games;
 
@@ -33,9 +28,6 @@ public class GameMenuScreen implements Screen {
 
     public GameMenuScreen(Games game){
         this.game = game;
-        /*this.cam = new OrthographicCamera();
-        this.viewport = new ExtendViewport(Games.MONITORWIDTH, Games.MONITORHEIGHT, cam);
-        cam.position.set(Games.MONITORWIDTH / 2f, Games.MONITORHEIGHT / 2f, 0);*/
     }
 
     /**Proov teha hea framework lihtsate ekraadide loomiseks.

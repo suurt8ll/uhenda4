@@ -22,7 +22,8 @@
 **.idea/**
 ### Gradle ###
 **.gradle/**
-/build/
+desktop/build/
+core/build/
 **/out/
 
 
