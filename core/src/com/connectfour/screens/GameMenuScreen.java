@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -30,52 +31,60 @@ public class GameMenuScreen implements Screen {
 
     public GameMenuScreen(Games game){
         this.game = game;
-        this.cam = new OrthographicCamera();
+        /*this.cam = new OrthographicCamera();
         this.viewport = new ExtendViewport(Games.MONITORWIDTH, Games.MONITORHEIGHT, cam);
-        cam.position.set(Games.MONITORWIDTH / 2f, Games.MONITORHEIGHT / 2f, 0);
+        cam.position.set(Games.MONITORWIDTH / 2f, Games.MONITORHEIGHT / 2f, 0);*/
     }
 
     /**Proov teha hea framework lihtsate ekraadide loomiseks.
      * edgePadding on tühja ala protsent külgedel
      * rowSpacing on objektide vahele jääv ala antud protsendina ekraani kõrgusest*/
-    private ExtendViewport createViewport(ImageButton[] imgButtonArr, float edgePadding, float rowSpacing) {
+    private Stage initStage(Actor[] actorArr, float rowSpacing) {
 
         int biggestX = 0;
         int heightSum = 0;
 
-        for (ImageButton button : imgButtonArr) {
-            int x = (int) button.getWidth();
-            int y = (int) button.getHeight();
+        for (Actor actor : actorArr) {
+            int x = (int) actor.getWidth();
+            int y = (int) actor.getHeight();
             if (x > biggestX) biggestX = x;
             heightSum += y;
         }
 
-        return null;
+        float aspectRatio = Games.MONITORWIDTH / (float) Games.MONITORHEIGHT;
+        float idealHeight = biggestX / aspectRatio;
+        float realHeight = heightSum + actorArr.length * rowSpacing * idealHeight;
+        float idealWidth = biggestX;
+
+        //Tõene juhul kui objektid ei mahuks antud laiuse juures vertikaalselt ekraanile.
+        if (realHeight > idealHeight) {
+            idealWidth = aspectRatio * realHeight;
+        }
+
+        Camera cam = new OrthographicCamera();
+        cam.position.set(idealWidth / 2, idealHeight / 2, 0);
+        Viewport viewport = new ExtendViewport(idealWidth, idealHeight, cam);
+        Stage stage = new Stage(viewport, game.batch);
+        stage.getBatch().setProjectionMatrix(stage.getViewport().getCamera().combined);
+
+        int i = 1;
+        for (Actor actor : actorArr) {
+            float x = (idealWidth - biggestX) / 2;
+            float y = idealHeight - ((idealHeight - realHeight) / 2) - i * actor.getHeight() - (i - 1) * realHeight * rowSpacing;
+            actor.setPosition(x, y);
+            stage.addActor(actor);
+            i += 1;
+        }
+
+        game.inputMultiplexer.addProcessor(stage);
+
+        return stage;
 
     }
 
     @Override
     public void show() {
-        stage = new Stage(viewport, game.batch);
-        final int edgesPadding = 100;
-        float scale = 1;
-        float maxTextHeight = Games.MONITORHEIGHT / 5f;
-
         ImageButton host = new ImageButton(new SpriteDrawable(new Sprite((Texture) game.assetsLoader.manager.get(game.assetsLoader.host))));
-
-        float textHeight = host.getHeight();
-        float textWidth = host.getWidth();
-
-        if (maxTextHeight < textHeight) {
-            scale = maxTextHeight / textHeight;
-            if (Games.MONITORWIDTH < textWidth * scale) {
-                scale = Games.MONITORWIDTH / host.getWidth();
-            }
-        }
-        textWidth = scale * host.getWidth();
-        textHeight *= scale;
-
-        host.setBounds(0, Games.MONITORHEIGHT - 1f * textHeight, 1920, textHeight);
         host.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -84,10 +93,8 @@ public class GameMenuScreen implements Screen {
                 return true;
             }
         });
-        stage.addActor(host);
 
         ImageButton join = new ImageButton(new SpriteDrawable(new Sprite((Texture) game.assetsLoader.manager.get(game.assetsLoader.join))));
-        join.setBounds(edgesPadding, Games.MONITORHEIGHT - 3f * textHeight, join.getWidth() * scale, textHeight);
         join.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -96,10 +103,8 @@ public class GameMenuScreen implements Screen {
                 return true;
             }
         });
-        //stage.addActor(join);
 
         ImageButton pvaibutton = new ImageButton(new SpriteDrawable(new Sprite((Texture) game.assetsLoader.manager.get(game.assetsLoader.vsai))));
-        pvaibutton.setBounds(edgesPadding, Games.MONITORHEIGHT - 4.5f * textHeight, pvaibutton.getWidth() * scale, textHeight);
         pvaibutton.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -109,8 +114,8 @@ public class GameMenuScreen implements Screen {
                 return true;
             }
         });
-        //stage.addActor(pvaibutton);
 
+        stage = initStage(new Actor[]{host, join, pvaibutton}, 0.1f);
         game.inputMultiplexer.addProcessor(stage);
     }
 
@@ -123,9 +128,12 @@ public class GameMenuScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height);
-        cam.position.set(Games.MONITORWIDTH / 2f, Games.MONITORHEIGHT / 2f, 0);
-        game.batch.setProjectionMatrix(cam.combined);
+        //viewport.update(width, height);
+        //cam.position.set(Games.MONITORWIDTH / 2f, Games.MONITORHEIGHT / 2f, 0);
+        stage.getViewport().update(width, height);
+        stage.getCamera().position.set(stage.getViewport().getWorldWidth() / 2, stage.getViewport().getWorldHeight() / 2, 0);
+        //game.batch.setProjectionMatrix(cam.combined);
+        game.batch.setProjectionMatrix(stage.getViewport().getCamera().combined);
     }
 
     @Override
