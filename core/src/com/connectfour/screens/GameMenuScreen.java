@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.connectfour.Games;
+import com.connectfour.SimpleMenuScreenBuilder;
 
 public class GameMenuScreen implements Screen {
 
@@ -28,69 +29,6 @@ public class GameMenuScreen implements Screen {
 
     public GameMenuScreen(Games game){
         this.game = game;
-    }
-
-    /**Proov teha hea framework lihtsate ekraadide loomiseks.
-     * edgePadding on tühja ala protsent külgedel
-     * rowSpacing on objektide vahele jääv ala antud protsendina ekraani kõrgusest*/
-    private Stage initStage(Actor[] actorArr, float rowSpacing) {
-
-        if (rowSpacing > 1f / actorArr.length) System.err.println("HOIATUS! Ridade vahe ei saa olla nii suur, sest matemaatika ei luba!");
-
-        int biggestX = 0;
-        int heightSum = 0;
-
-        for (Actor actor : actorArr) {
-            int x = (int) actor.getWidth();
-            int y = (int) actor.getHeight();
-            if (x > biggestX) biggestX = x;
-            heightSum += y;
-        }
-
-        float aspectRatio = Games.MONITORWIDTH / (float) Games.MONITORHEIGHT;
-        float idealHeight = biggestX / aspectRatio;
-        float realHeight = heightSum / (1 - rowSpacing * actorArr.length + rowSpacing);
-        float realWidth = biggestX;
-        boolean edgePadding = false;
-
-        //Tõene juhul kui objektid ei mahuks antud laiuse juures vertikaalselt ekraanile.
-        if (realHeight > idealHeight) {
-            realWidth = aspectRatio * realHeight;
-            edgePadding = true;
-        }
-
-        worldWidth = realWidth;
-        if (edgePadding) {
-            worldHeight = realHeight;
-        } else {
-            worldHeight = idealHeight;
-        }
-
-        Camera cam = new OrthographicCamera();
-        cam.position.set(worldWidth / 2, worldHeight / 2, 0);
-        Viewport viewport = new ExtendViewport(worldWidth, worldHeight, cam);
-
-        Stage stage = new Stage(viewport, game.batch);
-        stage.getBatch().setProjectionMatrix(stage.getViewport().getCamera().combined);
-
-        int i = 1;
-        for (Actor actor : actorArr) {
-            float x = (realWidth - actor.getWidth()) / 2;
-            float y;
-            if (edgePadding) {
-                y = realHeight - i * actor.getHeight() - (i - 1) * realHeight * rowSpacing;
-            } else {
-                y = idealHeight - ((idealHeight - realHeight) / 2) - i * actor.getHeight() - (i - 1) * idealHeight * rowSpacing;
-            }
-            actor.setPosition(x, y);
-            stage.addActor(actor);
-            i += 1;
-        }
-
-        game.inputMultiplexer.addProcessor(stage);
-
-        return stage;
-
     }
 
     @Override
@@ -126,8 +64,14 @@ public class GameMenuScreen implements Screen {
             }
         });
 
-        stage = initStage(new Actor[]{host, join, pvaibutton}, 0.1f);
+        SimpleMenuScreenBuilder builder = new SimpleMenuScreenBuilder(game);
+        builder.initStage(new Actor[]{host, join, pvaibutton}, 0.2f);
+        stage = builder.getStage();
         game.inputMultiplexer.addProcessor(stage);
+
+        worldWidth = builder.menuWidth;
+        worldHeight = builder.menuHeight;
+
     }
 
     @Override

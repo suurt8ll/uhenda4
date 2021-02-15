@@ -14,8 +14,8 @@ import java.util.ListIterator;
 public class SimpleMenuScreenBuilder {
 
     private final Games game;
-    private float menuWidth;
-    private float menuHeight;
+    public float menuWidth;
+    public float menuHeight;
     private int rows = 0;
 
     private final ArrayList<Float> rowLayout;
@@ -104,6 +104,68 @@ public class SimpleMenuScreenBuilder {
 
         //TODO Actorite lisamine ja scalemine Stagesse.
 
+    }
+
+    /**Algeline framework, suudab ainult keskele joonestatud {@link Actor} ridasid luua, reas saab vaid üks {@link Actor} olla.*/
+    public void initStage(Actor[] actorArr, float rowSpacing) {
+
+        if (rowSpacing > 1f / actorArr.length) System.err.println("HOIATUS! Ridade vahe ei saa olla nii suur, sest matemaatika ei luba!");
+
+        int biggestX = 0;
+        int heightSum = 0;
+
+        for (Actor actor : actorArr) {
+            int x = (int) actor.getWidth();
+            int y = (int) actor.getHeight();
+            if (x > biggestX) biggestX = x;
+            heightSum += y;
+        }
+
+        float aspectRatio = Games.MONITORWIDTH / (float) Games.MONITORHEIGHT;
+        float idealHeight = biggestX / aspectRatio;
+        float realHeight = heightSum / (1 - rowSpacing * actorArr.length + rowSpacing);
+        float realWidth = biggestX;
+        boolean edgePadding = false;
+
+        //Tõene juhul kui objektid ei mahuks antud laiuse juures vertikaalselt ekraanile.
+        if (realHeight > idealHeight) {
+            realWidth = aspectRatio * realHeight;
+            edgePadding = true;
+        }
+
+        menuWidth = realWidth;
+        if (edgePadding) {
+            menuHeight = realHeight;
+        } else {
+            menuHeight = idealHeight;
+        }
+
+        Camera cam = new OrthographicCamera();
+        cam.position.set(menuWidth / 2, menuHeight / 2, 0);
+        Viewport viewport = new ExtendViewport(menuWidth, menuHeight, cam);
+
+        Stage stage = new Stage(viewport, game.batch);
+        stage.getBatch().setProjectionMatrix(stage.getViewport().getCamera().combined);
+
+        int i = 1;
+        for (Actor actor : actorArr) {
+            float x = (realWidth - actor.getWidth()) / 2;
+            float y;
+            if (edgePadding) {
+                y = realHeight - i * actor.getHeight() - (i - 1) * realHeight * rowSpacing;
+            } else {
+                y = idealHeight - ((idealHeight - realHeight) / 2) - i * actor.getHeight() - (i - 1) * idealHeight * rowSpacing;
+            }
+            actor.setPosition(x, y);
+            stage.addActor(actor);
+            i += 1;
+        }
+
+        this.stage = stage;
+    }
+
+    public Stage getStage() {
+        return stage;
     }
 
     public enum Alignment {
