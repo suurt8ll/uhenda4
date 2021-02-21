@@ -16,6 +16,10 @@ import com.connectfour.Games;
 import com.connectfour.NumberTextFieldFilter;
 import com.connectfour.SimpleMenuScreenBuilder;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 public class JoinScreen implements Screen {
 
     private final Games game;
@@ -46,6 +50,13 @@ public class JoinScreen implements Screen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 Socket server = Gdx.net.newClientSocket(Net.Protocol.TCP, "localhost", 27016, null);
+                try {
+                    ObjectOutputStream out = new ObjectOutputStream(server.getOutputStream());
+                    ObjectInputStream in = new ObjectInputStream(server.getInputStream());
+                    System.out.println("[REMOTE CLIENT] Streams with local host created!");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 return true;
             }
         });

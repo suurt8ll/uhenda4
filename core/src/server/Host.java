@@ -29,18 +29,27 @@ public class Host implements Runnable {
 
         //Loob ühendused
         Socket client1, client2;
-        System.out.println("Wating for 1. player...");
+        System.out.println("[SERVER] Wating for 1. player...");
         client1 = server.accept(null);
-        System.out.printf("Player 1 connected from %s! \n", client1.getRemoteAddress());
-        System.out.println("Wating for 2. player...");
+        System.out.printf("[SERVER] Player 1 connected from %s! \n", client1.getRemoteAddress());
+        System.out.println("[SERVER] Wating for 2. player...");
         client2 = server.accept(null);
-        System.out.printf("Player 2 connected from %s! \n", client2.getRemoteAddress());
+        System.out.printf("[SERVER] Player 2 connected from %s! \n", client2.getRemoteAddress());
 
         ObjectInputStream client1In, client2In;
         ObjectOutputStream client1Out, client2Out;
-        Color client1Color, client2Color;
 
-        System.out.println(waitAndReadInput(client1));
+        try {
+            client1Out = new ObjectOutputStream(client1.getOutputStream());
+            client1In = new ObjectInputStream(client1.getInputStream());
+            client2Out = new ObjectOutputStream(client2.getOutputStream());
+            client2In = new ObjectInputStream(client2.getInputStream());
+            System.out.println("[SERVER] Streams with clients have been made.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //System.out.println(waitAndReadInput(client1));
 
     }
 
