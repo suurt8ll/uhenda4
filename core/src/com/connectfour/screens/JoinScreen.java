@@ -46,7 +46,6 @@ public class JoinScreen implements Screen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 Socket server = Gdx.net.newClientSocket(Net.Protocol.TCP, "localhost", 27016, null);
-                System.out.println("Serveriga ühendus loodud!");
                 return true;
             }
         });

@@ -1,8 +1,10 @@
 package com.connectfour.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Net;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL30;
+import com.badlogic.gdx.net.Socket;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -22,6 +24,7 @@ public class HostScreen implements Screen {
     private final Games game;
     private final SimpleMenuScreenBuilder builder;
     private Stage stage;
+    private Thread host;
 
     private float menuWidth;
     private float menuHeight;
@@ -50,13 +53,13 @@ public class HostScreen implements Screen {
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 try {
-                    Thread host = new Thread(new Host(game.CONNECTFOUR.board, game, 27016));
+                    host = new Thread(new Host(game.CONNECTFOUR.board, game, 27016));
                     host.setName("SERVERTHREAD");
                     host.start();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
+                Socket server = Gdx.net.newClientSocket(Net.Protocol.TCP, "localhost", 27016, null);
                 return true;
             }
         });
