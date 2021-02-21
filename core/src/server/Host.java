@@ -16,6 +16,7 @@ public class Host implements Runnable {
     private final Games game;
     private final int port;
     private final ServerSocket server;
+    public boolean running = false;
 
     public Host(Board board, Games game, int port) throws IOException {
         this.board = board;
@@ -26,57 +27,24 @@ public class Host implements Runnable {
 
     @Override
     public void run() {
-
+        running = true;
         //Loob ühendused
-        Socket client1, client2;
-        System.out.println("[SERVER] Wating for 1. player...");
-        client1 = server.accept(null);
-        System.out.printf("[SERVER] Player 1 connected from %s! \n", client1.getRemoteAddress());
-        System.out.println("[SERVER] Wating for 2. player...");
-        client2 = server.accept(null);
-        System.out.printf("[SERVER] Player 2 connected from %s! \n", client2.getRemoteAddress());
-
-        ObjectInputStream client1In, client2In;
-        ObjectOutputStream client1Out, client2Out;
-
+        Socket client;
+        System.out.println("[SERVER] Wating for opponent...");
+        client = server.accept(null);
+        System.out.printf("[SERVER] Opponent connected from %s! \n", client.getRemoteAddress());
+        //Loob streamid
         try {
-            client1Out = new ObjectOutputStream(client1.getOutputStream());
-            client1In = new ObjectInputStream(client1.getInputStream());
-            client2Out = new ObjectOutputStream(client2.getOutputStream());
-            client2In = new ObjectInputStream(client2.getInputStream());
-            System.out.println("[SERVER] Streams with clients have been made.");
+            ObjectOutputStream out = new ObjectOutputStream(client.getOutputStream());
+            ObjectInputStream in = new ObjectInputStream(client.getInputStream());
+            System.out.println("[SERVER] Streams with opponent have been made.");
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        //System.out.println(waitAndReadInput(client1));
-
     }
 
-    private Object waitAndReadInput(Socket client) {
-        Object input = null;
-        try {
-            System.out.println("TT");
-            ObjectInputStream inputStream = new ObjectInputStream(client.getInputStream());
-            inputStream.close();
-            System.out.println("AA");
-            while (input == null) {
-                try {
-                    input = inputStream.readObject();
-                } catch (IOException | ClassNotFoundException e) {
-                    try {
-                        this.wait(1000);
-                    } catch (InterruptedException exception) {
-                        exception.printStackTrace();
-                    }
-                    e.printStackTrace();
-                }
-            }
-            inputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return input;
+    public void stop() {
+        running = false;
     }
 
 }

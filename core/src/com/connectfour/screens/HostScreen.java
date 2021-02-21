@@ -61,15 +61,6 @@ public class HostScreen implements Screen {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                Socket server = Gdx.net.newClientSocket(Net.Protocol.TCP, "localhost", 27016, null);
-                try {
-                    ObjectOutputStream out = new ObjectOutputStream(server.getOutputStream());
-                    ObjectInputStream in = new ObjectInputStream(server.getInputStream());
-                    System.out.println("[LOCAL CLIENT] Streams with local host created!");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
                 return true;
             }
         });

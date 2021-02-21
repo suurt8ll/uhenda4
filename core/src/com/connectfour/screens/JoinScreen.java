@@ -53,7 +53,7 @@ public class JoinScreen implements Screen {
                 try {
                     ObjectOutputStream out = new ObjectOutputStream(server.getOutputStream());
                     ObjectInputStream in = new ObjectInputStream(server.getInputStream());
-                    System.out.println("[REMOTE CLIENT] Streams with local host created!");
+                    System.out.println("[OPPONENT] Streams with remote host created!");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
