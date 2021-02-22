@@ -21,7 +21,7 @@ public class ConnectFourScreen implements Screen {
 
     private final Games game;
     public Board board;
-    public byte whoseTurn;
+    public byte whoseTurn = 1;
     private float aspectRatio;
     private OrthographicCamera cam;
     private ImageButton arrowDown;
@@ -36,7 +36,6 @@ public class ConnectFourScreen implements Screen {
 
     @Override
     public void show() {
-        whoseTurn = 1;
 
         WORLD_SIZE_X = game.boardSizeX * 2 + (game.boardSizeX + 1) * game.spacing;
         WORLD_SIZE_Y = game.boardSizeY * 2 + (2 + game.spacing) + (game.boardSizeY + 1) * game.spacing;
@@ -94,6 +93,7 @@ public class ConnectFourScreen implements Screen {
     }
 
     private void buttonClick(InputEvent e) {
+        if (whoseTurn != 1) return;
         int mitmes = Integer.parseInt(e.getListenerActor().getName());
         for (int y = 1; y <= game.boardSizeY; y++) {
             if (board.getKettaState(mitmes, y) == 0) {

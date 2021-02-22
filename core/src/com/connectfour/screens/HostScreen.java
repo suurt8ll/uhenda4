@@ -1,15 +1,12 @@
 package com.connectfour.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Net;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL30;
-import com.badlogic.gdx.net.Socket;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.connectfour.Games;
@@ -18,15 +15,14 @@ import com.connectfour.SimpleMenuScreenBuilder;
 import server.Host;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
 public class HostScreen implements Screen {
 
     private final Games game;
     private final SimpleMenuScreenBuilder builder;
     private Stage stage;
-    private Thread host;
+    //TODO Host tuleb ConnectFourScreenile saadavaks teha, et seda peatada saaks.
+    private Host h;
 
     private float menuWidth;
     private float menuHeight;
@@ -55,7 +51,8 @@ public class HostScreen implements Screen {
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 try {
-                    host = new Thread(new Host(game.CONNECTFOUR.board, game, 27016));
+                    h = new Host(game, 27016);
+                    Thread host = new Thread(h);
                     host.setName("SERVERTHREAD");
                     host.start();
                 } catch (IOException e) {

@@ -15,6 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.connectfour.Games;
 import com.connectfour.NumberTextFieldFilter;
 import com.connectfour.SimpleMenuScreenBuilder;
+import server.ServerListener;
+import server.TurnPacket;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -25,6 +27,8 @@ public class JoinScreen implements Screen {
     private final Games game;
     private final SimpleMenuScreenBuilder builder;
     private Stage stage;
+    //TODO Tuleks pigem ConnectFourScreeni klassi liigutada, et parem ligipääs oleks.
+    private ServerListener serverListener;
 
     private float menuWidth;
     private float menuHeight;
@@ -54,7 +58,15 @@ public class JoinScreen implements Screen {
                     ObjectOutputStream out = new ObjectOutputStream(server.getOutputStream());
                     ObjectInputStream in = new ObjectInputStream(server.getInputStream());
                     System.out.println("[OPPONENT] Streams with remote host created!");
-                } catch (IOException e) {
+                    TurnPacket firstTurn = (TurnPacket) in.readObject();
+                    if (firstTurn.yourTurn) {
+                        game.CONNECTFOUR.whoseTurn = 1;
+                    } else {
+                        game.CONNECTFOUR.whoseTurn = 2;
+                    }
+
+                    game.changeScreen(game.CONNECTFOUR);
+                } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
                 }
                 return true;
