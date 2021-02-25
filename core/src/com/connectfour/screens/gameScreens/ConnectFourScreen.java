@@ -166,4 +166,5 @@ public class ConnectFourScreen implements Screen {
         }
         game.inputMultiplexer.addProcessor(stage);
     }
+
 }

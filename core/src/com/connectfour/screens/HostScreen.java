@@ -14,15 +14,11 @@ import com.connectfour.NumberTextFieldFilter;
 import com.connectfour.SimpleMenuScreenBuilder;
 import server.Host;
 
-import java.io.IOException;
-
 public class HostScreen implements Screen {
 
     private final Games game;
     private final SimpleMenuScreenBuilder builder;
     private Stage stage;
-    //TODO Host tuleb ConnectFourScreenile saadavaks teha, et seda peatada saaks.
-    private Host h;
 
     private float menuWidth;
     private float menuHeight;
@@ -50,14 +46,10 @@ public class HostScreen implements Screen {
         hostButton.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                try {
-                    h = new Host(game, 27016);
-                    Thread host = new Thread(h);
-                    host.setName("SERVERTHREAD");
-                    host.start();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                //TODO SERVERTHREAD tuleb kinni panna kui mängia väljub ekraanilt ja ei alusta mängu.
+                Thread hostThread = new Thread(new Host(game, 27016));
+                hostThread.setName("SERVERTHREAD");
+                hostThread.start();
                 return true;
             }
         });

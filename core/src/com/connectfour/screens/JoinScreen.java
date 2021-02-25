@@ -1,11 +1,8 @@
 package com.connectfour.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.Net;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.net.Socket;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -13,14 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.connectfour.Games;
-import com.connectfour.NumberTextFieldFilter;
 import com.connectfour.SimpleMenuScreenBuilder;
-import server.ServerListener;
-import server.TurnPacket;
-
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import server.Client;
 
 public class JoinScreen implements Screen {
 
@@ -28,7 +19,6 @@ public class JoinScreen implements Screen {
     private final SimpleMenuScreenBuilder builder;
     private Stage stage;
     //TODO Tuleks pigem ConnectFourScreeni klassi liigutada, et parem ligipääs oleks.
-    private ServerListener serverListener;
 
     private float menuWidth;
     private float menuHeight;
@@ -53,22 +43,10 @@ public class JoinScreen implements Screen {
         joinButton.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Socket server = Gdx.net.newClientSocket(Net.Protocol.TCP, "localhost", 27016, null);
-                try {
-                    ObjectOutputStream out = new ObjectOutputStream(server.getOutputStream());
-                    ObjectInputStream in = new ObjectInputStream(server.getInputStream());
-                    System.out.println("[OPPONENT] Streams with remote host created!");
-                    TurnPacket firstTurn = (TurnPacket) in.readObject();
-                    if (firstTurn.yourTurn) {
-                        game.CONNECTFOUR.whoseTurn = 1;
-                    } else {
-                        game.CONNECTFOUR.whoseTurn = 2;
-                    }
-
-                    game.changeScreen(game.CONNECTFOUR);
-                } catch (IOException | ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
+                //TODO Client threadi loomine ja jooksutamine
+                Thread clientThread = new Thread(new Client(game,"localhost",27016));
+                clientThread.setName("CLIENTTHREAD");
+                clientThread.start();
                 return true;
             }
         });
