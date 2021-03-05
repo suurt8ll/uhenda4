@@ -6,16 +6,18 @@ public class Minimax {
     public byte playerid;
     public byte aiid;
     public byte emptyid;
+    public int bestmove;
 
-    public Minimax(Board board) {
+    public Minimax(Board board, byte aiid, byte playerid, byte emptyid) {
         this.board = board;
         this.b = board.getBoard();
-        this.aiid = 2;
-        this.playerid = 1;
-        this.emptyid = 0;
+        this.aiid = aiid;
+        this.playerid = playerid;
+        this.emptyid = emptyid;
     }
     public int minimax1(boolean ismaximizing, int alpha, int beta, int depth){
         int winner = board.checkWin(4);
+        bestmove = (int) (board.board[0].length/2);
         int score = 0;
         if (winner!=-1){
             return score;
@@ -24,14 +26,17 @@ public class Minimax {
             return 0;
         }
         if (ismaximizing){
-            int bestscore = -1000;
-            for (int x = 0; x < b.length; x++) {
+            int bestscore = 0;
+            for (int x = 0; x < b[0].length; x++) {
                 for (int y = 0; y < b.length; y++) {
                     if (b[y][x]==emptyid){
                         b[y][x]=this.aiid;
                         score = minimax1(false, alpha, beta, depth-1)-1;
                         b[y][x]=emptyid;
-                        bestscore = Math.max(bestscore,score);
+                        if (score>bestscore){
+                            bestscore = score;
+                            bestmove = x;
+                        }
                         alpha = Math.max(alpha,score);
                         if (beta<=alpha){
                             x = b.length;
@@ -42,8 +47,8 @@ public class Minimax {
             }
             return bestscore;
         }else {
-            int bestscore = 1000;
-            for (int x = 0; x < b.length; x++) {
+            int bestscore = 0;
+            for (int x = 0; x < b[0].length; x++) {
                 for (int y = 0; y < b.length; y++) {
                     if (b[y][x]==emptyid){
                         b[y][x]=this.playerid;
@@ -62,7 +67,19 @@ public class Minimax {
         }
         return 0;
     }
-
+    public int scorePosition(int x){
+        if (board.checkWin(4) == aiid){
+            return 1000;
+        }else if (board.checkWin(4) == playerid){
+            return -1000;
+        }
+        if (board.checkWin(3)==aiid){
+            return 900;
+        }else if (board.checkWin(3) == playerid){
+            return -900;
+        }
+        return 0;
+    }
     /*
     function minimax(node, depth, maximizingPlayer) is
     if depth = 0 or node is a terminal node then

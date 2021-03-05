@@ -16,12 +16,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.connectfour.Board;
 import com.connectfour.Games;
+import com.connectfour.Minimax;
 
 public class ConnectFourScreen implements Screen {
 
     private final Games game;
     public Board board;
-    public byte whoseTurn = 1;
+    public byte whoseTurn;
     private float aspectRatio;
     private OrthographicCamera cam;
     private ImageButton arrowDown;
@@ -50,7 +51,10 @@ public class ConnectFourScreen implements Screen {
 
         stage = new Stage(this.vp, this.game.batch);
         initButtons();
-
+        whoseTurn = game.player1.getId();
+        if (game.player2.isAI()){
+            game.player2.minimax = new Minimax(this.board, game.player2.getId(), game.player1.getId(), (byte) 0);
+        }
     }
 
     @Override
@@ -93,7 +97,6 @@ public class ConnectFourScreen implements Screen {
     }
 
     private void buttonClick(InputEvent e) {
-        if (whoseTurn != 1) return;
         int mitmes = Integer.parseInt(e.getListenerActor().getName());
         for (int y = 1; y <= game.boardSizeY; y++) {
             if (board.getKettaState(mitmes, y) == 0) {
@@ -110,16 +113,24 @@ public class ConnectFourScreen implements Screen {
                         game.setScreen(new EndScreen(game, EndScreen.Outcome.LOSE/*, cam, vp*/));
                         break;
                 }
+                doTurn();
 
-                if (whoseTurn == 1) {
-                    whoseTurn = 2;
-                } else {
-                    whoseTurn = 1;
-                }
                 if (y == game.boardSizeY) e.getListenerActor().clear();
                 //board.printboard();
-                return;
+                y = game.boardSizeY;
             }
+        }
+        if (whoseTurn == game.player2.getId() && game.player2.isAI()){
+            //AI käib
+            game.player2.minimax.minimax1(true,-1000,1000,5);
+            mitmes = game.player2.minimax.bestmove;
+            for (int y = 1; y <= game.boardSizeY; y++) {
+                if (board.getKettaState(mitmes, y) == 0) {
+                    board.setKettaState(mitmes, y, whoseTurn);
+                    y = game.boardSizeY;
+                }
+            }
+            doTurn();
         }
     }
 
@@ -131,7 +142,7 @@ public class ConnectFourScreen implements Screen {
             for (float x = spaceBetween + radius; x <= game.boardSizeX * (2 * radius + spaceBetween); x += (2 * radius + spaceBetween)) {
                 if (board.getKettaState(ringX, ringY) == 0) {
                     shapeRenderer.setColor(Color.WHITE);
-                } else if (board.getKettaState(ringX, ringY) == 1) {
+                } else if (board.getKettaState(ringX, ringY) == game.player1.getId()) {
                     shapeRenderer.setColor(game.player1.color);
                 } else {
                     shapeRenderer.setColor(game.player2.color);
@@ -166,5 +177,11 @@ public class ConnectFourScreen implements Screen {
         }
         game.inputMultiplexer.addProcessor(stage);
     }
-
+    private void doTurn(){
+        if (whoseTurn == game.player1.getId()) {
+            whoseTurn = game.player2.getId();
+        } else {
+            whoseTurn = game.player1.getId();
+        }
+    }
 }

@@ -4,10 +4,11 @@ import com.badlogic.gdx.graphics.Color;
 
 public class Player {
     public String name;
-    public int id;
+    public byte id;
     public Color color;
     public boolean AI;
-    public Player(String name, int id, Color color){
+    public Minimax minimax;
+    public Player(String name, byte id, Color color){
         this.name = name;
         this.id = id;
         this.color = color;
@@ -21,7 +22,7 @@ public class Player {
         return name;
     }
 
-    public int getId() {
+    public byte getId() {
         return id;
     }
 
