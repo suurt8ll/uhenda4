@@ -58,7 +58,6 @@ public class GameMenuScreen implements Screen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 game.player2.setAI(true);
-                //TODO Implement minmax.
                 game.changeScreen(game.CONNECTFOUR);
                 return true;
             }

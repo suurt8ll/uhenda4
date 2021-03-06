@@ -101,8 +101,29 @@ public class ConnectFourScreen implements Screen {
     }
 
     private void buttonClick(InputEvent e) {
-        Thread thread = new Thread(game.player2.minimax);
-        if (!game.player2.minimax.threadrunning){
+        if (game.player2.isAI()){
+            Thread thread = new Thread(game.player2.minimax);
+            if (!game.player2.minimax.threadrunning){
+                int mitmes = Integer.parseInt(e.getListenerActor().getName());
+                for (int y = 0; y < game.boardSizeY; y++) {
+                    if (board.getKettaState(mitmes, y) == 0) {
+                        board.setKettaState(mitmes, y, whoseTurn);
+                        checkGameWin();
+
+                        doTurn();
+                        if (y == game.boardSizeY) e.getListenerActor().clear();
+                        y = game.boardSizeY;
+                    }
+                }
+                if (whoseTurn == game.player2.getId() && game.player2.isAI()){
+                    //mitmes = game.player2.minimax.findBestMove(board);
+                    thread.start();
+                    //checkGameWin();
+
+                    doTurn();
+                }
+            }
+        }else {
             int mitmes = Integer.parseInt(e.getListenerActor().getName());
             for (int y = 0; y < game.boardSizeY; y++) {
                 if (board.getKettaState(mitmes, y) == 0) {
@@ -114,14 +135,8 @@ public class ConnectFourScreen implements Screen {
                     y = game.boardSizeY;
                 }
             }
-            if (whoseTurn == game.player2.getId() && game.player2.isAI()){
-                //mitmes = game.player2.minimax.findBestMove(board);
-                thread.start();
-                //checkGameWin();
-
-                doTurn();
-            }
         }
+
     }
 
     private void drawBoard(float spaceBetween, float radius) {
