@@ -18,6 +18,8 @@ import com.connectfour.Board;
 import com.connectfour.Games;
 import com.connectfour.Minimax;
 
+import java.util.concurrent.ScheduledExecutorService;
+
 public class ConnectFourScreen implements Screen {
 
     private final Games game;
@@ -30,6 +32,7 @@ public class ConnectFourScreen implements Screen {
     private ExtendViewport vp;
     private Stage stage;
     private ShapeRenderer shapeRenderer;
+    private boolean gameOver;
 
     public ConnectFourScreen(final Games game) {
         this.game = game;
@@ -53,8 +56,9 @@ public class ConnectFourScreen implements Screen {
         initButtons();
         whoseTurn = game.player1.getId();
         if (game.player2.isAI()){
-            game.player2.minimax = new Minimax(this.board, game.player2.getId(), game.player1.getId(), (byte) 0);
+            game.player2.minimax = new Minimax(game.player2.getId(), game.player1.getId(), (byte) 0, game.difficulty, board);
         }
+        gameOver = false;
     }
 
     @Override
@@ -98,45 +102,44 @@ public class ConnectFourScreen implements Screen {
 
     private void buttonClick(InputEvent e) {
         int mitmes = Integer.parseInt(e.getListenerActor().getName());
-        for (int y = 1; y <= game.boardSizeY; y++) {
+        for (int y = 0; y < game.boardSizeY; y++) {
             if (board.getKettaState(mitmes, y) == 0) {
                 board.setKettaState(mitmes, y, whoseTurn);
+                checkGameWin();
 
-                switch (board.checkWin(4)) {
-                    case 0:
-                        game.setScreen(new EndScreen(game, EndScreen.Outcome.DRAW/*, cam, vp*/));
-                        break;
-                    case 1:
-                        game.setScreen(new EndScreen(game, EndScreen.Outcome.WIN/*, cam, vp*/));
-                        break;
-                    case 2:
-                        game.setScreen(new EndScreen(game, EndScreen.Outcome.LOSE/*, cam, vp*/));
-                        break;
-                }
                 doTurn();
-
                 if (y == game.boardSizeY) e.getListenerActor().clear();
-                //board.printboard();
                 y = game.boardSizeY;
             }
         }
         if (whoseTurn == game.player2.getId() && game.player2.isAI()){
-            //AI käib
-            game.player2.minimax.minimax1(true,-1000,1000,5);
-            mitmes = game.player2.minimax.bestmove;
-            for (int y = 1; y <= game.boardSizeY; y++) {
+            //mitmes = game.player2.minimax.findBestMove(board);
+            Thread thread = new Thread(game.player2.minimax);
+            thread.start();
+            //TODO merge threads
+            while (true){
+                if (!thread.isAlive()){
+                    break;
+                }
+            }
+            mitmes = game.player2.minimax.bestMove;
+
+            for (int y = 0; y < game.boardSizeY; y++) {
                 if (board.getKettaState(mitmes, y) == 0) {
                     board.setKettaState(mitmes, y, whoseTurn);
                     y = game.boardSizeY;
                 }
             }
+
+            //checkGameWin();
+
             doTurn();
         }
     }
 
     private void drawBoard(float spaceBetween, float radius) {
-        int ringX = 1;
-        int ringY = 1;
+        int ringX = 0;
+        int ringY = 0;
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         for (float y = spaceBetween + radius; y <= game.boardSizeY * (2 * radius + spaceBetween); y += (2 * radius + spaceBetween)) {
             for (float x = spaceBetween + radius; x <= game.boardSizeX * (2 * radius + spaceBetween); x += (2 * radius + spaceBetween)) {
@@ -150,7 +153,7 @@ public class ConnectFourScreen implements Screen {
                 shapeRenderer.circle(x, y, radius, 100);
                 ringX += 1;
             }
-            ringX = 1;
+            ringX = 0;
             ringY += 1;
         }
         shapeRenderer.end();
@@ -158,7 +161,7 @@ public class ConnectFourScreen implements Screen {
 
     private void initButtons() {
         Sprite arrowSprite = new Sprite((Texture) game.assetsLoader.manager.get(game.assetsLoader.arrowDownImg));
-        int mitmes = 1;
+        int mitmes = 0;
         for (float x = game.spacing; x <= game.boardSizeX * (2 + game.spacing); x += (2 + game.spacing)) {
             arrowDown = new ImageButton(new SpriteDrawable(arrowSprite));
             arrowDown.setBounds(x, WORLD_SIZE_Y - 2 - game.spacing, 2, 2);
@@ -182,6 +185,19 @@ public class ConnectFourScreen implements Screen {
             whoseTurn = game.player2.getId();
         } else {
             whoseTurn = game.player1.getId();
+        }
+    }
+    private void checkGameWin(){
+        switch (board.checkWin(4)) {
+            case 0:
+                game.setScreen(new EndScreen(game, EndScreen.Outcome.DRAW/*, cam, vp*/));
+                break;
+            case 1:
+                game.setScreen(new EndScreen(game, EndScreen.Outcome.WIN/*, cam, vp*/));
+                break;
+            case 2:
+                game.setScreen(new EndScreen(game, EndScreen.Outcome.LOSE/*, cam, vp*/));
+                break;
         }
     }
 }

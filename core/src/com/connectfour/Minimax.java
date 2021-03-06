@@ -1,73 +1,86 @@
 package com.connectfour;
 
-public class Minimax {
-    public Board board;
-    public byte[][] b;
-    public byte playerid;
-    public byte aiid;
-    public byte emptyid;
-    public int bestmove;
-
-    public Minimax(Board board, byte aiid, byte playerid, byte emptyid) {
-        this.board = board;
-        this.b = board.getBoard();
+public class Minimax implements Runnable{
+    private byte playerid;
+    private byte aiid;
+    private byte emptyid;
+    private int difficulty;
+    public int bestMove;
+    private Board board;
+    public Minimax(byte aiid, byte playerid, byte emptyid, int difficulty, Board board) {
         this.aiid = aiid;
         this.playerid = playerid;
         this.emptyid = emptyid;
+        this.difficulty = difficulty;
+        this.board = board;
     }
-    public int minimax1(boolean ismaximizing, int alpha, int beta, int depth){
-        int winner = board.checkWin(4);
-        bestmove = (int) (board.board[0].length/2);
-        int score = 0;
-        if (winner!=-1){
-            return score;
+    public int findBestMove(Board board){
+        int bestscore = -100000;
+        int move = 0;
+        byte[][] b = board.getBoard();
+        int[] posToTry = new int[b[0].length];
+        for (int i = 0; i < b[0].length; i++) {
+            posToTry[i] = 0;
         }
-        if (depth==0){
-            return 0;
+        for (int i = 0; i < b[0].length; i++) {
+            int x = centerXpicker(board, posToTry);
+            if (x !=-1){
+                int y = board.getYwithX(x);
+                if (y!=-1){
+                    posToTry[x] = 1;
+                    b[y][x]=this.aiid;
+                    int score = minimax2(board,difficulty,false, -10000, 10000);
+                    b[y][x]=emptyid;
+                    if (score>bestscore){
+                        bestscore = score;
+                        move = x;
+                    }
+                }
+            }
         }
-        if (ismaximizing){
-            int bestscore = 0;
+        return move;
+    }
+    public int minimax2(Board board, int depth, boolean isMaximizing, int alpha, int beta){
+        byte[][] b = board.getBoard();
+        if (depth == 0|| board.checkWin(4)!=-1){
+            return scorePosition(board);
+        }
+        if (isMaximizing){
+            int bestscore = -1000;
             for (int x = 0; x < b[0].length; x++) {
-                for (int y = 0; y < b.length; y++) {
-                    if (b[y][x]==emptyid){
-                        b[y][x]=this.aiid;
-                        score = minimax1(false, alpha, beta, depth-1)-1;
-                        b[y][x]=emptyid;
-                        if (score>bestscore){
-                            bestscore = score;
-                            bestmove = x;
-                        }
-                        alpha = Math.max(alpha,score);
-                        if (beta<=alpha){
-                            x = b.length;
-                            y = b.length;
-                        }
+                int y = board.getYwithX(x);
+                if (y!=-1){
+                    b[y][x] = aiid;
+                    int score = minimax2(board, depth-1, false, alpha, beta)-1;
+                    b[y][x] = emptyid;
+                    alpha = Math.max(alpha,score);
+                    bestscore = Math.max(score,bestscore);
+                    if (beta<=alpha){
+                        x = b[0].length;
                     }
                 }
             }
             return bestscore;
         }else {
-            int bestscore = 0;
+            int bestscore = 1000;
             for (int x = 0; x < b[0].length; x++) {
-                for (int y = 0; y < b.length; y++) {
-                    if (b[y][x]==emptyid){
-                        b[y][x]=this.playerid;
-                        score = minimax1(true, alpha, beta, depth-1)-1;
-                        b[y][x]=emptyid;
-                        bestscore = Math.min(bestscore,score);
-                        beta = Math.min(alpha,score);
-                        if (beta<=alpha){
-                            x = b.length;
-                            y = b.length;
-                        }
+                int y = board.getYwithX(x);
+                if (y!=-1){
+                    b[y][x] = playerid;
+                    int score = minimax2(board, depth-1, true, alpha, beta)+1;
+                    b[y][x] = emptyid;
+                    beta = Math.min(beta,score);
+                    bestscore = Math.min(score,bestscore);
+                    if (beta<=alpha){
+                        x = b[0].length;
                     }
                 }
-                return bestscore;
             }
+            return bestscore;
         }
-        return 0;
     }
-    public int scorePosition(int x){
+
+    public int scorePosition(Board board){
         if (board.checkWin(4) == aiid){
             return 1000;
         }else if (board.checkWin(4) == playerid){
@@ -80,19 +93,28 @@ public class Minimax {
         }
         return 0;
     }
-    /*
-    function minimax(node, depth, maximizingPlayer) is
-    if depth = 0 or node is a terminal node then
-        return the heuristic value of node
-    if maximizingPlayer then
-        value := −∞
-        for each child of node do
-            value := max(value, minimax(child, depth − 1, FALSE))
-        return value
-    else (* minimizing player *)
-        value := +∞
-        for each child of node do
-            value := min(value, minimax(child, depth − 1, TRUE))
-        return value
-     */
+    public int centerXpicker(Board board, int[] openPositions){
+        byte[][] b = board.getBoard();
+        int maxy = b.length-1;
+        int x = b[0].length/2;
+        boolean goleft = true;
+        for (int i = 1; i < b[0].length+1; i++) {
+            if (openPositions[x]==0 && b[maxy][x] == 0){
+                return x;
+            }
+            if (goleft){
+                x-=i;
+                goleft = false;
+            }else {
+                x+=i;
+                goleft = true;
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public void run() {
+       bestMove = findBestMove(board);
+    }
 }

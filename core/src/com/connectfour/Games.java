@@ -31,8 +31,8 @@ public class Games extends Game {
     public Prefs prefs;
     public int boardSizeX;
     public int boardSizeY;
-    //FIXME muutuja spacing Prefs klassi implementida
     public float spacing;
+    public int difficulty;
 
     public GameMenuScreen GAMEMENU;
     public SettingsScreen SETTINGS;
@@ -58,7 +58,8 @@ public class Games extends Game {
 
         this.boardSizeX = this.prefs.getBoardx();
         this.boardSizeY = this.prefs.getBoardy();
-        this.spacing = 0.2f;
+        this.spacing = this.prefs.getSpacing();
+        this.difficulty = this.prefs.getDifficulty();
 
         this.viewport = new FitViewport(this.ScreenWidth,this.ScreenHeight, new OrthographicCamera(this.ScreenWidth,this.ScreenHeight));
         this.batch = new SpriteBatch();

@@ -3,6 +3,9 @@ package com.connectfour;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
+import java.util.function.Consumer;
+import java.util.function.IntConsumer;
+
 public class Prefs {
 
     private final String MUSIC_VOLUME = "Music_volume";
@@ -14,7 +17,10 @@ public class Prefs {
     private final String PLAYER1_COLOR = "Player1_color";
     private final String PLAYER2_COLOR = "Player2_color";
     private final String BACKGROUND_COLOR = "Background_color";
+    private final String SPACING = "Spacing";
+    private final String DIFFICULTY = "Difficulty";
     private Preferences preferences;
+
     public Prefs(){
         this.preferences = Gdx.app.getPreferences("ConnectFourPrefs");
     }
@@ -79,25 +85,65 @@ public class Prefs {
     }
 
     public void init(){
-        if (this.preferences.get().isEmpty()){
+        boolean toSave = false;
+        if (!this.preferences.get().containsKey(this.MUSIC_VOLUME)){
             setMusicVolume(0.5f);
+            toSave = true;
+        }
+        if (!this.preferences.get().containsKey(this.SOUND_VOLUME)){
             setSoundVolume(0.5f);
+            toSave = true;
+        }
+        if (!this.preferences.get().containsKey(this.PLAYER1_NAME)){
             setPlayer1Name("Player1");
+            toSave = true;
+        }
+        if (!this.preferences.get().containsKey(this.PLAYER2_NAME)){
             setPlayer2Name("Player2");
+            toSave = true;
+        }
+        if (!this.preferences.get().containsKey(this.BOARD_SIZE_X)){
             setBoardx(7);
+            toSave = true;
+        }
+        if (!this.preferences.get().containsKey(this.BOARD_SIZE_Y)){
             setBoardy(6);
-            save();
+            toSave = true;
+        }
+        if (!this.preferences.get().containsKey(this.PLAYER1_COLOR)){
+            setPlayer1Color("09ff00ff");
+            toSave = true;
+        }
+        if (!this.preferences.get().containsKey(this.PLAYER2_COLOR)){
+            setPlayer2Color("ff0d00ff");
+            toSave = true;
+        }
+        if (!this.preferences.get().containsKey(this.BACKGROUND_COLOR)){
+            setBackgroundColor("0065ffff");
+            toSave = true;
+        }
+        if (!this.preferences.get().containsKey(this.SPACING)){
+            setSpacing(0.2f);
+            toSave = true;
+        }
+
+        if (!this.preferences.get().containsKey(this.DIFFICULTY)){
+            setDifficulty(3);
+            toSave = true;
         }
         if (getPlayer1Color().equals("")){
             setPlayer1Color("09ff00ff");
-            save();
+            toSave = true;
         }
         if (getPlayer2Color().equals("")){
             setPlayer2Color("ff0d00ff");
-            save();
+            toSave = true;
         }
         if (getBackgroundColor().equals("")){
             setBackgroundColor("0065ffff");
+            toSave = true;
+        }
+        if (toSave){
             save();
         }
     }
@@ -106,5 +152,17 @@ public class Prefs {
     }
     public int getBoardy(){
         return this.preferences.getInteger(this.BOARD_SIZE_Y);
+    }
+    public void setSpacing(float spacing){
+        this.preferences.putFloat(this.SPACING, spacing);
+    }
+    public float getSpacing(){
+        return this.preferences.getFloat(this.SPACING);
+    }
+    public void setDifficulty(int difficulty){
+        this.preferences.putInteger(this.DIFFICULTY, difficulty);
+    }
+    public int getDifficulty(){
+        return this.preferences.getInteger(this.DIFFICULTY);
     }
 }

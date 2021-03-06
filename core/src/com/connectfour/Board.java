@@ -10,12 +10,12 @@ public class Board {
 
     /**Mängulaua koordinaadid algavad ülevalt vasakust nurgast, esimene ketas on näiteks (1, 1), teine (2, 1) jne...*/
     public byte getKettaState(int boardX, int boardY) {
-        return board[boardY - 1][boardX - 1];
+        return board[boardY][boardX];
     }
 
     /**Mängulaua koordinaadid algavad ülevalt vasakust nurgast, esimene ketas on näiteks (1, 1), teine (2, 1) jne...*/
     public void setKettaState(int boardX, int boardY, byte state) {
-        board[boardY - 1][boardX - 1] = state;
+        board[boardY][boardX] = state;
     }
 
     public byte[][] getBoard() {
@@ -36,65 +36,65 @@ public class Board {
     public int checkWin(int inARow) {
         int voitja = -1;
         for (int y = 0; y < board.length; y++) {
-            for (int x = 0; x < board[0].length - 3; x++) {
-                for (int l = 1; l < 3; l++) {
+            for (int x = 0; x < board[0].length - (inARow-1); x++) {
+                for (int playerid = 1; playerid < 3; playerid++) {
                     boolean praeguneCheck = true;
-                    for (int k = 0; k < inARow; k++) {
-                        if (board[y][x + k] != l) {
+                    for (int inRow = 0; inRow < inARow; inRow++) {
+                        if (board[y][x + inRow] != playerid) {
                             praeguneCheck = false;
                             break;
                         }
                     }
                     if (praeguneCheck) {
-                        voitja = l;
+                        voitja = playerid;
                     }
                 }
             }
         }
-        for (int y = 0; y < board.length - 3; y++) {
+        for (int y = 0; y < board.length - (inARow-1); y++) {
             for (int x = 0; x < board[0].length; x++) {
-                for (int l = 1; l < 3; l++) {
+                for (int playerid = 1; playerid < 3; playerid++) {
                     boolean praeguneCheck = true;
-                    for (int k = 0; k < inARow; k++) {
-                        if (board[y + k][x] != l) {
+                    for (int inRow = 0; inRow < inARow; inRow++) {
+                        if (board[y + inRow][x] != playerid) {
                             praeguneCheck = false;
                             break;
                         }
                     }
                     if (praeguneCheck) {
-                        voitja = l;
+                        voitja = playerid;
                     }
                 }
             }
         }
-        for (int y = 0; y < board.length - 3; y++) {
-            for (int x = 0; x < board[0].length - 3; x++) {
-                for (int l = 1; l < 3; l++) {
+        for (int y = 0; y < board.length - (inARow-1); y++) {
+            for (int x = 0; x < board[0].length - (inARow-1); x++) {
+                for (int playerid = 1; playerid < 3; playerid++) {
                     boolean praeguneCheck = true;
-                    for (int k = 0; k < inARow; k++) {
-                        if (board[y + k][x + k] != l) {
+                    for (int inRow = 0; inRow < inARow; inRow++) {
+                        if (board[y + inRow][x + inRow] != playerid) {
                             praeguneCheck = false;
                             break;
                         }
                     }
                     if (praeguneCheck) {
-                        voitja = l;
+                        voitja = playerid;
                     }
                 }
             }
         }
-        for (int y = 3; y < board.length; y++) {
-            for (int x = 0; x < board[0].length - 3; x++) {
-                for (int l = 1; l < 3; l++) {
+        for (int y = (inARow-1); y < board.length; y++) {
+            for (int x = 0; x < board[0].length - (inARow-1); x++) {
+                for (int playerid = 1; playerid < 3; playerid++) {
                     boolean praeguneCheck = true;
-                    for (int k = 0; k < inARow; k++) {
-                        if (board[y - k][x + k] != l) {
+                    for (int inRow = 0; inRow < inARow; inRow++) {
+                        if (board[y - inRow][x + inRow] != playerid) {
                             praeguneCheck = false;
                             break;
                         }
                     }
                     if (praeguneCheck) {
-                        voitja = l;
+                        voitja = playerid;
                     }
                 }
             }
@@ -113,5 +113,13 @@ public class Board {
             }
         }
         return voitja;
+    }
+    public int getYwithX(int x){
+        for (int y = 0; y < board.length; y++) {
+            if (board[y][x] == 0) {
+                return y;
+            }
+        }
+        return -1;
     }
 }
