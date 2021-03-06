@@ -18,10 +18,6 @@ import com.connectfour.Board;
 import com.connectfour.Games;
 import com.connectfour.Minimax;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
 public class ConnectFourScreen implements Screen {
 
     private final Games game;

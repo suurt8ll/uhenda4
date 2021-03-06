@@ -9,8 +9,6 @@ import com.connectfour.ColorPicker;
 import com.connectfour.Games;
 import com.connectfour.NumberTextFieldFilter;
 import com.connectfour.filters.FloatOnlyFilter;
-import org.w3c.dom.Text;
-//import com.connectfour.testacor;
 
 public class SettingsScreen implements Screen {
     private final Games game;
@@ -31,10 +29,10 @@ public class SettingsScreen implements Screen {
         final TextField spacing = new TextField(String.valueOf(game.spacing), game.skin);
         final TextField difficultyField = new TextField(String.valueOf(game.difficulty),game.skin);
         final TextButton applybutton = new TextButton("Apply",game.skin);
-        volumeMusicSlider = new Slider( 0f, 1f, 0.1f,false, game.skin);
-        volumeSoundSlider = new Slider( 0f, 1f, 0.1f,false, game.skin);
+        volumeMusicSlider = new Slider( 0f, 1f, 0.01f,false, game.skin);
+        volumeSoundSlider = new Slider( 0f, 1f, 0.01f,false, game.skin);
         final SelectBox<String> selectBox = new SelectBox<>(game.skin);
-        String[] values = new String[2];//{GamesEnum.CONNECTFOUR.getName(), GamesEnum.GOMOKU.getName()};
+        String[] values = new String[2];
         for (int i = 0; i < 2; i++) {
             values[i] = "song1";
         }
