@@ -39,7 +39,6 @@ public class Minimax implements Runnable{
                     posToTry[x] = 1;
                     b[y][x]=this.aiid;
                     int score = minimax2(board,difficulty,false, -10000, 10000);
-
                     b[y][x]=emptyid;
                     if (score>bestscore){
                         bestscore = score;
@@ -78,7 +77,7 @@ public class Minimax implements Runnable{
                 int y = board.getYwithX(x);
                 if (y!=-1){
                     b[y][x] = playerid;
-                    int score = minimax2(board, depth-1, true, alpha, beta)+1;
+                    int score = minimax2(board, depth-1, true, alpha, beta)-1;
                     b[y][x] = emptyid;
                     beta = Math.min(beta,score);
                     bestscore = Math.min(score,bestscore);
