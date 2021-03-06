@@ -1,11 +1,16 @@
 package com.connectfour;
 
+import java.io.*;
+
 public class Board {
 
     protected byte[][] board;
-
+    private int boardSizeX;
+    private int boardSizeY;
     public Board(int boardSizeX, int boardSizeY) {
         board = new byte[boardSizeY][boardSizeX];
+        this.boardSizeX = boardSizeX;
+        this.boardSizeY = boardSizeY;
     }
 
     /**Mängulaua koordinaadid algavad ülevalt vasakust nurgast, esimene ketas on näiteks (1, 1), teine (2, 1) jne...*/
@@ -35,8 +40,8 @@ public class Board {
 
     public int checkWin(int inARow) {
         int voitja = -1;
-        for (int y = 0; y < board.length; y++) {
-            for (int x = 0; x < board[0].length - (inARow-1); x++) {
+        for (int y = 0; y < boardSizeY; y++) {
+            for (int x = 0; x < boardSizeX - (inARow-1); x++) {
                 for (int playerid = 1; playerid < 3; playerid++) {
                     boolean praeguneCheck = true;
                     for (int inRow = 0; inRow < inARow; inRow++) {
@@ -51,8 +56,8 @@ public class Board {
                 }
             }
         }
-        for (int y = 0; y < board.length - (inARow-1); y++) {
-            for (int x = 0; x < board[0].length; x++) {
+        for (int y = 0; y < boardSizeY - (inARow-1); y++) {
+            for (int x = 0; x < boardSizeX; x++) {
                 for (int playerid = 1; playerid < 3; playerid++) {
                     boolean praeguneCheck = true;
                     for (int inRow = 0; inRow < inARow; inRow++) {
@@ -67,8 +72,8 @@ public class Board {
                 }
             }
         }
-        for (int y = 0; y < board.length - (inARow-1); y++) {
-            for (int x = 0; x < board[0].length - (inARow-1); x++) {
+        for (int y = 0; y < boardSizeY - (inARow-1); y++) {
+            for (int x = 0; x < boardSizeX - (inARow-1); x++) {
                 for (int playerid = 1; playerid < 3; playerid++) {
                     boolean praeguneCheck = true;
                     for (int inRow = 0; inRow < inARow; inRow++) {
@@ -83,8 +88,8 @@ public class Board {
                 }
             }
         }
-        for (int y = (inARow-1); y < board.length; y++) {
-            for (int x = 0; x < board[0].length - (inARow-1); x++) {
+        for (int y = (inARow-1); y <boardSizeY; y++) {
+            for (int x = 0; x < boardSizeX - (inARow-1); x++) {
                 for (int playerid = 1; playerid < 3; playerid++) {
                     boolean praeguneCheck = true;
                     for (int inRow = 0; inRow < inARow; inRow++) {
@@ -101,8 +106,8 @@ public class Board {
         }
         if (voitja == -1) {
             loop:
-            for (int y = 0; y < board.length; y++) {
-                for (int x = 0; x < board[0].length; x++) {
+            for (int y = 0; y < boardSizeY; y++) {
+                for (int x = 0; x < boardSizeX; x++) {
                     if (board[y][x] == 0) {
                         voitja = -1;
                         break loop;
@@ -112,6 +117,7 @@ public class Board {
                 }
             }
         }
+
         return voitja;
     }
     public int getYwithX(int x){
@@ -121,5 +127,27 @@ public class Board {
             }
         }
         return -1;
+    }
+    public byte[][] cloneBoardArray(){
+        return deepCopy(this.board);
+    }
+    private byte[][] deepCopy(byte[][] obj)
+    {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try
+        {
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+
+            // Beware, this can throw java.io.NotSerializableException
+            // if any object inside obj is not Serializable
+            oos.writeObject(obj);
+            ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray()));
+            return (byte[][]) ois.readObject();
+        }
+        catch (  ClassNotFoundException /* Not sure */
+                | IOException /* Never happens as we are not writing to disc */ e)
+        {
+            throw new RuntimeException(e); // Your own custom exception
+        }
     }
 }

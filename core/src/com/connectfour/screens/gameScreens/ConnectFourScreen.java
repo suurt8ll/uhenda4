@@ -18,7 +18,9 @@ import com.connectfour.Board;
 import com.connectfour.Games;
 import com.connectfour.Minimax;
 
+import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class ConnectFourScreen implements Screen {
 
@@ -32,7 +34,6 @@ public class ConnectFourScreen implements Screen {
     private ExtendViewport vp;
     private Stage stage;
     private ShapeRenderer shapeRenderer;
-    private boolean gameOver;
 
     public ConnectFourScreen(final Games game) {
         this.game = game;
@@ -58,7 +59,6 @@ public class ConnectFourScreen implements Screen {
         if (game.player2.isAI()){
             game.player2.minimax = new Minimax(game.player2.getId(), game.player1.getId(), (byte) 0, game.difficulty, board);
         }
-        gameOver = false;
     }
 
     @Override
@@ -101,39 +101,26 @@ public class ConnectFourScreen implements Screen {
     }
 
     private void buttonClick(InputEvent e) {
-        int mitmes = Integer.parseInt(e.getListenerActor().getName());
-        for (int y = 0; y < game.boardSizeY; y++) {
-            if (board.getKettaState(mitmes, y) == 0) {
-                board.setKettaState(mitmes, y, whoseTurn);
-                checkGameWin();
-
-                doTurn();
-                if (y == game.boardSizeY) e.getListenerActor().clear();
-                y = game.boardSizeY;
-            }
-        }
-        if (whoseTurn == game.player2.getId() && game.player2.isAI()){
-            //mitmes = game.player2.minimax.findBestMove(board);
-            Thread thread = new Thread(game.player2.minimax);
-            thread.start();
-            //TODO merge threads
-            while (true){
-                if (!thread.isAlive()){
-                    break;
-                }
-            }
-            mitmes = game.player2.minimax.bestMove;
-
+        Thread thread = new Thread(game.player2.minimax);
+        if (!game.player2.minimax.threadrunning){
+            int mitmes = Integer.parseInt(e.getListenerActor().getName());
             for (int y = 0; y < game.boardSizeY; y++) {
                 if (board.getKettaState(mitmes, y) == 0) {
                     board.setKettaState(mitmes, y, whoseTurn);
+                    checkGameWin();
+
+                    doTurn();
+                    if (y == game.boardSizeY) e.getListenerActor().clear();
                     y = game.boardSizeY;
                 }
             }
+            if (whoseTurn == game.player2.getId() && game.player2.isAI()){
+                //mitmes = game.player2.minimax.findBestMove(board);
+                thread.start();
+                //checkGameWin();
 
-            //checkGameWin();
-
-            doTurn();
+                doTurn();
+            }
         }
     }
 
