@@ -5,6 +5,7 @@ import com.connectfour.Games;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.SocketException;
 
 public class Server {
 
@@ -29,7 +30,7 @@ public class Server {
         }
     }
 
-    protected void sendPacket(TurnPacket packet) {
+    public void sendPacket(TurnPacket packet) {
         try {
             outputStream.writeObject(packet);
             outputStream.flush();
@@ -42,10 +43,11 @@ public class Server {
     protected void recievePacket() {
         try {
             TurnPacket packet = (TurnPacket) inputStream.readObject();
-            game.CONNECTFOUR.whoseTurn = 1;
-
+            game.CONNECTFOUR.placeKetas(packet.turnX);
         } catch (IOException e) {
             //TODO handle
+            System.out.println("[CONSOLE] Vastane lahkus mängust!");
+            running = false;
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             System.out.println("[ERROR] Server saatis objekti, mida mul lugeda ei õnnestu!");

@@ -14,7 +14,7 @@ public class Client extends Server implements Runnable {
 
     @Override
     public void run() {
-        running = true;
+        super.running = true;
         //Loob serveriga streamid
         super.initStreams();
         System.out.println("[OPPONENT] Streams with remote host created!");
@@ -28,12 +28,18 @@ public class Client extends Server implements Runnable {
         //Kui kõik läks hästi, vaata, kas mina alustan
         assert firstTurn != null;
         if (firstTurn.yourTurn) {
+            System.out.println("[OPPONENT] Mina alustan!");
             super.game.CONNECTFOUR.whoseTurn = 1;
         } else {
             super.game.CONNECTFOUR.whoseTurn = 2;
         }
         //Serveriga ühendus loodud -> alusta mänguga
+        super.game.CONNECTFOUR.server = this;
         Gdx.app.postRunnable(() -> super.game.changeScreen(super.game.CONNECTFOUR));
+        //Alustab ühenduse kuulamist
+        while (super.running) {
+            super.recievePacket();
+        }
         //Thread lõpetab töö
         super.stop();
     }

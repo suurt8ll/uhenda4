@@ -17,7 +17,7 @@ public class Host extends Server implements Runnable {
 
     @Override
     public void run() {
-        running = true;
+        super.running = true;
         //Loob ühendused
         System.out.println("[SERVER] Wating for opponent...");
         super.socket = server.accept(null);
@@ -37,9 +37,15 @@ public class Host extends Server implements Runnable {
             super.game.CONNECTFOUR.whoseTurn = 2;
         } else {
             super.game.CONNECTFOUR.whoseTurn = 1;
+            System.out.println("[SERVER] Mina alustan!");
         }
         //Server töötab -> alusta mänguga
+        super.game.CONNECTFOUR.server = this;
         Gdx.app.postRunnable(() -> super.game.changeScreen(super.game.CONNECTFOUR));
+        //Alustab ühenduse kuulamist
+        while (super.running) {
+            super.recievePacket();
+        }
         //Thread lõpetab töö
         super.stop();
     }

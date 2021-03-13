@@ -43,6 +43,7 @@ public class EndScreen implements Screen {
 
     @Override
     public void show() {
+        //TODO Skaleeri ekraan paremini, praegu on nata imelik see.
         stage = new Stage(viewport, game.batch);
         CharSequence message;
         switch (outcome) {

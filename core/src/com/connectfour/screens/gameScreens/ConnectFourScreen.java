@@ -17,6 +17,8 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.connectfour.Board;
 import com.connectfour.Games;
 import com.connectfour.Minimax;
+import com.connectfour.server.Server;
+import com.connectfour.server.TurnPacket;
 
 public class ConnectFourScreen implements Screen {
 
@@ -30,6 +32,7 @@ public class ConnectFourScreen implements Screen {
     private Stage stage;
     private ShapeRenderer shapeRenderer;
     private ImageButton[] imgButtonArr;
+    public Server server = null;
 
     public ConnectFourScreen(final Games game) {
         this.game = game;
@@ -52,9 +55,9 @@ public class ConnectFourScreen implements Screen {
 
         stage = new Stage(this.vp, this.game.batch);
         initButtons();
-        whoseTurn = game.player1.getId();
         if (game.player2.isAI()){
             //game.player2.minimax = new Minimax(game.player2.getId(), game.player1.getId(), (byte) 0, game.difficulty, board);
+            whoseTurn = game.player1.getId();
             game.player2.minimax = new Minimax(game);
         }
     }
@@ -96,6 +99,7 @@ public class ConnectFourScreen implements Screen {
     public void dispose() {
         game.inputMultiplexer.removeProcessor(stage);
         stage.dispose();
+        server.stop();
     }
 
     public void placeKetas(int x) {
@@ -122,6 +126,8 @@ public class ConnectFourScreen implements Screen {
                 Thread minMaxThread = new Thread(game.player2.minimax);
                 minMaxThread.setName("MINMAXTHREAD");
                 minMaxThread.start();
+            } else {
+                server.sendPacket(new TurnPacket(0, true, mitmesVeerg));
             }
         }
     }
