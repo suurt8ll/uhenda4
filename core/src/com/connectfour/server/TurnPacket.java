@@ -1,4 +1,4 @@
-package server;
+package com.connectfour.server;
 
 import java.io.Serializable;
 

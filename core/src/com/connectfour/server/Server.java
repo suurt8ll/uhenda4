@@ -1,4 +1,4 @@
-package server;
+package com.connectfour.server;
 
 import com.badlogic.gdx.net.Socket;
 import com.connectfour.Games;
@@ -35,6 +35,21 @@ public class Server {
             outputStream.flush();
         } catch (IOException e) {
             //TODO errorit võiks kuidagi handelida
+            e.printStackTrace();
+        }
+    }
+
+    protected void recievePacket() {
+        try {
+            TurnPacket packet = (TurnPacket) inputStream.readObject();
+            game.CONNECTFOUR.whoseTurn = 1;
+
+        } catch (IOException e) {
+            //TODO handle
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            System.out.println("[ERROR] Server saatis objekti, mida mul lugeda ei õnnestu!");
+            //TODO handle
             e.printStackTrace();
         }
     }

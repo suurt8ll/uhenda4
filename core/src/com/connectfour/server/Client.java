@@ -1,4 +1,4 @@
-package server;
+package com.connectfour.server;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;

@@ -25,14 +25,15 @@ public class ConnectFourScreen implements Screen {
     public byte whoseTurn;
     private float aspectRatio;
     private OrthographicCamera cam;
-    private ImageButton arrowDown;
     private float WORLD_SIZE_X, WORLD_SIZE_Y;
     private ExtendViewport vp;
     private Stage stage;
     private ShapeRenderer shapeRenderer;
+    private ImageButton[] imgButtonArr;
 
     public ConnectFourScreen(final Games game) {
         this.game = game;
+        imgButtonArr = new ImageButton[game.boardSizeX];
     }
 
     @Override
@@ -53,7 +54,8 @@ public class ConnectFourScreen implements Screen {
         initButtons();
         whoseTurn = game.player1.getId();
         if (game.player2.isAI()){
-            game.player2.minimax = new Minimax(game.player2.getId(), game.player1.getId(), (byte) 0, game.difficulty, board);
+            //game.player2.minimax = new Minimax(game.player2.getId(), game.player1.getId(), (byte) 0, game.difficulty, board);
+            game.player2.minimax = new Minimax(game);
         }
     }
 
@@ -96,43 +98,32 @@ public class ConnectFourScreen implements Screen {
         stage.dispose();
     }
 
-    private void buttonClick(InputEvent e) {
-        if (game.player2.isAI()){
-            Thread thread = new Thread(game.player2.minimax);
-            if (!game.player2.minimax.threadrunning){
-                int mitmes = Integer.parseInt(e.getListenerActor().getName());
-                for (int y = 0; y < game.boardSizeY; y++) {
-                    if (board.getKettaState(mitmes, y) == 0) {
-                        board.setKettaState(mitmes, y, whoseTurn);
-                        checkGameWin();
-
-                        doTurn();
-                        if (y == game.boardSizeY) e.getListenerActor().clear();
-                        y = game.boardSizeY;
-                    }
+    public void placeKetas(int x) {
+        for (int y = 0; y < game.boardSizeY; y++) {
+            if (board.getKettaState(x, y) == 0) {
+                board.setKettaState(x, y, whoseTurn);
+                //Kui veerg saab täis, siis kustuta nool.
+                if (y == game.boardSizeY - 1) {
+                    imgButtonArr[x].clear();
+                    imgButtonArr[x] = null;
                 }
-                if (whoseTurn == game.player2.getId() && game.player2.isAI()){
-                    //mitmes = game.player2.minimax.findBestMove(board);
-                    thread.start();
-                    //checkGameWin();
-
-                    doTurn();
-                }
-            }
-        }else {
-            int mitmes = Integer.parseInt(e.getListenerActor().getName());
-            for (int y = 0; y < game.boardSizeY; y++) {
-                if (board.getKettaState(mitmes, y) == 0) {
-                    board.setKettaState(mitmes, y, whoseTurn);
-                    checkGameWin();
-
-                    doTurn();
-                    if (y == game.boardSizeY) e.getListenerActor().clear();
-                    y = game.boardSizeY;
-                }
+                checkGameWin();
+                doTurn();
+                return;
             }
         }
+    }
 
+    private void buttonClick(InputEvent e) {
+        if (whoseTurn == 1) {
+            int mitmesVeerg = Integer.parseInt(e.getListenerActor().getName());
+            placeKetas(mitmesVeerg);
+            if (game.player2.isAI()) {
+                Thread minMaxThread = new Thread(game.player2.minimax);
+                minMaxThread.setName("MINMAXTHREAD");
+                minMaxThread.start();
+            }
+        }
     }
 
     private void drawBoard(float spaceBetween, float radius) {
@@ -161,9 +152,10 @@ public class ConnectFourScreen implements Screen {
         Sprite arrowSprite = new Sprite((Texture) game.assetsLoader.manager.get(game.assetsLoader.arrowDownImg));
         int mitmes = 0;
         for (float x = game.spacing; x <= game.boardSizeX * (2 + game.spacing); x += (2 + game.spacing)) {
-            arrowDown = new ImageButton(new SpriteDrawable(arrowSprite));
+            ImageButton arrowDown = new ImageButton(new SpriteDrawable(arrowSprite));
             arrowDown.setBounds(x, WORLD_SIZE_Y - 2 - game.spacing, 2, 2);
             arrowDown.setName(Integer.toString(mitmes));
+            imgButtonArr[mitmes] = arrowDown;
 
             arrowDown.addListener(new InputListener() {
                 @Override
@@ -178,6 +170,7 @@ public class ConnectFourScreen implements Screen {
         }
         game.inputMultiplexer.addProcessor(stage);
     }
+
     private void doTurn(){
         if (whoseTurn == game.player1.getId()) {
             whoseTurn = game.player2.getId();
@@ -185,17 +178,22 @@ public class ConnectFourScreen implements Screen {
             whoseTurn = game.player1.getId();
         }
     }
+
     private void checkGameWin(){
+        EndScreen.Outcome outcome;
         switch (board.checkWin(4)) {
             case 0:
-                game.setScreen(new EndScreen(game, EndScreen.Outcome.DRAW/*, cam, vp*/));
+                outcome = EndScreen.Outcome.DRAW;
                 break;
             case 1:
-                game.setScreen(new EndScreen(game, EndScreen.Outcome.WIN/*, cam, vp*/));
+                outcome = EndScreen.Outcome.WIN;
                 break;
             case 2:
-                game.setScreen(new EndScreen(game, EndScreen.Outcome.LOSE/*, cam, vp*/));
+                outcome = EndScreen.Outcome.LOSE;
                 break;
+            default:
+                outcome = null;
         }
+        if (outcome != null) Gdx.app.postRunnable(() -> game.setScreen(new EndScreen(game, outcome/*, cam, vp*/)));
     }
 }

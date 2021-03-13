@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.connectfour.Games;
 import com.connectfour.SimpleMenuScreenBuilder;
-import server.Client;
+import com.connectfour.server.Client;
 
 public class JoinScreen implements Screen {
 
@@ -43,7 +43,6 @@ public class JoinScreen implements Screen {
         joinButton.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                //TODO Client threadi loomine ja jooksutamine
                 Thread clientThread = new Thread(new Client(game,"localhost",27016));
                 clientThread.setName("CLIENTTHREAD");
                 clientThread.start();

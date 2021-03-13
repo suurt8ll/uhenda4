@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.connectfour.Games;
 import com.connectfour.NumberTextFieldFilter;
 import com.connectfour.SimpleMenuScreenBuilder;
-import server.Host;
+import com.connectfour.server.Host;
 
 public class HostScreen implements Screen {
 

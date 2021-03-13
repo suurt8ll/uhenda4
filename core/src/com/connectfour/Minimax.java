@@ -1,14 +1,18 @@
 package com.connectfour;
 
-public class Minimax implements Runnable{
-    private byte playerid;
-    private byte aiid;
-    private byte emptyid;
-    private int difficulty;
-    public int bestMove;
-    private Board board;
+import com.connectfour.screens.gameScreens.ConnectFourScreen;
+
+public class Minimax implements Runnable {
+    private ConnectFourScreen gameScreen;
+    private final byte playerid;
+    private final byte aiid;
+    private final byte emptyid;
+    private final int difficulty;
+    public int bestX;
+    private final Board board;
     public boolean threadrunning;
 
+    /** @author Raido */
     public Minimax(byte aiid, byte playerid, byte emptyid, int difficulty, Board board) {
         this.aiid = aiid;
         this.playerid = playerid;
@@ -17,6 +21,19 @@ public class Minimax implements Runnable{
         this.board = board;
         this.threadrunning = false;
     }
+
+    /**See variant kasutab ainult game klassi. Äkki nii on parem?
+     * @author Leo*/
+    public Minimax(Games game) {
+        this.gameScreen = game.CONNECTFOUR;
+        this.playerid = game.player1.getId();
+        this.aiid = game.player2.getId();
+        this.emptyid = 0;
+        this.difficulty = game.difficulty;
+        this.board = game.CONNECTFOUR.board;
+        this.threadrunning = false;
+    }
+
     public int findBestMove(Board board){
         Board tempBoard = new Board(board.board[0].length,board.board.length);
         tempBoard.board = board.cloneBoardArray();
@@ -108,7 +125,7 @@ public class Minimax implements Runnable{
     public int centerXpicker(Board board, int[] openPositions){
         byte[][] b = board.getBoard();
         int maxy = b.length-1;
-        int x = b.length/2;
+        int x = b[0].length / 2;
         boolean goleft = true;
         for (int i = 1; i < b[0].length+1; i++) {
             if (openPositions[x]==0 && b[maxy][x] == 0){
@@ -128,8 +145,9 @@ public class Minimax implements Runnable{
     @Override
     public void run() {
         threadrunning = true;
-        bestMove = findBestMove(board);
-        board.setKettaState(bestMove,board.getYwithX(bestMove), aiid);
+        bestX = findBestMove(board);
+        gameScreen.placeKetas(bestX);
+        //board.setKettaState(bestX, board.getYwithX(bestX), aiid);
         threadrunning = false;
     }
 }
