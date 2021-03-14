@@ -24,6 +24,7 @@ public class GameMenuScreen implements Screen {
     private Viewport viewport;
     private Camera cam;
     private Stage stage;
+    public HostScreen HOSTSCREEN;
 
     private float worldWidth, worldHeight;
 
@@ -33,12 +34,13 @@ public class GameMenuScreen implements Screen {
 
     @Override
     public void show() {
+        this.HOSTSCREEN = new HostScreen(game);
         ImageButton host = new ImageButton(new SpriteDrawable(new Sprite((Texture) game.assetsLoader.manager.get(game.assetsLoader.host))));
         host.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 game.player2.setAI(false);
-                game.changeScreen(new HostScreen(game));
+                game.changeScreen(HOSTSCREEN);
                 return true;
             }
         });

@@ -19,9 +19,10 @@ public class HostScreen implements Screen {
     private final Games game;
     private final SimpleMenuScreenBuilder builder;
     private Stage stage;
-
     private float menuWidth;
     private float menuHeight;
+    private Host runnableHost;
+    public boolean gameStarted = false;
 
     public HostScreen(Games game) {
         this.game = game;
@@ -47,7 +48,8 @@ public class HostScreen implements Screen {
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 //TODO SERVERTHREAD tuleb kinni panna kui mängia väljub ekraanilt ja ei alusta mängu.
-                Thread hostThread = new Thread(new Host(game, 27016));
+                runnableHost = new Host(game, 27016);
+                Thread hostThread = new Thread(runnableHost);
                 hostThread.setName("SERVERTHREAD");
                 hostThread.start();
                 return true;
@@ -95,5 +97,10 @@ public class HostScreen implements Screen {
     public void dispose() {
         game.inputMultiplexer.removeProcessor(stage);
         stage.dispose();
+        if (!gameStarted) {
+            runnableHost.stop();
+        } else {
+            gameStarted = false;
+        }
     }
 }

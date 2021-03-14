@@ -1,17 +1,17 @@
 package com.connectfour.server;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.net.Socket;
 import com.connectfour.Games;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.SocketException;
 
 public class Server {
 
     public boolean running = false;
     protected Games game;
-    protected Socket socket;
+    public Socket socket;
     protected ObjectInputStream inputStream;
     protected ObjectOutputStream outputStream;
 
@@ -45,10 +45,11 @@ public class Server {
             TurnPacket packet = (TurnPacket) inputStream.readObject();
             game.CONNECTFOUR.placeKetas(packet.turnX);
         } catch (IOException e) {
-            //TODO handle
-            System.out.println("[CONSOLE] Vastane lahkus mängust!");
             running = false;
-            e.printStackTrace();
+            if (!game.CONNECTFOUR.voitja) {
+                System.out.println("[CONSOLE] Vastane lahkus mängust!");
+                Gdx.app.postRunnable(() -> game.setScreen(game.MAINMENU));
+            }
         } catch (ClassNotFoundException e) {
             System.out.println("[ERROR] Server saatis objekti, mida mul lugeda ei õnnestu!");
             //TODO handle

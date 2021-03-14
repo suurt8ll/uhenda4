@@ -33,6 +33,7 @@ public class ConnectFourScreen implements Screen {
     private ShapeRenderer shapeRenderer;
     private ImageButton[] imgButtonArr;
     public Server server = null;
+    public boolean voitja = false;
 
     public ConnectFourScreen(final Games game) {
         this.game = game;
@@ -202,6 +203,9 @@ public class ConnectFourScreen implements Screen {
             default:
                 outcome = null;
         }
-        if (outcome != null) Gdx.app.postRunnable(() -> game.setScreen(new EndScreen(game, outcome/*, cam, vp*/)));
+        if (outcome != null) {
+            voitja = true;
+            Gdx.app.postRunnable(() -> game.setScreen(new EndScreen(game, outcome/*, cam, vp*/)));
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.connectfour.server;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
 import com.badlogic.gdx.net.ServerSocket;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.connectfour.Games;
 import java.util.Random;
 
@@ -20,7 +21,12 @@ public class Host extends Server implements Runnable {
         super.running = true;
         //Loob ühendused
         System.out.println("[SERVER] Wating for opponent...");
-        super.socket = server.accept(null);
+        try {
+            super.socket = server.accept(null);
+        } catch (GdxRuntimeException e) {
+            System.out.println("[CONSOLE] Panen serveri uuesti kinni!");
+            return;
+        }
         System.out.printf("[SERVER] Opponent connected from %s! \n", super.socket.getRemoteAddress());
         //Teeb coinflipi, et selgitada, kes alustab. 1 = host, 2 = vastane
         boolean opponentsTurn;
@@ -40,6 +46,7 @@ public class Host extends Server implements Runnable {
             System.out.println("[SERVER] Mina alustan!");
         }
         //Server töötab -> alusta mänguga
+        super.game.GAMEMENU.HOSTSCREEN.gameStarted = true;
         super.game.CONNECTFOUR.server = this;
         Gdx.app.postRunnable(() -> super.game.changeScreen(super.game.CONNECTFOUR));
         //Alustab ühenduse kuulamist
@@ -48,5 +55,12 @@ public class Host extends Server implements Runnable {
         }
         //Thread lõpetab töö
         super.stop();
+    }
+
+    @Override
+    public void stop() {
+        running = false;
+        server.dispose();
+        if (socket != null) socket.dispose();
     }
 }
