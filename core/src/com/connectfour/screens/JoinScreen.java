@@ -28,16 +28,18 @@ public class JoinScreen implements Screen {
     }
     @Override
     public void show() {
-        TextField.TextFieldStyle style = game.skin.get(TextField.TextFieldStyle.class);
+        //TextField.TextFieldStyle style = game.skin.get(TextField.TextFieldStyle.class);
         //Muudab skini yee yee ass fonti meie seksikaks Roboto fontiks.
-        style.font = game.assetsLoader.manager.get(game.assetsLoader.robotoBlack);
-        TextField input = new TextField("", style);
+        //style.font = game.assetsLoader.manager.get(game.assetsLoader.robotoBlack);
+        TextField input = new TextField("", game.skin);
         input.setMessageText("ip:port");
         input.setWidth(500);
 
-        TextButton.TextButtonStyle bttnStyle = game.skin.get(TextButton.TextButtonStyle.class);
-        bttnStyle.font = game.assetsLoader.manager.get(game.assetsLoader.robotoBlack);
-        TextButton joinButton = new TextButton("JOIN", bttnStyle);
+        //TextButton.TextButtonStyle bttnStyle = game.skin.get(TextButton.TextButtonStyle.class);
+        //bttnStyle.font = game.assetsLoader.manager.get(game.assetsLoader.robotoBlack);
+        TextButton joinButton = new TextButton("JOIN", game.skin);
+        joinButton.setWidth(100);
+        joinButton.setHeight(50);
 
         joinButton.addListener(new InputListener(){
             @Override

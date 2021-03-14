@@ -32,17 +32,19 @@ public class HostScreen implements Screen {
     @Override
     public void show() {
 
-        TextField.TextFieldStyle style = game.skin.get(TextField.TextFieldStyle.class);
+        //TextField.TextFieldStyle style = game.skin.get(TextField.TextFieldStyle.class);
         //Muudab skini yee yee ass fonti meie seksikaks Roboto fontiks.
-        style.font = game.assetsLoader.manager.get(game.assetsLoader.robotoBlack);
-        TextField input = new TextField("27016", style);
+        //style.font = game.assetsLoader.manager.get(game.assetsLoader.robotoBlack);
+        TextField input = new TextField("27016", game.skin);
         input.setTextFieldFilter(new NumberTextFieldFilter());
         input.setMessageText("Port");
         input.setWidth(500);
 
-        TextButton.TextButtonStyle bttnStyle = game.skin.get(TextButton.TextButtonStyle.class);
-        bttnStyle.font = game.assetsLoader.manager.get(game.assetsLoader.robotoBlack);
-        TextButton hostButton = new TextButton("HOST", bttnStyle);
+        //TextButton.TextButtonStyle bttnStyle = game.skin.get(TextButton.TextButtonStyle.class);
+        //bttnStyle.font = game.assetsLoader.manager.get(game.assetsLoader.robotoBlack);
+        TextButton hostButton = new TextButton("HOST", game.skin);
+        hostButton.setWidth(100);
+        hostButton.setHeight(50);
 
         hostButton.addListener(new InputListener(){
             @Override

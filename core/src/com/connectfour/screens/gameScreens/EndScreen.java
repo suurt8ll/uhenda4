@@ -43,13 +43,23 @@ public class EndScreen implements Screen {
         CharSequence message;
         switch (outcome) {
             case WIN:
-                message = game.player1.name+" WON";
+                if (game.local1v1 || game.player2.isAI()){
+                    message = game.player1.name+" WON";
+                }else {
+                    message = "YOU WON";
+                }
+
                 break;
             case DRAW:
                 message = "DRAW";
                 break;
             default:
-                message = game.player2.name+" WON";
+                if (game.local1v1 || game.player2.isAI()){
+                    message = game.player2.name+" WON";
+                }else {
+                    message = "YOU LOST";
+                }
+
                 break;
         }
         //Label.LabelStyle style = game.skin.get(Label.LabelStyle.class);

@@ -39,12 +39,11 @@ public class ConnectFourScreen implements Screen {
 
     public ConnectFourScreen(final Games game) {
         this.game = game;
-
+        whoseTurn = 1;
     }
 
     @Override
     public void show() {
-
         WORLD_SIZE_X = game.boardSizeX * 2 + (game.boardSizeX + 1) * game.spacing;
         WORLD_SIZE_Y = game.boardSizeY * 2 + (2 + game.spacing) + (game.boardSizeY + 1) * game.spacing;
 
@@ -126,6 +125,7 @@ public class ConnectFourScreen implements Screen {
     }
 
     private void buttonClick(InputEvent e) {
+        System.out.println(whoseTurn);
         if (!game.local1v1){
             if (whoseTurn == 1) {
                 int mitmesVeerg = Integer.parseInt(e.getListenerActor().getName());

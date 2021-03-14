@@ -13,7 +13,6 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
 public class AssetsLoader {
     public AssetManager manager = new AssetManager();
@@ -64,7 +63,7 @@ public class AssetsLoader {
         this.manager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
         this.mySmallFont = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         this.mySmallFont.fontFileName = robotoBlack;
-        this.mySmallFont.fontParameters.size = 80;
+        this.mySmallFont.fontParameters.size = 50;
     }
 
 
