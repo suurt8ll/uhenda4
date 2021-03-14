@@ -99,7 +99,9 @@ public class ConnectFourScreen implements Screen {
     public void dispose() {
         game.inputMultiplexer.removeProcessor(stage);
         stage.dispose();
-        server.stop();
+        if (server!=null){
+            server.stop();
+        }
     }
 
     public void placeKetas(int x) {

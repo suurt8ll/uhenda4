@@ -54,7 +54,7 @@ public class EndScreen implements Screen {
                 message = "DRAW";
                 break;
             default:
-                message = "YOU LOST! SHITASS!";
+                message = "YOU LOST!";
                 break;
         }
         //font = new BitmapFont(new FileHandle("C:\\Users\\leoku\\Desktop\\UhendaNeli\\core\\assets\\fonts\\roboto-medium-1024px.fnt"));
