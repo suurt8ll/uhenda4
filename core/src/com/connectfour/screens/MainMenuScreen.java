@@ -46,11 +46,21 @@ public class MainMenuScreen implements Screen {
                 return true;
             }
         });
+        ImageButton historybutton = new ImageButton(new TextureRegionDrawable(new TextureRegion((Texture) game.assetsLoader.manager.get(game.assetsLoader.history))));
+        historybutton.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                game.changeScreen(game.HISTORY);
+                return true;
+            }
+        });
         Table table = new Table();
         table.setFillParent(true);
         table.add(playbutton).width(150).height(100);
         table.row();
-        table.add(settingsbutton);
+        table.add(settingsbutton).height(150);
+        table.row();
+        table.add(historybutton).padTop(10).height(150);
         stage.addActor(table);
         game.inputMultiplexer.addProcessor(stage);
     }

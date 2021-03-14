@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
 public class AssetsLoader {
     public AssetManager manager = new AssetManager();
@@ -32,6 +33,8 @@ public class AssetsLoader {
     public final String host = "host_1937x256.png";
     public final String join = "join_1834x256.png";
     public final String vsai = "vsai_1733x256.png";
+    public final String history = "history.png";
+    public final String pvp = "pvp.png";
     private FreetypeFontLoader.FreeTypeFontLoaderParameter mySmallFont;
 
     public void load() {
@@ -51,6 +54,8 @@ public class AssetsLoader {
         manager.load(host, Texture.class);
         manager.load(join, Texture.class);
         manager.load(vsai, Texture.class);
+        manager.load(history, Texture.class);
+        manager.load(pvp,Texture.class);
         manager.finishLoading();
     }
     public void init(){
@@ -59,7 +64,7 @@ public class AssetsLoader {
         this.manager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
         this.mySmallFont = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         this.mySmallFont.fontFileName = robotoBlack;
-        this.mySmallFont.fontParameters.size = 100;
+        this.mySmallFont.fontParameters.size = 80;
     }
 
 

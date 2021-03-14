@@ -43,19 +43,21 @@ public class EndScreen implements Screen {
         CharSequence message;
         switch (outcome) {
             case WIN:
-                message = "YOU WON";
+                message = game.player1.name+" WON";
                 break;
             case DRAW:
                 message = "DRAW";
                 break;
             default:
-                message = "YOU LOST";
+                message = game.player2.name+" WON";
                 break;
         }
-        Label.LabelStyle style = game.skin.get(Label.LabelStyle.class);
+        //Label.LabelStyle style = game.skin.get(Label.LabelStyle.class);
         //Muudab skini yee yee ass fonti meie seksikaks Roboto fontiks.
-        style.font = game.assetsLoader.manager.get(game.assetsLoader.robotoBlack);
-        Label text = new Label(message, style);
+        //Siin ei tohtinud muuta game.skin muutujas olevat fonti, pigem luua uus style.
+        Label.LabelStyle style1 = new Label.LabelStyle();
+        style1.font = game.assetsLoader.manager.get(game.assetsLoader.robotoBlack);
+        Label text = new Label(message, style1);
 
         //TODO Uut mängu alustades tuleb natuke rohkem koodide, sest multiplayer. Praeguseks on nupp välja kommenteeritud.
         /*ImageButton newGame = new ImageButton(new SpriteDrawable(new Sprite((Texture) game.assetsLoader.manager.get(game.assetsLoader.newGame))));

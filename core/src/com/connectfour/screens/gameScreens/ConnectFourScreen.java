@@ -20,6 +20,8 @@ import com.connectfour.Minimax;
 import com.connectfour.server.Server;
 import com.connectfour.server.TurnPacket;
 
+import java.util.Random;
+
 public class ConnectFourScreen implements Screen {
 
     private final Games game;
@@ -37,7 +39,7 @@ public class ConnectFourScreen implements Screen {
 
     public ConnectFourScreen(final Games game) {
         this.game = game;
-        imgButtonArr = new ImageButton[game.boardSizeX];
+
     }
 
     @Override
@@ -53,10 +55,12 @@ public class ConnectFourScreen implements Screen {
         shapeRenderer = new ShapeRenderer();
 
         this.board = new Board(game.boardSizeX, game.boardSizeY);
-
+        imgButtonArr = new ImageButton[game.boardSizeX];
+        voitja = false;
         stage = new Stage(this.vp, this.game.batch);
         initButtons();
         if (game.player2.isAI()){
+            game.player2.name = "Computer";
             //game.player2.minimax = new Minimax(game.player2.getId(), game.player1.getId(), (byte) 0, game.difficulty, board);
             whoseTurn = game.player1.getId();
             game.player2.minimax = new Minimax(game);
@@ -122,17 +126,23 @@ public class ConnectFourScreen implements Screen {
     }
 
     private void buttonClick(InputEvent e) {
-        if (whoseTurn == 1) {
+        if (!game.local1v1){
+            if (whoseTurn == 1) {
+                int mitmesVeerg = Integer.parseInt(e.getListenerActor().getName());
+                placeKetas(mitmesVeerg);
+                if (game.player2.isAI()) {
+                    Thread minMaxThread = new Thread(game.player2.minimax);
+                    minMaxThread.setName("MINMAXTHREAD");
+                    minMaxThread.start();
+                } else {
+                    server.sendPacket(new TurnPacket(0, true, mitmesVeerg));
+                }
+            }
+        }else {
             int mitmesVeerg = Integer.parseInt(e.getListenerActor().getName());
             placeKetas(mitmesVeerg);
-            if (game.player2.isAI()) {
-                Thread minMaxThread = new Thread(game.player2.minimax);
-                minMaxThread.setName("MINMAXTHREAD");
-                minMaxThread.start();
-            } else {
-                server.sendPacket(new TurnPacket(0, true, mitmesVeerg));
-            }
         }
+
     }
 
     private void drawBoard(float spaceBetween, float radius) {
@@ -190,22 +200,27 @@ public class ConnectFourScreen implements Screen {
 
     private void checkGameWin(){
         EndScreen.Outcome outcome;
-        switch (board.checkWin(4)) {
-            case 0:
-                outcome = EndScreen.Outcome.DRAW;
-                break;
-            case 1:
-                outcome = EndScreen.Outcome.WIN;
-                break;
-            case 2:
-                outcome = EndScreen.Outcome.LOSE;
-                break;
-            default:
-                outcome = null;
-        }
-        if (outcome != null) {
-            voitja = true;
-            Gdx.app.postRunnable(() -> game.setScreen(new EndScreen(game, outcome/*, cam, vp*/)));
+        if (!voitja){
+            switch (board.checkWin(4)) {
+                case 0:
+                    game.prefs.addHistory("Draw");
+                    outcome = EndScreen.Outcome.DRAW;
+                    break;
+                case 1:
+                    game.prefs.addHistory(game.player1.name);
+                    outcome = EndScreen.Outcome.WIN;
+                    break;
+                case 2:
+                    game.prefs.addHistory(game.player2.name);
+                    outcome = EndScreen.Outcome.LOSE;
+                    break;
+                default:
+                    outcome = null;
+            }
+            if (outcome != null) {
+                voitja = true;
+                Gdx.app.postRunnable(() -> game.setScreen(new EndScreen(game, outcome/*, cam, vp*/)));
+            }
         }
     }
 }

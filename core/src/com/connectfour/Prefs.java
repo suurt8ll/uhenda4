@@ -19,6 +19,7 @@ public class Prefs {
     private final String BACKGROUND_COLOR = "Background_color";
     private final String SPACING = "Spacing";
     private final String DIFFICULTY = "Difficulty";
+    private final String HISTORY = "History";
     private Preferences preferences;
 
     public Prefs(){
@@ -99,7 +100,7 @@ public class Prefs {
             toSave = true;
         }
         if (!this.preferences.get().containsKey(this.PLAYER2_NAME)){
-            setPlayer2Name("Player2");
+            setPlayer2Name("Computer");
             toSave = true;
         }
         if (!this.preferences.get().containsKey(this.BOARD_SIZE_X)){
@@ -130,6 +131,10 @@ public class Prefs {
         if (!this.preferences.get().containsKey(this.DIFFICULTY)){
             setDifficulty(3);
             toSave = true;
+        }
+        if (!this.preferences.get().containsKey(this.HISTORY)){
+            setHistory("");
+            toSave= true;
         }
         if (getPlayer1Color().equals("")){
             setPlayer1Color("09ff00ff");
@@ -164,5 +169,26 @@ public class Prefs {
     }
     public int getDifficulty(){
         return this.preferences.getInteger(this.DIFFICULTY);
+    }
+    public String getHistory(){
+        return this.preferences.getString(this.HISTORY);
+    }
+    public void addHistory(String s){
+        String string = getHistory();
+
+        String[] stringList = string.split(";");
+        if (stringList.length>9){
+            String newString = "";
+            for (int i = 1; i < stringList.length; i++) {
+                newString += stringList[i]+";";
+            }
+            string = newString;
+        }
+        string+=s+";";
+        this.preferences.putString(this.HISTORY,string);
+        save();
+    }
+    public void setHistory(String s){
+        this.preferences.putString(this.HISTORY, s);
     }
 }

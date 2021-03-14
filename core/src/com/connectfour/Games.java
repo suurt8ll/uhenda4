@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.connectfour.screens.GameMenuScreen;
+import com.connectfour.screens.HistoryScreen;
 import com.connectfour.screens.MainMenuScreen;
 import com.connectfour.screens.SettingsScreen;
 import com.connectfour.screens.gameScreens.ConnectFourScreen;
@@ -19,6 +20,7 @@ public class Games extends Game {
 
     public static int MONITORWIDTH;
     public static int MONITORHEIGHT;
+
 
     public Viewport viewport;
     public SpriteBatch batch;
@@ -38,18 +40,20 @@ public class Games extends Game {
     public SettingsScreen SETTINGS;
     public MainMenuScreen MAINMENU;
     public ConnectFourScreen CONNECTFOUR;
+    public HistoryScreen HISTORY;
 
     public Music music;
 
     public InputMultiplexer inputMultiplexer;
     public Color backGroundColor;
 
+    public boolean local1v1;
+
     @Override
     public void create() {
         Dimension dimension = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         MONITORWIDTH = dimension.width;
         MONITORHEIGHT = dimension.height;
-
         this.assetsLoader = new AssetsLoader();
         this.assetsLoader.init();
         this.assetsLoader.load();
@@ -91,6 +95,7 @@ public class Games extends Game {
         this.SETTINGS = new SettingsScreen(this);
         this.MAINMENU = new MainMenuScreen(this);
         this.CONNECTFOUR = new ConnectFourScreen(this);
+        this.HISTORY = new HistoryScreen(this);
         this.setScreen(this.MAINMENU);
     }
 
