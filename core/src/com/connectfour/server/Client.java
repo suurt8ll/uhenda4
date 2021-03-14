@@ -2,6 +2,7 @@ package com.connectfour.server;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.connectfour.Games;
 import java.io.IOException;
 
@@ -9,11 +10,17 @@ public class Client extends Server implements Runnable {
 
     public Client(Games game, String hostIpAdress, int hostPort) {
         super(game);
-        super.socket = Gdx.net.newClientSocket(Net.Protocol.TCP, hostIpAdress, hostPort, null);
+        try {
+            System.out.printf("Connecting with %s:%s \n", hostIpAdress, hostPort);
+            super.socket = Gdx.net.newClientSocket(Net.Protocol.TCP, hostIpAdress, hostPort, null);
+        } catch (GdxRuntimeException e) {
+            System.out.println("[CONSOLE] Ühendust ei õnnestunud luua!");
+        }
     }
 
     @Override
     public void run() {
+        if (super.socket == null) return;
         super.running = true;
         //Loob serveriga streamid
         super.initStreams();

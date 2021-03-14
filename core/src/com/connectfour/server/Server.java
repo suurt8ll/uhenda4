@@ -25,7 +25,7 @@ public class Server {
             outputStream.flush();
             inputStream = new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
-            //TODO errori puhul viib mängia tagasi main menusse
+            //TODO handle
             e.printStackTrace();
         }
     }
@@ -52,8 +52,6 @@ public class Server {
             }
         } catch (ClassNotFoundException e) {
             System.out.println("[ERROR] Server saatis objekti, mida mul lugeda ei õnnestu!");
-            //TODO handle
-            e.printStackTrace();
         }
     }
 

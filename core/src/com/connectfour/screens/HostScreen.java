@@ -35,7 +35,7 @@ public class HostScreen implements Screen {
         TextField.TextFieldStyle style = game.skin.get(TextField.TextFieldStyle.class);
         //Muudab skini yee yee ass fonti meie seksikaks Roboto fontiks.
         style.font = game.assetsLoader.manager.get(game.assetsLoader.robotoBlack);
-        TextField input = new TextField("", style);
+        TextField input = new TextField("27016", style);
         input.setTextFieldFilter(new NumberTextFieldFilter());
         input.setMessageText("Port");
         input.setWidth(500);
@@ -47,8 +47,7 @@ public class HostScreen implements Screen {
         hostButton.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                //TODO SERVERTHREAD tuleb kinni panna kui mängia väljub ekraanilt ja ei alusta mängu.
-                runnableHost = new Host(game, 27016);
+                runnableHost = new Host(game, Integer.parseInt(input.getText()));
                 Thread hostThread = new Thread(runnableHost);
                 hostThread.setName("SERVERTHREAD");
                 hostThread.start();
@@ -98,7 +97,7 @@ public class HostScreen implements Screen {
         game.inputMultiplexer.removeProcessor(stage);
         stage.dispose();
         if (!gameStarted) {
-            runnableHost.stop();
+            if (runnableHost != null) runnableHost.stop();
         } else {
             gameStarted = false;
         }

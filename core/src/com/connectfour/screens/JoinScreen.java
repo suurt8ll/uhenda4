@@ -18,7 +18,6 @@ public class JoinScreen implements Screen {
     private final Games game;
     private final SimpleMenuScreenBuilder builder;
     private Stage stage;
-    //TODO Tuleks pigem ConnectFourScreeni klassi liigutada, et parem ligipääs oleks.
 
     private float menuWidth;
     private float menuHeight;
@@ -43,7 +42,17 @@ public class JoinScreen implements Screen {
         joinButton.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Thread clientThread = new Thread(new Client(game,"localhost",27016));
+                String read = input.getText();
+                String ip = null;
+                Integer port = null;
+                try {
+                    ip = read.split(":")[0];
+                    port = Integer.parseInt(read.split(":")[1]);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.out.println("[CONSOLE] Ip aadress on valesti kirjutatud!");
+                    return false;
+                }
+                Thread clientThread = new Thread(new Client(game, ip, port));
                 clientThread.setName("CLIENTTHREAD");
                 clientThread.start();
                 return true;

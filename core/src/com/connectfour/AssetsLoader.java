@@ -28,7 +28,7 @@ public class AssetsLoader {
     public final String whiteCircle = "whitecircle_512x512.png";
     public final String newGame = "newgame_512x122.png";
     public final String exit = "exit_512x122.png";
-    //TODO Faili suuruseid tuleg kindlasti väiksemaks saada.
+    //TODO Faili suuruseid tuleks väiksemaks saada.
     public final String host = "host_1937x256.png";
     public final String join = "join_1834x256.png";
     public final String vsai = "vsai_1733x256.png";

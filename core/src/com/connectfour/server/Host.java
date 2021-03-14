@@ -9,15 +9,20 @@ import java.util.Random;
 
 public class Host extends Server implements Runnable {
 
-    private final ServerSocket server;
+    private ServerSocket server = null;
 
     public Host(Games game, int port) {
         super(game);
-        server = Gdx.net.newServerSocket(Net.Protocol.TCP, port, null);
+        try {
+            server = Gdx.net.newServerSocket(Net.Protocol.TCP, port, null);
+        } catch (GdxRuntimeException e) {
+            System.out.println("[CONSOLE] Serverit ei õnnestunud luua!");
+        }
     }
 
     @Override
     public void run() {
+        if (server == null) return;
         super.running = true;
         //Loob ühendused
         System.out.println("[SERVER] Wating for opponent...");

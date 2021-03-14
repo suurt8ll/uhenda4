@@ -9,65 +9,56 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.connectfour.Games;
+import com.connectfour.SimpleMenuScreenBuilder;
 
 public class EndScreen implements Screen {
 
     private final Games game;
     private final Outcome outcome;
-    private final Camera cam;
-    private final Viewport viewport;
     private Stage stage;
-    private BitmapFontCache text;
-    private BitmapFont font;
+    private final SimpleMenuScreenBuilder builder;
+
+    private float menuWidth;
+    private float menuHeight;
 
     public EndScreen(Games game, Outcome outcome) {
         this.game = game;
         this.outcome = outcome;
-        this.cam = game.viewport.getCamera();
-        this.viewport = game.viewport;
-    }
-
-    public EndScreen(Games game, Outcome outcome, Camera cam, Viewport viewport) {
-        this.game = game;
-        this.outcome = outcome;
-        this.cam = cam;
-        this.viewport = viewport;
+        builder = new SimpleMenuScreenBuilder(game);
     }
 
     @Override
     public void show() {
         //TODO Skaleeri ekraan paremini, praegu on nata imelik see.
-        stage = new Stage(viewport, game.batch);
         CharSequence message;
         switch (outcome) {
             case WIN:
-                message = "YOU WON!";
+                message = "YOU WON";
                 break;
             case DRAW:
                 message = "DRAW";
                 break;
             default:
-                message = "YOU LOST!";
+                message = "YOU LOST";
                 break;
         }
-        //font = new BitmapFont(new FileHandle("C:\\Users\\leoku\\Desktop\\UhendaNeli\\core\\assets\\fonts\\roboto-medium-1024px.fnt"));
-        font = game.assetsLoader.manager.get(game.assetsLoader.robotoBlack);
-        GlyphLayout layout = new GlyphLayout(font, message);
-        text = new BitmapFontCache(font);
-        //FIXME Tekst on mingitel kindlatel teadmata juhtudel valesti positsioneeritud ning scaletud.
-        float textScale = (float) ((0.8 * Games.MONITORWIDTH) / layout.width);
-        //muuda fondi suurust assetsloaderis init funktsioonis
-        //font.getData().setScale(textScale);
-        text.addText(message, (float) (Games.MONITORWIDTH * 0.1), 400);
+        Label.LabelStyle style = game.skin.get(Label.LabelStyle.class);
+        //Muudab skini yee yee ass fonti meie seksikaks Roboto fontiks.
+        style.font = game.assetsLoader.manager.get(game.assetsLoader.robotoBlack);
+        Label text = new Label(message, style);
 
-        ImageButton newGame = new ImageButton(new SpriteDrawable(new Sprite((Texture) game.assetsLoader.manager.get(game.assetsLoader.newGame))));
+        //TODO Uut mängu alustades tuleb natuke rohkem koodide, sest multiplayer. Praeguseks on nupp välja kommenteeritud.
+        /*ImageButton newGame = new ImageButton(new SpriteDrawable(new Sprite((Texture) game.assetsLoader.manager.get(game.assetsLoader.newGame))));
         float imageScale = Games.MONITORWIDTH / (3 * newGame.getWidth());
         newGame.setBounds((float) (Games.MONITORWIDTH * 0.1), 400 - layout.height * textScale - newGame.getHeight() * imageScale - 50,
                 newGame.getWidth() * imageScale, newGame.getHeight() * imageScale);
@@ -78,11 +69,10 @@ public class EndScreen implements Screen {
                 return true;
             }
         });
-        stage.addActor(newGame);
+        stage.addActor(newGame);*/
 
+        //Viib lihtsalt tagasi MAINMENUSCREENILE.
         ImageButton exit = new ImageButton(new SpriteDrawable(new Sprite((Texture) game.assetsLoader.manager.get(game.assetsLoader.exit))));
-        exit.setBounds((float) (Games.MONITORWIDTH * 0.9 - exit.getWidth() * imageScale), 400 - layout.height * textScale - exit.getHeight() * imageScale - 50,
-                exit.getWidth() * imageScale, exit.getHeight() * imageScale);
         exit.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -90,24 +80,27 @@ public class EndScreen implements Screen {
                 return true;
             }
         });
-        stage.addActor(exit);
+
+        builder.initStage(new Actor[]{text, exit}, 0.2f);
+        stage = builder.getStage();
         game.inputMultiplexer.addProcessor(stage);
+
+        menuWidth = builder.menuWidth;
+        menuHeight = builder.menuHeight;
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl30.glClearColor(game.backGroundColor.r, game.backGroundColor.g, game.backGroundColor.b, game.backGroundColor.a);
         Gdx.gl30.glClear(GL30.GL_COLOR_BUFFER_BIT);
-        game.batch.begin();
-        text.draw(game.batch);
-        game.batch.end();
         stage.draw();
     }
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height, true);
-        game.batch.setProjectionMatrix(cam.combined);
+        stage.getViewport().update(width, height);
+        stage.getCamera().position.set(menuWidth / 2f, menuHeight / 2f, 0);
+        game.batch.setProjectionMatrix(stage.getViewport().getCamera().combined);
     }
 
     @Override
@@ -129,8 +122,6 @@ public class EndScreen implements Screen {
     public void dispose() {
         game.inputMultiplexer.removeProcessor(stage);
         stage.dispose();
-        //kui managerist võtta ss ei pea enam disposima
-        //font.dispose();
     }
 
     public enum Outcome {
